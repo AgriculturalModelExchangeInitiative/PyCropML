@@ -1,0 +1,89 @@
+<!ELEMENT ModelUnit (Description,Inputs?,Outputs?,Algorithm,Parametersets,
+                     Testsets)>
+<!ATTLIST ModelUnit>
+
+<!ELEMENT Description (Title,Author,Institution,URI?,Reference?,Abstract)>
+<!ATTLIST Description>
+
+<!ELEMENT Inputs (Input)+>
+<!ATTLIST Inputs>
+
+<!ELEMENT Outputs (Output*)>
+<!ATTLIST Outputs>
+
+<!ELEMENT Algorithm (#PCDATA)>
+<!ATTLIST Algorithm
+  language CDATA #REQUIRED>
+
+<!ELEMENT Parametersets (Parameterset+)>
+<!ATTLIST Parametersets>
+
+<!ELEMENT Testsets (Testset+)>
+<!ATTLIST Testsets>
+
+<!ELEMENT Title (#PCDATA)>
+<!ATTLIST Title>
+
+<!ELEMENT Author (#PCDATA)>
+<!ATTLIST Author>
+
+<!ELEMENT Institution (#PCDATA)>
+<!ATTLIST Institution>
+
+<!ELEMENT URI (#PCDATA)>
+<!ATTLIST URI>
+
+<!ELEMENT Reference (#PCDATA)>
+<!ATTLIST Reference>
+
+<!ELEMENT Abstract (#PCDATA)>
+<!ATTLIST Abstract>
+
+<!ELEMENT Input (param)*>
+<!ATTLIST Input
+  datatype NMTOKEN #REQUIRED
+  default CDATA #IMPLIED
+  description CDATA #REQUIRED
+  max CDATA #REQUIRED
+  min CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  type NMTOKEN #REQUIRED
+  unit CDATA #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Output (Param)*>
+<!ATTLIST Output
+  datatype (CHAR|CHARARRAY|DATE|DOUBLE|DOUBLEARRAY|INT|INTARRAY|BOOLEAN) #REQUIRED 
+  description CDATA #REQUIRED
+  max CDATA #REQUIRED
+  min CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  unit CDATA #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Parameterset (Param*)>
+<!ATTLIST Parameterset
+  description CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Testset (Test*)>
+<!ATTLIST Testset
+  description CDATA #REQUIRED
+  name CDATA #REQUIRED
+  parameterset NMTOKEN #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Test (Param*, Check*)>
+<!ATTLIST Test
+  description CDATA #IMPLIED
+  name CDATA #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Param (#PCDATA) >
+<!ATTLIST Param name CDATA #REQUIRED >
+
+<!ELEMENT Check (#PCDATA) >
+<!ATTLIST Check name CDATA #REQUIRED >
+<!ATTLIST Check description CDATA #IMPLIED >
+
