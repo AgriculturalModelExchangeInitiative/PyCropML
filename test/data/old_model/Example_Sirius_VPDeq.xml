@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/cyrillemidingoyi/PyCropML/render_csharp/test/data/ModelUnit.dtd">
+<ModelUnit modelid="1" name="VPDeq" timestep="1" version="1.0">
+    <Description>
+        <Title>VPDeq Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="hourlyVPDairLeaf" description="" parametercategory="species" datatype="DOUBLE" default="[0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.7, 0.6, 0.6, 0.5, 0.5, 0.5, 0.4, 0.4]" min="0" max="1000" unit="hPa" uri="some url" inputtype="variable"/>
+        <Input name="hourlySolarRadiation" description="" parametercategory="species" datatype="DOUBLE" default="[0,0,0,0,0,0,0,0,0.1,0.5,1.0,1.4,1.4,1.0,0.5,0.08,0,0,0,0,0,0,0,0]" min="0" max="100" unit="MJ/m²d" uri="some url" inputtype="variable"/>
+        <Input name="SwitchMaize" description="true if maize false if wheat" parametercategory="species" datatype="DOUBLE" default="0" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+     
+    </Inputs>
+    <Outputs>
+     	<Output name="VPDeq" description=" " datatype="DOUBLE" min="0" max="5"  unit="hPa" uri="some url"/>
+
+    </Outputs>
+    
+    <Algorithm language="C#" platform=""><![CDATA[
+    	
+        if (SwitchMaize == 1)
+        	{
+            	for (int i = 0; i < 24; i++)
+        			{
+        				double PAR = (hourlySolarRadiation[i] * 2.02 / 3600 * 1e6);
+        				VPDeq[i] = (hourlyVPDairLeaf[i] * Math.Max(0.0, Math.Min(PAR / 500.0, 1.0)));
+        			}     
+                   
+             }        
+        
+                
+      ]]>
+     </Algorithm>    
+    
+    <Algorithm language="python_ext" platform=""><![CDATA[
+    	VPDeq = range(24)
+        if (SwitchMaize == 1):
+        	{
+            	for i in range(0,24):
+        			{
+        				PAR = hourlySolarRadiation[i] * 2.02 / 3600 * 1e6
+        				VPDeq[i] = (hourlyVPDairLeaf[i] * max(0.0, min(PAR / 500.0, 1.0)))
+        			}     
+                   
+             }        
+        
+    
+
+      ]]>
+     </Algorithm>
+     <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="SwitchMaize">1</Param>
+  
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="hourlyVPDairLeaf">[0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.7, 0.6, 0.6, 0.5, 0.5, 0.5, 0.4, 0.4]</InputValue>
+        		<InputValue name="hourlySolarRadiation">[0,0,0,0,0,0,0,0,0.1,0.5,1.0,1.4,1.4,1.0,0.5,0.08,0,0,0,0,0,0,0,0]</InputValue>
+    			<OutputValue name="VPDeq" precision ="1">[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.3, 0.6, 0.6, 0.7, 0.7, 0.4, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

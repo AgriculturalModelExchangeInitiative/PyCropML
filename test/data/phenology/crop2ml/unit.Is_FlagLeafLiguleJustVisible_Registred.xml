@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.WheatPhenology.IsMomentRegistredZC_39" name="IsMomentRegistredZC_39" timestep="1" version="1.0">
+    <Description>
+        <Title>IsMomentRegistredZC39 Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modeling development phase in the 
+                Wheat Simulation Model SiriusQuality.
+                See documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract>if FlagLeafLiguleJustVisible is already Registred </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="calendarMoments" description="List containing appearance of each stage" variablecategory="auxiliary"  datatype="STRINGLIST"  default= "['Sowing']" unit=""  inputtype = "variable"/>
+    </Inputs>
+    <Outputs>
+        <Output name="isMomentRegistredZC_39" description=" if Flag leaf ligule has already appeared " datatype="INT" min="0" max="1"  unit="" />
+
+    </Outputs>
+    
+	<Algorithm  language="Python" platform="" filename="algo/py/Is_FlagLeafLiguleJustVisible_Registred.py" />
+	<Algorithm  language="C#" platform="" filename="algo/cs/Is_FlagLeafLiguleJustVisible_Registred.cs" />
+	<Algorithm  language="Java" platform="" filename="algo/java/Is_FlagLeafLiguleJustVisible_Registred.java" />
+	<Algorithm  language="C++" platform="" filename="algo/cpp/Is_FlagLeafLiguleJustVisible_Registred.cpp" />
+	<Algorithm  language="Fortran" platform="" filename="algo/f90/Is_FlagLeafLiguleJustVisible_Registred.f90" />
+	<Algorithm  language="Cyml" platform="" filename="algo/pyx/Is_FlagLeafLiguleJustVisible_Registred.pyx" />
+	<Algorithm  language="R" platform="" filename="algo/r/Is_FlagLeafLiguleJustVisible_Registred.r" />
+
+    <Parametersets>
+        <Parameterset name="wheat" description="some values in there" >
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model" parameterset = "wheat" description="some values in there" >
+        	<Test name ="test_wheat1">
+ 				<InputValue name="calendarMoments">["Sowing", "Emergence", "FloralInitiation", "FlagLeafLiguleJustVisible", "Heading", "Anthesis"]</InputValue>
+				<OutputValue name="isMomentRegistredZC_39" >1</OutputValue>
+        	</Test>
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>
+

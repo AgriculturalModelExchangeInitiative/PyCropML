@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit  modelid="1" name="Partitioning" timestep="1" version="1.0">
+    <Description>
+      <Title>Partitioning</Title>
+      <Authors>Gunther Krauss, gk@uni-bonn.de</Authors>
+      <Institution>INRES Pflanzenbau, Uni Bonn</Institution>
+      <Reference>as given in the documentation</Reference>
+      <Abstract>see documentation at http://www.simplace.net/doc/simplace_modules/class_net.simplace.sim.components.experimental.amei.Partitioning.html</Abstract>
+    </Description>
+    <Inputs>
+      <Input name="cPartitionNStressReduction" description="N Stress on Partitioning" datatype="DOUBLE" min="0.0" max="1.0" inputtype = "parameter" default="1.0" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cLeavesPartitioningTableDVS" description="DVS for fraction of total dry matter to leaves (c.f. FLVTB)" datatype="DOUBLEARRAY" min="0" max="10" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="iTRANRF" description="Transpiration reduction factor" datatype="DOUBLE" min="0.0" max="1.0" default="1.0" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cStemsPartitioningTableFraction" description="Fraction of total dry matter to stems as function of DVS (c.f. FSTTB)" datatype="DOUBLEARRAY" min="0" max="10" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cLeavesPartitioningTableFraction" description="Fraction of total dry matter to leaves as function of DVS (c.f. FLVTB)" datatype="DOUBLEARRAY" min="0" max="10" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cFSOTB" description="Fractions Table Storage Organs" datatype="DOUBLEARRAY" min="0" max="0" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cStemsPartitioningTableDVS" description="DVS for fraction of total dry matter to stems (c.f. FSTTB)" datatype="DOUBLEARRAY" min="0" max="10" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cFRTTB" description="Fractions Table Root" datatype="DOUBLEARRAY" min="0" max="0" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cFSTTB" description="Fractions Table Stems" datatype="DOUBLEARRAY" min="0" max="0" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cStorageOrgansPartitioningTableDVS" description="DVS for fraction of total dry matter to storage organs (c.f. FSOTB)" datatype="DOUBLEARRAY" min="0" max="10" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="iNitrogenNutritionIndex" description="Nitrogen Nutrition Index" datatype="DOUBLE" min="0.0" max="1.0" default="1.0" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cRootsPartitioningTableDVS" description="DVS for fraction of total dry matter to roots (c.f. FRTTB)" datatype="DOUBLEARRAY" min="0" max="10" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="nameoSow" description="if Sowingdate reached fraction tables are initialized" datatype="BOOLEAN" default="False" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cFLVTB" description="Fractions Table Leaves" datatype="DOUBLEARRAY"  min="0" max="0" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cRootsPartitioningTableFraction" description="Fraction of total dry matter to roots as function of DVS (c.f. FRTTB)" datatype="DOUBLEARRAY" min="0" max="0" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="idevStage" description="Development stage of the plant" datatype="DOUBLE" min="0.0" max="3.0" default="0.0" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Input name="cStorageOrgansPartitioningTableFraction" description="Fraction of total dry matter to storage organs as function of DVS (c.f. FSOTB)" datatype="DOUBLEARRAY" min="0" max="0" default="([0.1,0.2,0.4])" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+    </Inputs>
+    <Outputs>
+      <Output name="FractionStems" description="Fraction part going to Stems compartment" datatype="DOUBLE" min="0.0" max="1.0"  unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Output name="FractionStorageOrgans" description="Fraction part going to Storage Organs compartment" datatype="DOUBLE" min="0.0" max="1.0"  unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Output name="FractionLeaves" description="Fraction part going to Leaves compartment" datatype="DOUBLE" min="0.0" max="1.0"  unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+      <Output name="FractionRoot" description="Fraction part going to Root compartment" datatype="DOUBLE" min="0.0" max="1.0"  unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+    </Outputs>
+    <Algorithm language="java" platform="SIMPLACE"><![CDATA[
+
+    double FRTWET = FSTFunctions.AFGEN(cRootsPartitioningTableDVS, cRootsPartitioningTableFraction, DevStage.getValue());
+    if (TRANRF.getValue() &lt; NitrogenNutritionIndex.getValue()) {
+        double FRTMOD = max(1.0, 1.0 / (TRANRF.getValue() + 0.5));
+        FractionRoot.setValue(FRTWET * FRTMOD, this);
+        double FSHMOD = (1.0 - FractionRoot.getValue()) / (1.0 - FractionRoot.getValue() / FRTMOD);
+        FractionLeaves.setValue(FSTFunctions.AFGEN(cLeavesPartitioningTableDVS, cLeavesPartitioningTableFraction, DevStage.getValue()) * FSHMOD, this);
+        FractionStems.setValue(FSTFunctions.AFGEN(cStemsPartitioningTableDVS, cStemsPartitioningTableFraction, DevStage.getValue()) * FSHMOD, this);
+        FractionStorageOrgans.setValue(FSTFunctions.AFGEN(cStorageOrgansPartitioningTableDVS, cStorageOrgansPartitioningTableFraction, DevStage.getValue()) * FSHMOD, this);
+    } else {
+        double FLVMOD = exp(-PartitionNStressReduction.getValue() * (1 - NitrogenNutritionIndex.getValue()));
+        FractionRoot.setValue(FRTWET, this);
+        double FLVT = FSTFunctions.AFGEN(cLeavesPartitioningTableDVS, cLeavesPartitioningTableFraction, DevStage.getValue());
+        FractionLeaves.setValue(FLVT * FLVMOD, this);
+        FractionStems.setValue(FSTFunctions.AFGEN(cStemsPartitioningTableDVS, cStemsPartitioningTableFraction, DevStage.getValue()) + FLVT - FractionLeaves.getValue(), this);
+        FractionStorageOrgans.setValue(FSTFunctions.AFGEN(cStorageOrgansPartitioningTableDVS, cStorageOrgansPartitioningTableFraction, DevStage.getValue()), this);
+    }
+
+     ]]>
+    </Algorithm>
+    <Algorithm language="python_ext" platform="OpenAlea"><![CDATA[
+    FractionStems=0
+    FractionStorageOrgans=0
+    FractionLeaves=0
+    FractionRoot=0
+    
+    """
+       double FRTWET = FSTFunctions.AFGEN(cRootsPartitioningTableDVS, cRootsPartitioningTableFraction, DevStage.getValue());
+    if (TRANRF.getValue() &lt; NitrogenNutritionIndex.getValue()) {
+        double FRTMOD = max(1.0, 1.0 / (TRANRF.getValue() + 0.5));
+        FractionRoot.setValue(FRTWET * FRTMOD, this);
+        double FSHMOD = (1.0 - FractionRoot.getValue()) / (1.0 - FractionRoot.getValue() / FRTMOD);
+        FractionLeaves.setValue(FSTFunctions.AFGEN(cLeavesPartitioningTableDVS, cLeavesPartitioningTableFraction, DevStage.getValue()) * FSHMOD, this);
+        FractionStems.setValue(FSTFunctions.AFGEN(cStemsPartitioningTableDVS, cStemsPartitioningTableFraction, DevStage.getValue()) * FSHMOD, this);
+        FractionStorageOrgans.setValue(FSTFunctions.AFGEN(cStorageOrgansPartitioningTableDVS, cStorageOrgansPartitioningTableFraction, DevStage.getValue()) * FSHMOD, this);
+    } else {
+        double FLVMOD = exp(-PartitionNStressReduction.getValue() * (1 - NitrogenNutritionIndex.getValue()));
+        FractionRoot.setValue(FRTWET, this);
+        double FLVT = FSTFunctions.AFGEN(cLeavesPartitioningTableDVS, cLeavesPartitioningTableFraction, DevStage.getValue());
+        FractionLeaves.setValue(FLVT * FLVMOD, this);
+        FractionStems.setValue(FSTFunctions.AFGEN(cStemsPartitioningTableDVS, cStemsPartitioningTableFraction, DevStage.getValue()) + FLVT - FractionLeaves.getValue(), this);
+        FractionStorageOrgans.setValue(FSTFunctions.AFGEN(cStorageOrgansPartitioningTableDVS, cStorageOrgansPartitioningTableFraction, DevStage.getValue()), this);
+    }
+    
+    """
+    
+    
+     ]]>
+    </Algorithm>
+ </ModelUnit>

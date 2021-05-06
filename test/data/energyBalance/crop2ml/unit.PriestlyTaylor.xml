@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.EnergyBalance.PriestlyTaylor" name="PriestlyTaylor" timestep="1" version="1.0">
+    <Description>
+        <Title>evapoTranspirationPriestlyTaylor  Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modelling energy balance in the wheat crop model SiriusQuality2:
+            Evapotranspiration and canopy and soil temperature calculations</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="netRadiationEquivalentEvaporation" description="net Radiation in Equivalent Evaporation" variablecategory="state" datatype="DOUBLE" default="638.142" min="0" max="5000" unit="g m-2 d-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="variable"/>
+        <Input name="hslope" description="the slope of saturated vapor pressure temperature curve at a given temperature " variablecategory="auxiliary" datatype="DOUBLE" default="0.584" min="0" max="1000" unit="hPa °C-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="variable"/>
+        <Input name="psychrometricConstant" description="psychrometric constant" parametercategory="constant" datatype="DOUBLE" default="0.66" min="0" max="1" unit="" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="parameter"/>
+        <Input name="Alpha" description="Priestley-Taylor evapotranspiration proportionality constant" parametercategory="constant" datatype="DOUBLE" default="1.5" min="0" max="100" unit="" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="parameter"/>
+   </Inputs>
+   
+    <Outputs>
+         <Output name="evapoTranspirationPriestlyTaylor" description="evapoTranspiration of Priestly Taylor " datatype="DOUBLE" min="0" max="10000"  unit="g m-2 d-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547"/>
+   	
+    </Outputs>
+    
+    <Algorithm  language="C#" platform="" filename="algo/cs/PriestlyTaylor.cs" />
+    <Algorithm  language="Python" platform="" filename="algo/py/PriestlyTaylor.py" />
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/PriestlyTaylor.pyx" />
+    <Algorithm  language="Java" platform="" filename="algo/java/PriestlyTaylor.java" />
+    <Algorithm  language="C++" platform="" filename="algo/cpp/PriestlyTaylor.cpp" />
+    <Algorithm  language="R" platform="" filename="algo/r/PriestlyTaylor.r" />
+    <Algorithm  language="Fortran" platform="" filename="algo/f90/PriestlyTaylor.f90" />    
+
+      <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="Alpha">1.5</Param>
+
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="netRadiationEquivalentEvaporation">638.142</InputValue>
+				<OutputValue name="evapoTranspirationPriestlyTaylor" precision ="3">449.367</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

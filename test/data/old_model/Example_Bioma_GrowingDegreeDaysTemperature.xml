@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ModelUnit PUBLIC "" "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" timestep="1" name="Bioma_GrowingDegreeDaysTemperature" version="1.0">
+	<Description>
+		<Title>GrowingDegreeDaysTemperature</Title>
+		<Authors>various</Authors>
+		<Institution></Institution>
+		<URI></URI>
+		<Reference>absolutely non</Reference>
+		<Abstract><![CDATA[
+			Growing degree days based on temperature -Confalonieri, R., Gusberti, D., Acutis, M., 2006.
+		  	Comparison of WOFOST, CropSyst and WARM for simulating rice growth
+		  	Japonica type short cycle varieties. Italian Journal of Agrometeorology, 3, 7-16
+		]]></Abstract>
+	</Description>
+	<Inputs>
+		<Input name="BaseTemperatureDevelopment" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="-10" max="40" default="10" unit="°C" description="Base temperature for development" />
+		<Input name="CutoffTemperatureDevelopment" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="10" max="50" default="40" unit="°C" description="Cutoff temperature for development" />		
+		<Input name="AirTemperatureAverage" datatype="DOUBLE" inputtype="variable" min="-30" max="55" default="25" unit="°C" description="Daily average air temperature"/>		
+		<Input name="GrowingDegreeDaysTemperature" datatype="DOUBLE" inputtype="variable" min="0" max="8000" default="100" unit="°C" description="Potential growing degree days calculated on temperature"/>		
+	</Inputs>
+	<Outputs>
+		<Output name="GrowingDegreeDaysTemperature" datatype="DOUBLE" min="0" max="8000"  unit="°C" description="Potential growing degree days calculated on temperature"/>
+		<Output name="GrowingDegreeDaysTemperatureRate" datatype="DOUBLE" min="0" max="50"  unit="°C" description="Potential daily rate of growing degree days accumulation based on temperature"/>		
+	</Outputs>
+	<Algorithm language="python_ext" platform=" ">
+		<![CDATA[ 
+				Tavg = float(AirTemperatureAverage)
+
+                if (Tavg <= BaseTemperatureDevelopment):
+                {
+                    GrowingDegreeDaysTemperatureRate = 0
+                }
+                elif (Tavg >= CutoffTemperatureDevelopment):
+                {
+                    GrowingDegreeDaysTemperatureRate = CutoffTemperatureDevelopment - BaseTemperatureDevelopment
+                }
+                else:
+                {
+                    GrowingDegreeDaysTemperatureRate = Tavg - BaseTemperatureDevelopment
+                }
+				GrowingDegreeDaysTemperature = GrowingDegreeDaysTemperature + GrowingDegreeDaysTemperatureRate
+		]]>
+	</Algorithm>
+	<Parametersets>
+		<Parameterset name="default" description="default values">
+			<Param name="BaseTemperatureDevelopment">10</Param>
+			<Param name="CutoffTemperatureDevelopment">40</Param>			
+		</Parameterset>		
+	</Parametersets>
+	<Testsets>
+		<Testset name="check 1" parameterset="default" description="some test values">
+			<Test name="check 1 1">
+				<InputValue name="AirTemperatureAverage">16</InputValue>
+				<InputValue name="GrowingDegreeDaysTemperature">5</InputValue>
+				<OutputValue name="GrowingDegreeDaysTemperature" precision ="2">11</OutputValue>
+				<OutputValue name="GrowingDegreeDaysTemperatureRate" precision ="2">6</OutputValue>
+			</Test>
+			<Test name="check 1 2">
+				<InputValue name="AirTemperatureAverage">46</InputValue>
+				<InputValue name="GrowingDegreeDaysTemperature">5</InputValue>
+				<OutputValue name="GrowingDegreeDaysTemperature" precision ="2">35</OutputValue>
+				<OutputValue name="GrowingDegreeDaysTemperatureRate" precision ="2">30</OutputValue>
+			</Test>
+			<Test name="check 1 3">
+				<InputValue name="AirTemperatureAverage">-1</InputValue>
+				<InputValue name="GrowingDegreeDaysTemperature">5</InputValue>
+				<OutputValue name="GrowingDegreeDaysTemperature" precision ="2">5</OutputValue>
+				<OutputValue name="GrowingDegreeDaysTemperatureRate" precision ="2">0</OutputValue>
+			</Test>
+		</Testset>		
+	</Testsets>
+</ModelUnit>

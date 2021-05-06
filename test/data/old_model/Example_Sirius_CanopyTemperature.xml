@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="CanopyTemperature" timestep="1" version="1.0">
+    <Description>
+        <Title>CanopyTemperature Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="minTair" description="minimal temperature" datatype="DOUBLE" min="0" max="25" default="0.7" unit="°C" uri="some url" inputtype = "variable"/>
+        <Input name="maxTair" description="max Temperature" datatype="DOUBLE" min="0" max="30" default="7.2" unit="°C" uri="some url" inputtype = "variable"/>
+        <Input name="cropHeatFlux" description="" parametercategory="constant" inputtype="variable" datatype="DOUBLE" min="0" max="30" default="447.912" unit="g/m²d" uri="some url" />
+        <Input name="conductance" description="" parametercategory="constant" inputtype="variable" datatype="DOUBLE" min="0" max="10" default="598.685" unit="m/d" uri="some url" />
+        <Input name="lambdaV" description="latent heat of vaporization of water" parametercategory="species" datatype="DOUBLE" default="2.454" min="0" max="10" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="rhoDensityAir" description="Density of air" parametercategory="species" datatype="DOUBLE" default="1.225" min="0" max="10" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="specificHeatCapacityAir" description="Specific heat capacity of dry air" parametercategory="species" datatype="DOUBLE" default="0.00101" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+   
+    </Inputs>
+    <Outputs>
+        <Output name="minCanopyTemperature" description="  " datatype="DOUBLE" min="0" max="15"  unit="°C" uri="some url"/>
+        <Output name="maxCanopyTemperature" description=" " datatype="DOUBLE" min="0" max="25"  unit="°C" uri="some url"/>
+    	
+    </Outputs>
+    
+    <Algorithm language=" " platform=""><![CDATA[
+ 
+   		minCanopyTemperature = minTair + cropHeatFlux / ((rhoDensityAir * specificHeatCapacityAir * conductance / lambdaV) * 1000)
+ 		maxCanopyTemperature = maxTair + cropHeatFlux / ((rhoDensityAir * specificHeatCapacityAir * conductance / lambdaV) * 1000)
+   
+                
+      ]]>
+    </Algorithm>    
+
+     <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="rhoDensityAir">1.225</Param>
+
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="minTair">0.7</InputValue>
+        		<InputValue name="maxTair">7.2</InputValue>
+ 				<OutputValue name="minCanopyTemperature" precision ="3">2.184</OutputValue>
+				<OutputValue name="maxCanopyTemperature" precision ="3">8.684</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+ 	
+ 	
+</ModelUnit>

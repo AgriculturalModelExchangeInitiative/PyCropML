@@ -1,0 +1,9 @@
+public void Process()
+{
+    double tnetRadiationEquivalentEvaporation = netRadiationEquivalentEvaporation.getValue();
+    double ttau = tau.getValue();
+    double tsoilEvaporation = soilEvaporation.getValue();
+    double tsoilHeatFlux = soilHeatFlux.getValue();
+    tsoilHeatFlux = ttau * tnetRadiationEquivalentEvaporation - tsoilEvaporation;
+    soilHeatFlux.setValue(tsoilHeatFlux);
+}

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC "-//SIMPLACE/DTD SOL 1.0//EN" "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" timestep="1" name ="SoilTemp2" version="1.0">
+	<Description>
+		<Title>STMPsimCalculator</Title>
+		<Authors>Andreas Enders</Authors>
+		<Institution>Crop Science Group Bonn</Institution>
+		<URI>http://www.simplace.net/doc/simplace_modules/class_net.simplace.sim.components.soil.temperature.STMPsimCalculator.html</URI>
+		<Abstract>Calculates the soil temperature in n layers depending on climate and soil conditions.</Abstract>
+	</Description>
+	<Inputs>
+		<Input name="cSoilLayerDepth" datatype="DOUBLEARRAY" inputtype="parameter" parametercategory="constant" min="" max="" default="([0.1,0.2,0.4,0.6,0.9,1.1,1.3,1.5,1.7,1.9,2.1,2.3])" unit="" description="" />
+		<Input name="cFirstDayMeanTemp" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="" max="" default="10" unit="" description=""/>
+		<Input name="cAVT" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="" max="" default="100" unit="" description=""/>
+		<Input name="cABD" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="" max="" default="3.12" unit="" description=""/>
+		<Input name="cDampingDepth" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="" max="" default="3" unit="" description=""/>
+		<Input name="iSoilSurfaceTemperature" datatype="DOUBLE" inputtype="variable" min="" max="" default="10" unit="" description=""/>
+		<Input name="iSoilWaterContent" datatype="DOUBLE" inputtype="variable" min="" max="" default="15" unit="" description=""/>
+	</Inputs>
+	<Outputs>
+		<Output name="SoilTempArray" datatype="DOUBLEARRAY" min="" max="" unit="" description=""/>
+	</Outputs>
+	<Algorithm language="python_ext" platform="OpenAlea"><![CDATA[ 
+			Z = copy(cSoilLayerDepth)
+			firstDayMeanTemp = cFirstDayMeanTemp
+			_profiledepth = Z[len(Z) - 1]
+			additionalDepth = cDampingDepth - _profiledepth
+			firstAdditionalLayerHight = additionalDepth - np.floor(additionalDepth)
+			layers = (np.abs(np.ceil(additionalDepth)))+len(Z)
+			SoilTempArray = np.arange(layers)
+			tz = np.arange(layers)
+			for i in range(0,len(SoilTempArray)):
+			{
+				if (i < len(Z)):
+				{        
+					depth = Z[i]
+				}        
+				else: #first additional layer might be smaller than 1 m
+				{            
+					depth = _profiledepth + firstAdditionalLayerHight + i - len(Z)
+				}        
+				tz[i] = depth
+				SoilTempArray[i] = (firstDayMeanTemp * (cDampingDepth - depth) + cAVT * depth) / cDampingDepth
+				#set linear aproximation to the soil temperature as    initial value
+    		}
+			_z = tz
+			XLAG =.8 #XLAG = LAG = Coefficient for weighting yesterday's soil temperature
+			XLG1 = 1 - XLAG; #XLG1 = Inverse of coefficient for weighting yesterday's soil temperature
+			DP = (1 + 2.5 * cABD / (cABD + np.exp(6.53 -5.63 * cABD))) #DP= Maximum damping depth (m)
+			WC = 0.001*iSoilWaterContent/((.356 -.144 * cABD) * _profiledepth)#WC seems to be a water content related factor [cm3/g] to modify the damping depth ?
+			DD = np.exp(np.log(0.5/DP)*((1 - WC)/(1 + WC)) * 2) * DP
+			# DD(t)= Damping depth (m), multiplied by 2 (20110628 TG) to increase damping depth
+			# DD could be also calculated from d = (2Dh /w )^0.5 (easy soilT, Nofziger et al.), where w = 2Pi/365 (d^-1)
+			#and Dh is the thermal diffusivity (m^2 s^-l) with ( Dh= K/Cs, Cs = volumetric heat capacity in J m^-3 K^-1, K=??)
+			Z1 = 0 #Z1=Depth of the bottom of the previous soil layer, initialized with 0 (m)
+			for  i in range( 0, len(SoilTempArray)):
+			{
+				ZD = 0.5*(Z1 + _z[i])/DD
+				#Factor of the depth in soil: Middle of depth of layer divided by damping depth
+				RATE = ZD / (ZD + np.exp(-.8669 - 2.0775 * ZD)) * (cAVT - iSoilSurfaceTemperature) #RATE = Rate of change of STMP(ISL)
+				SoilTempArray[i] = XLAG * SoilTempArray[i] + XLG1 * (RATE + iSoilSurfaceTemperature);
+				Z1 = _z[i]
+			}
+		]]>
+	</Algorithm>
+	<Parametersets>
+		<Parameterset name="cold" description="some values for cold weather">
+			<Param name="cSoilLayerDepth">([0.1,0.2,0.4,0.6,0.9,1.1,1.3,1.5,1.7,1.9,2.1,2.3])</Param>
+			<Param name="cFirstDayMeanTemp">10</Param>
+			<Param name="cAVT">50</Param>
+			<Param name="cABD">3.12</Param>
+			<Param name="cDampingDepth">5.75</Param>
+		</Parameterset>
+		<Parameterset name="hot" description="some values in there">
+			<Param name="cSoilLayerDepth">([0.1,0.2,0.4,0.6,0.9,1.1,1.3,1.5,1.7,1.9,2.1,2.3])</Param>
+			<Param name="cFirstDayMeanTemp">10</Param>
+			<Param name="cAVT">50</Param>
+			<Param name="cABD">3.12</Param>
+			<Param name="cDampingDepth">5.75</Param>
+		</Parameterset>
+		<Parameterset name="dry" description="some values in there">
+			<Param name="cSoilLayerDepth">([0.1,0.2,0.4,0.6,0.9,1.1,1.3,1.5,1.7,1.9,2.1,2.3])</Param>
+			<Param name="cFirstDayMeanTemp">10</Param>
+			<Param name="cAVT">30</Param>
+			<Param name="cABD">3.12</Param>
+			<Param name="cDampingDepth">5.75</Param>
+		</Parameterset>
+	</Parametersets>
+	<Testsets>
+		<Testset name="check soil temp1" parameterset="cold" description="some values in there">
+			<Test name="cold_and_colder1">
+				<InputValue name="iSoilWaterContent">0.22</InputValue>
+				<InputValue name="iSoilSurfaceTemperature">-0.75</InputValue>
+				<OutputValue name="SoilTempArray" precision = "2">([17.33, 19.09, 20.23, 21.34, 23.01, 24.12, 25.23, 26.35, 27.46, 28.57, 29.69, 30.8 , 33.3 , 38.87, 44.43, 50.  ])</OutputValue>
+			</Test>
+			<Test name="cold_and_colder2">
+				<InputValue name="iSoilWaterContent">0.5</InputValue>
+				<InputValue name="iSoilSurfaceTemperature">-2</InputValue>
+				<OutputValue name="SoilTempArray" precision ="2">([17.33, 19.09, 20.23, 21.34, 23.01, 24.12, 25.23, 26.35, 27.46,28.57, 29.69, 30.8 , 33.3 , 38.87, 44.43, 50.  ])</OutputValue>
+			</Test>
+
+		</Testset>
+		<Testset name="check soil temp2" parameterset="hot" description="some values in there">
+			<Test name="hot_and_hotter">
+				<InputValue name="iSoilWaterContent">0.22</InputValue>
+				<InputValue name="iSoilSurfaceTemperature">29.75</InputValue>
+				<OutputValue name="SoilTempArray" precision="2">([18.07, 19.1 , 20.23, 21.34, 23.01, 24.12, 25.23, 26.35, 27.46,28.57, 29.69, 30.8 , 33.3 , 38.87, 44.43, 50.  ])</OutputValue>
+			</Test>
+		</Testset>
+		<Testset name="check soil temp3" parameterset="dry" description="some values in there">
+			<Test name="dry_test">
+				<InputValue name="iSoilWaterContent">0.12</InputValue>
+				<InputValue name="iSoilSurfaceTemperature">20.75</InputValue>
+				<OutputValue name="SoilTempArray" precision="2">([14.05, 14.55, 15.11, 15.67, 16.5 , 17.06, 17.62, 18.17, 18.73, 19.29, 19.84, 20.4 , 21.65, 24.43, 27.22, 30.  ])</OutputValue>
+			</Test>
+		</Testset>
+	</Testsets>
+</ModelUnit>

@@ -28,7 +28,6 @@ def builtin_type_check(namespace, function, receiver, args):
     if function not in fs:        
         raise  PseudoCythonTypeCheckError('wrong usage of %s' % str(function))
     x = fs[function]
-    print("sdsdqdd",namespace,receiver, args)
     a = namespace + '#' + function if receiver else namespace + ':' + function
     if namespace == 'List' or namespace == 'array':
         if not isinstance(receiver['pseudo_type'], list):
@@ -113,10 +112,10 @@ def sub(l, r):
         #raise PseudoCythonTypeCheckError("wrong types for +: %s and %s" % (serialize_type(l), serialize_type(r)))
 
 def mul(l, r):
-    if l == 'float' and r in ['float', 'int']  or r == 'float' and l in ['float', 'int'] :
+    if l in ['float', 'double'] and r in ['float', 'int', 'double'] :
         return [l, r, 'float']
-    elif l == 'double' and r in ['float', 'int','double']  or r == 'double' and l in ['float', 'int',"double"] :
-        return [l, r, 'double']
+    elif r in ['float', 'double'] and l in ['float', 'int', 'double'] :
+        return [l, r, 'float']
     elif l == 'int' and r == 'int':
         return [l, r, 'int']
     elif l == 'int' and (isinstance(r, list) and r[0] == "List" or r == 'str'): 
@@ -130,7 +129,9 @@ def mul(l, r):
         #raise PseudoCythonTypeCheckError("wrong types for *: %s and %s" % (serialize_type(l), serialize_type(r)))
 
 def div(l, r, lo=None):
-    if l == 'float' and r in ['float', 'int'] or r == 'float' and l in ['float', 'int']:
+    if l in ['float', 'double'] and r in ['float', 'int', 'double'] :
+        return [l, r, 'float']
+    elif r in ['float', 'double'] and l in ['float', 'int', 'double'] :
         return [l, r, 'float']
     elif l == 'int' and r == 'int':
         return [l, r, 'int']
@@ -190,7 +191,7 @@ TYPED_API = {
         "max":['Number','Number']
     },
         
-    'Math': {
+    'math': {
         'abs':         ["Number", "Number"],
         'tan':          ['Number', 'double'],
         'atan':          ['Number', 'double'],
@@ -200,7 +201,7 @@ TYPED_API = {
         'acos':          ['double', 'double'],
         'log':          ['double', 'double', 'double'],
         'sqrt':         ['Number', 'double'],
-        'ceiling':      ['double', 'double'],
+        'ceil':      ['double', 'int'],
         'exp':          ['double','double'],
         'PI': 'PI',
         'Floor':          ['double','double'],
@@ -223,12 +224,12 @@ TYPED_API = {
     'List': {
         'append':       ['@t', ['List', '@t']],
         'sum':       [['List', '@t'], '@t'],
-        'AddRAnge':       [["List",'@t'], ['List', '@t']],
-        'Contains':       ["@t", "bool"],
+        'extend':       [["List",'@t'], ['List', '@t']],
+        'contains?':       ["@t", "bool"],
         'Remove':        ['@t','bool'],
         'Insert':     ['int','@t', ["List", '@t']],
-        'Count':     ['int'],
-        'IndexOf':      ['@t','int'],
+        'len':     ['int'],
+        'index':      ['@t','int'],
     },
 }
     

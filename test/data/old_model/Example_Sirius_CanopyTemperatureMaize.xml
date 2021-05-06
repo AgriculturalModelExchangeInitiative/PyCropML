@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="CanopyTemperatureMaize" timestep="1" version="1.0">
+    <Description>
+        <Title>CanopyTemperatureMaize Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="hourlyTemp" description="" parametercategory="species" datatype="DOUBLE" default="[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 3.0, 5.0, 6.0, 7.0, 7.0, 7.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 2.0, 2.0, 1.0]" min="0" max="1000" unit="°C" uri="some url" inputtype="variable"/>
+        <Input name="hourlyVPDair" description="" parametercategory="species" datatype="DOUBLE" default="[0.09,0.08,0.07,0.07,0.07,0.07,0.06,0.06,0.1,0.1,0.2,0.3,0.4,0.4,0.4,0.4,0.3,0.2,0.2,0.1,0.1,0.1,0.1,0.1]" min="0" max="1000" unit="°C" uri="some url" inputtype="variable"/>
+        <Input name="hourlySolarRadiation" description="" parametercategory="species" datatype="DOUBLE" default="[0,0,0,0,0,0,0,0,0.1,0.5,1.0,1.4,1.4,1.0,0.5,0.08,0,0,0,0,0,0,0,0]" min="0" max="1000" unit="MJ/m²d" uri="some url" inputtype="variable"/>
+        <Input name="wc3cm" description="" parametercategory="species" datatype="DOUBLE" default="2.19" min="0" max="1000" unit="g/m²d" uri="some url" inputtype="variable"/>
+        <Input name="Ntip" description="" parametercategory="species" datatype="DOUBLE" default="0" min="0" max="1000" unit=" " uri="some url" inputtype="variable"/>
+        <Input name="SwitchMaize" description="true if maize false if wheat" parametercategory="species" datatype="DOUBLE" default="1" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+  
+     
+    </Inputs>
+    <Outputs>
+
+        <Output name="hourlyCanopyTemperature" description=" " datatype="DOUBLE" min="0" max="5"  unit="°C" uri="some url"/>
+ 
+    </Outputs>
+    
+    <Algorithm language="C#" platform=""><![CDATA[
+ 
+        if (SwitchMaize == 1)
+        	{
+        		double A, B, C, D, E;
+        		if (Ntip <= 8)
+        			{ A = 6.49; B = 0.77; C = 0.01; D = -0.48; E = -0.22; }
+        		else
+            		{ A = 1.18; B = 1; C = 0.01; D = -1.65; E = 0; } 
+       			for (int i = 0; i < 24; i++)
+            		{
+            			hourlyCanopyTemperature[i] = A + B * hourlyTemp[i] + C * hourlyVPDair[i] + D * hourlySolarRadiation[i] + E * wc3cm;
+            		} 
+            }        
+        
+                
+      ]]>
+     </Algorithm>    
+    
+    <Algorithm language="python_ext" platform=""><![CDATA[
+    
+   		hourlyCanopyTemperature = range(24)
+     
+        if (SwitchMaize == 1):
+        	{
+        		if (Ntip <= 8):
+        			{ 
+        				A = 6.49
+        				B = 0.77
+        				C = 0.01
+        				D = -0.48
+        				E = -0.22; 
+        			}
+        		else:
+            		{ 
+            			A = 1.18
+            			B = 1
+            		 	C = 0.01
+            		 	D = -1.65
+            		 	E = 0
+            		} 
+       			for i in range(0,24):
+            		{
+            			hourlyCanopyTemperature[i] = A + B * hourlyTemp[i] + C * hourlyVPDair[i] + D * hourlySolarRadiation[i] + E * wc3cm;
+            		} 
+            }  
+
+      ]]>
+     </Algorithm>
+    <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="SwitchMaize">1</Param>
+  
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="hourlyTemp">[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 3.0, 5.0, 6.0, 7.0, 7.0, 7.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 2.0, 2.0, 1.0]</InputValue>
+        		<InputValue name="hourlyVPDair">[0.09,0.08,0.07,0.07,0.07,0.07,0.06,0.06,0.1,0.1,0.2,0.3,0.4,0.4,0.4,0.4,0.3,0.2,0.2,0.1,0.1,0.1,0.1,0.1]</InputValue>
+        		<InputValue name="hourlySolarRadiation">[0,0,0,0,0,0,0,0,0.1,0.5,1.0,1.4,1.4,1.0,0.5,0.08,0,0,0,0,0,0,0,0]</InputValue>
+        		<InputValue name="wc3cm">2.19</InputValue>
+        		<InputValue name="Ntip">0</InputValue>
+        		<OutputValue name="hourlyCanopyTemperature" precision ="1">[6.8,6.8, 6.8, 6.8, 6.8, 6.8, 6.8, 6.8, 7.5, 8.1, 9.4, 10.0, 10.7, 10.9, 11.2, 11.4, 10.6, 9.9, 9.1, 8.3, 7.5, 7.5, 7.5, 6.8]</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+ 	
+</ModelUnit>

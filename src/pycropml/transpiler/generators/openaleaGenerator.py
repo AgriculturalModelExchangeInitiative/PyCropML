@@ -120,8 +120,8 @@ class OpenaleaCompo(PythonCompo):
 
         _factory = node.Factory(name=model.name,
                                 description=model.description.Abstract,
-                                nodemodule=model.name.capitalize(),
-                                nodeclass="model_%s"%signature(model),
+                                nodemodule=model.name,
+                                nodeclass="model_%s"%(model.name),
                                 inputs=inputs,
                                 outputs=outputs,
                                 )

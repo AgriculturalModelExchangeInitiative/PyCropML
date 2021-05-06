@@ -41,12 +41,13 @@ class Cs_Cyml_ast():
     
     op = lib.binary_op
     
-    def __init__(self, tree, model=None, name=None):
+    def __init__(self, tree, model=None, name=None, var= []):
         self.tree = tree
         self.model = model
         self.name = name
         self.recursive = False
         self.type_env = Env()
+        self.var =  var
 
 
     def visit(self, node):
@@ -93,22 +94,14 @@ class Cs_Cyml_ast():
     def visit_methodDef(self, node):
         self.function_name = node.name
         pa = self.visit(node.params)
-        if pa is None: pa =[]
-        self.type_env.top['functions'][node.name] = [ 'Function'] + ([None] * len(pa)) + [None]
-        self.type_env.top[node.name] = self.type_env.top['functions'][node.name]
-        env = {a["name"]: a["pseudo_type"] for a in pa}
-        self.type_env, old_type_env = self.type_env.top.child_env( env), self.type_env
-        domain_func = list(env.values())
-        self.type_env.top["functions"][node.name][1:-1] = domain_func
         block = self.visit(node.block)
-        self.type_env = old_type_env
         
         z = {
             'type':   "function_definition",
             'name':   node.name,
             'params': pa,
-            'return_type':  self.type_env.top["functions"][node.name][-1],
-            'pseudo_type': self.type_env.top["functions"][node.name],
+            'return_type':  node.return_type,
+            'pseudo_type': node.pseudo_type,
             'block': block,
             'recursive':self.recursive
 
@@ -135,10 +128,14 @@ class Cs_Cyml_ast():
     def visit_declaration(self, node):
         res = []
         for de in node.decl:
-            z = self.visit(de)
-            self.type_env[z["name"]] = z["pseudo_type"]
-            res.append(z)            
-        return {"type":"declaration", "decl": res}
+            if de.name not in self.var:
+                z = self.visit(de)
+                self.type_env[z["name"]] = z["pseudo_type"]
+                res.append(z)            
+        if res:
+            return {"type":"declaration", "decl": res} 
+        else:
+            pass
     
     def visit_int(self, node):
         if "value" in dir(node) and "name" in dir(node): 
@@ -148,28 +145,29 @@ class Cs_Cyml_ast():
             val = self.visit(node.value)
             return {'type': 'int', 'value': val, 'pseudo_type': 'int'}
         elif "name" in dir(node): 
-            #if str(node.name) not in self.env:
             return {'type': 'int', 'name':str(node.name), 'pseudo_type': 'int'}
 
     def visit_double(self, node):
         if "value" in dir(node) and "name" in dir(node): 
             val = self.visit(node.value)
-            return  {'type': 'float', 'name': str(node.name), 'value': val["value"], 'pseudo_type': 'float'}
+            return  {'type': 'float', 'name': str(node.name), 'value': val, 'pseudo_type': 'float'}
         elif "value" in dir(node): 
             val = self.visit(node.value)
             return {'type': 'float', 'value': val, 'pseudo_type': 'float'}
         elif "name" in dir(node): return {'type': 'float', 'name':str(node.name), 'pseudo_type': 'float'}
+        else: print ("todo doble")
  
     def visit_string(self, node):
         if "value" in dir(node) and "name" in dir(node): 
             val = self.visit(node.value)
-            print(type(val["value"]), "hjhjhj")
             return  {'type': 'str', 'name': node.name, 'value': val["value"], 'pseudo_type': 'str'}
         elif "value" in dir(node): 
             val = self.visit(node.value)
             return {'type': 'str', 'value': val, 'pseudo_type': 'str'}
         elif "name" in dir(node): return {'type': 'str', 'name':node.name, 'pseudo_type': 'str'}
-    
+ 
+    def visit_fielddecl(self, node):
+        return
  
     def visit_float(self, node):
         if "value" in dir(node) and "name" in dir(node): 
@@ -207,21 +205,43 @@ class Cs_Cyml_ast():
           'elements': z,           
           'pseudo_type': self.translate_decl(node.pseudo_type)}  
         if "name" in dir(node):
-            res["name"] = str(node.name)        
+            res["name"] = str(node.name) 
+            return res
+        if "args" in dir(node):
+            return {"type": "standard_call",
+                    "function":"copy",
+                    "namespace":"system",
+                    "pseudo_type": self.translate_decl(node.pseudo_type),
+                    "args": node.args[0]
+                }
+            
         #self.type_env[res["name"]] = res["pseudo_type"]
-        return res
+        
         
     def visit_assignment(self, node):
-        return {'type': 'assignment',
-           'target': self.visit(node.target),
+        target = self.visit(node.target)
+        value = self.visit(node.value)
+        if "name" in value and target["name"]== value["name"]:
+            return
+        else:
+            return {'type': 'assignment',
+           'target': target,
            'op': '=',
-           'value': self.visit(node.value),
+           'value': value,
            'pseudo_type': 'Void'}
+    
+    def visit_cond_expr_node(self, node):
+        return {
+                'type': 'cond_expr_node',
+                'test': self.visit(node.test),
+                'true_val': self.visit(node.true_val),
+                'pseudo_type': 'Void',
+                'false_val': self.visit(node.false_val)
+            }
+
     
     def visit_implicit_return(self, node):
         z = self.visit(node.value)
-        whiplash = self.type_env.top["functions"][self.function_name]
-        whiplash[-1] = z['pseudo_type']
         
         return {'type': 'implicit_return',
          'value': z, 'pseudo_type': z['pseudo_type']}
@@ -231,7 +251,7 @@ class Cs_Cyml_ast():
           'op': str(node.op),
           'left': self.visit(node.left),
           'right': self.visit(node.right),
-          'pseudo_type': self.visit(node.pseudo_type)}
+          'pseudo_type': self.translate_decl(node.pseudo_type)}
     
     def visit_if_statement(self, node):
         return {'type': 'if_statement',
@@ -259,24 +279,16 @@ class Cs_Cyml_ast():
             'pseudo_type': 'Void'}
     
     def visit_standard_call(self, node):
-        ns = node.namespace
-        ns = namespace[ns] if ns in namespace else ns
-        function = functions[ns][node.function] if node.function in functions[ns] else node.function
-        if not callable(function): 
-            return {'type': 'standard_call',
-              'namespace': ns,
-              'function': function,
+        return {'type': 'standard_call',
+              'namespace': node.namespace,
+              'function': node.function,
               'args': self.visit(node.args),
-              'pseudo_type': node.pseudo_type}
-        else:  
-            args = self.visit(node.args)
-            newNode = self.visit(function(node, args))
-            return newNode
+              'pseudo_type': self.translate_decl(node.pseudo_type)}
     
     def visit_standard_method_call(self, node):
         return {'type': 'standard_method_call',
                   'receiver': self.visit(node.receiver),
-                  'args': self.visit(node.args),
+                  'args': self.visit(node.args) if "args" in dir(node) else [],
                   'message': node.message,
                   'pseudo_type': self.translate_decl(node.pseudo_type)}
     
@@ -321,6 +333,14 @@ class Cs_Cyml_ast():
                                     'pseudo_type': z["iterators"]["iterator"]["pseudo_type"]}]})
         
         return z
+    
+    def visit_unary_op(self, node):
+        return {
+            'type': 'unary_op',
+                    'operator': str(node.operator),
+                    'value': self.visit(node.value),
+                    'pseudo_type': self.translate_decl(node.pseudo_type)
+        } 
     
     def visit_while_statement(self, node):
         

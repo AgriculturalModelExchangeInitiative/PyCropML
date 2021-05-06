@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="SoilEvaporation" timestep="1" version="1.0">
+    <Description>
+        <Title>SoilEvaporation Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="diffusionLimitedEvaporation" description="" parametercategory="species" datatype="DOUBLE" default="6605.505" min="0" max="10000" unit="g/m²d" uri="some url" inputtype="variable"/>
+        <Input name="energyLimitedEvaporation" description="" parametercategory="species" datatype="DOUBLE" default="448.240" min="0" max="1000" unit="g/m²d" uri="some url" inputtype="variable"/>
+     
+    </Inputs>
+    <Outputs>
+
+        <Output name="soilEvaporation" description=" " datatype="DOUBLE" min="0" max="5"  unit="g/m²d" uri="some url"/>
+	
+    </Outputs>
+    
+    <Algorithm language="C#" platform=""><![CDATA[
+        soilEvaporation = Math.Min(diffusionLimitedEvaporation, energyLimitedEvaporation);
+               
+      ]]>
+     </Algorithm>    
+    
+    <Algorithm language="python_ext" platform=""><![CDATA[
+           soilEvaporation = min(diffusionLimitedEvaporation, energyLimitedEvaporation)
+ 
+
+      ]]>
+     </Algorithm>
+    <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="diffusionLimitedEvaporation">6605.505</InputValue>
+        		<InputValue name="energyLimitedEvaporation">448.240</InputValue>
+        		
+ 				<OutputValue name="soilEvaporation" precision ="3">448.240</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

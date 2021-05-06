@@ -1,0 +1,20 @@
+<ModelUnit modelid="SQ.Pheno_Pkg.CumulTTFrom" name="CumulTTFrom" timestep="1" version="001">
+    <Description>
+        <Title>CumulTTFrom model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>(None,)</Reference>
+        <Abstract>Calculate CumulTT </Abstract></Description>
+    <Inputs>
+        <Input datatype="DOUBLELIST" default="" description="list containing for each stage occured its cumulated thermal times" max="" min="" name="calendarCumuls_t1" units="°C d" variablecategory="state"/>
+        <Input datatype="STRINGLIST" default="" description="List containing appearance of each stage" max="" min="" name="calendarMoments_t1" units="" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="112.330110409888" description="cumul thermal times at currentdate" max="10000" min="-200" name="cumulTT" units="°C d" variablecategory="auxiliary"/></Inputs>
+    <Outputs>
+        <Output datatype="DOUBLE" description=" cumul TT from Anthesis to current date " max="-5000D" min="0" name="cumulTTFromZC_65" units="°C d" variablecategory="auxiliary"/>
+        <Output datatype="DOUBLE" description=" cumul TT from FlagLeafLiguleJustVisible to current date " max="5000" min="0" name="cumulTTFromZC_39" units="°C d" variablecategory="auxiliary"/>
+        <Output datatype="DOUBLE" description=" cumul TT from EndGrainFilling to current date " max="4000D" min="0" name="cumulTTFromZC_91" units="°C d" variablecategory="auxiliary"/></Outputs>
+    <Algorithm filename="algo/pyx/CumulTTFrom.pyx" language="cyml" platform=""/>
+    <Parametersets>
+        <Parameterset description="" name=""/></Parametersets>
+    <Testsets>
+        <Testset description="" name="" parameterset=""/></Testsets></ModelUnit>

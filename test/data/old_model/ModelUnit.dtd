@@ -1,0 +1,117 @@
+<!---->
+<!ELEMENT ModelUnit (Description,Inputs?,Outputs?,Initialization?,Function*, Algorithm+,Parametersets,Testsets)>
+<!ATTLIST ModelUnit
+  name CDATA #REQUIRED
+  modelid CDATA #REQUIRED
+  timestep CDATA #IMPLIED
+  version CDATA #REQUIRED>
+
+<!ELEMENT Description (Title,Authors,Institution,URI?,Reference?,Abstract)>
+<!ATTLIST Description>
+
+<!ELEMENT Inputs (Input)+>
+<!ATTLIST Inputs>
+
+<!ELEMENT Outputs (Output*)>
+<!ATTLIST Outputs>
+
+<!ELEMENT Algorithm (#PCDATA)>
+<!ATTLIST Algorithm
+  language CDATA #REQUIRED
+  platform CDATA #IMPLIED
+  filename CDATA #IMPLIED
+  function CDATA #IMPLIED>
+
+<!ELEMENT Parametersets (Parameterset+)>
+<!ATTLIST Parametersets>
+
+<!ELEMENT Testsets (Testset+)>
+<!ATTLIST Testsets>
+
+<!ELEMENT Function (#PCDATA)>
+<!ATTLIST Function
+	name CDATA #REQUIRED
+	language CDATA #REQUIRED
+	filename CDATA #IMPLIED
+	type (internal|external) #REQUIRED
+	description CDATA #IMPLIED>
+
+<!ELEMENT Initialization (#PCDATA)>
+<!ATTLIST Initialization
+	name CDATA #REQUIRED
+	language CDATA #REQUIRED
+	filename CDATA #IMPLIED>	
+
+<!ELEMENT Title (#PCDATA)>
+<!ATTLIST Title>
+
+<!ELEMENT Authors (#PCDATA)>
+<!ATTLIST Authors>
+
+<!ELEMENT Institution (#PCDATA)>
+<!ATTLIST Institution>
+
+<!ELEMENT URI (#PCDATA)>
+<!ATTLIST URI>
+
+<!ELEMENT Reference (#PCDATA)>
+<!ATTLIST Reference>
+
+<!ELEMENT Abstract (#PCDATA)>
+<!ATTLIST Abstract>
+
+<!ELEMENT Input EMPTY>
+<!ATTLIST Input
+  name NMTOKEN #REQUIRED
+  datatype (STRING|DATE|DOUBLE|LIST|STRINGARRAY|DOUBLEARRAY|INTARRAY|STRINGLIST|INTLIST|DOUBLELIST|INT|BOOLEAN|BOOLEANARRAY|BOOLEANLIST|DATELIST|DATEARRAY) #REQUIRED 
+  description CDATA #REQUIRED
+  default CDATA #IMPLIED
+  max CDATA #IMPLIED
+  min CDATA #IMPLIED
+  inputtype (variable|parameter) #REQUIRED
+  parametercategory (constant|species|genotypic|soil|private) #IMPLIED
+  variablecategory (state|rate|auxillary) #IMPLIED
+  unit CDATA #IMPLIED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Output EMPTY>
+<!ATTLIST Output
+  name NMTOKEN #REQUIRED
+  datatype (STRING|DATE|DOUBLE|LIST|STRINGARRAY|DOUBLEARRAY|INTARRAY|STRINGLIST|INTLIST|DOUBLELIST|INT|BOOLEAN|BOOLEANARRAY|BOOLEANLIST|DATELIST|DATEARRAY) #REQUIRED 
+  description CDATA #REQUIRED
+  max CDATA #REQUIRED
+  min CDATA #REQUIRED
+  variablecategory (state|rate|auxiliary) #IMPLIED
+  unit CDATA #IMPLIED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Parameterset (Param*)>
+<!ATTLIST Parameterset
+  description CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Testset (Test+)>
+<!ATTLIST Testset
+  description CDATA #REQUIRED
+  name CDATA #REQUIRED
+  parameterset NMTOKEN #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Test (InputValue*, OutputValue+)>
+<!ATTLIST Test
+  description CDATA #IMPLIED
+  name CDATA #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Param (#PCDATA) >
+<!ATTLIST Param name CDATA #REQUIRED >
+
+<!ELEMENT InputValue (#PCDATA) >
+<!ATTLIST InputValue name CDATA #REQUIRED >
+
+<!ELEMENT OutputValue (#PCDATA) >
+<!ATTLIST OutputValue name CDATA #REQUIRED >
+<!ATTLIST OutputValue description CDATA #IMPLIED >
+<!ATTLIST OutputValue precision CDATA #IMPLIED >
+

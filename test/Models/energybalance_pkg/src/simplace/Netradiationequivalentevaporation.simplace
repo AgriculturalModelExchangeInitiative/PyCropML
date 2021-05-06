@@ -1,0 +1,8 @@
+public void Process()
+{
+    double tlambdaV = lambdaV.getValue();
+    double tnetRadiation = netRadiation.getValue();
+    double tnetRadiationEquivalentEvaporation = netRadiationEquivalentEvaporation.getValue();
+    tnetRadiationEquivalentEvaporation = tnetRadiation / tlambdaV * 1000.0d;
+    netRadiationEquivalentEvaporation.setValue(tnetRadiationEquivalentEvaporation);
+}

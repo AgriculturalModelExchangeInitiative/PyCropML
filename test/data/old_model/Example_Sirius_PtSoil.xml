@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="PtSoil" timestep="1" version="1.0">
+    <Description>
+        <Title>PtSoil EnergyLimitedEvaporation Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="evapoTranspirationPriestlyTaylor" description="" parametercategory="species" datatype="DOUBLE" default="120" min="0" max="1000" unit="°g/m²d" uri="some url" inputtype="variable"/>
+        <Input name="Alpha" description="Priestley-Taylor evapotranspiration proportionality constant" parametercategory="species" datatype="DOUBLE" default="1.5" min="0" max="100" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="tau" description="plant cover factor" parametercategory="species" datatype="DOUBLE" default="0.9983" min="0" max="100" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="tauAlpha" description="Fraction of the total net radiation exchanged at the soil surface when AlpaE = 1" parametercategory="species" datatype="DOUBLE" default="0.3" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+     
+    </Inputs>
+    <Outputs>
+
+        <Output name="energyLimitedEvaporation" description=" " datatype="DOUBLE" min="0" max="5"  unit="Cd/leaf" uri="some url"/>
+    	
+    </Outputs>
+    
+    <Algorithm language="C#" platform=""><![CDATA[
+  
+         if (tau < tauAlpha)
+        	{
+        		double AlphaE = 1 ; 
+        	}  
+        else 
+        	{
+        		double AlphaE = Alpha - ((Alpha - 1) * (1 - tau) / (1 - tauAlpha)); 
+        	}
+        energyLimitedEvaporation= (evapoTranspirationPriestlyTaylor / Alpha) * AlphaE * tau; 
+       ]]>
+     </Algorithm>    
+    
+    <Algorithm language="python_ext" platform=""><![CDATA[
+    	 if (tau < tauAlpha):
+        	{
+        		AlphaE = 1 
+        	}  
+        else :
+        	{
+        		AlphaE = Alpha - ((Alpha - 1.0) * (1.0 - tau) / (1.0 - tauAlpha))
+        	}
+        energyLimitedEvaporation= (evapoTranspirationPriestlyTaylor / Alpha) * AlphaE * tau
+ 
+      ]]>
+     </Algorithm>
+    <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="tau">0.9983</Param>
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="evapoTranspirationPriestlyTaylor">449.367</InputValue>
+ 				<OutputValue name="energyLimitedEvaporation" precision ="3">448.240</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+ 	
+</ModelUnit>

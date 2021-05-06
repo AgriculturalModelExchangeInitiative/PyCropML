@@ -1,0 +1,29 @@
+public void Process()
+{
+    double tminTair = minTair.getValue();
+    double tmaxTair = maxTair.getValue();
+    double talbedoCoefficient = albedoCoefficient.getValue();
+    double tstefanBoltzman = stefanBoltzman.getValue();
+    double televation = elevation.getValue();
+    double tsolarRadiation = solarRadiation.getValue();
+    double tvaporPressure = vaporPressure.getValue();
+    double textraSolarRadiation = extraSolarRadiation.getValue();
+    double tnetRadiation = netRadiation.getValue();
+    double tnetOutGoingLongWaveRadiation = netOutGoingLongWaveRadiation.getValue();
+    double Nsr;
+    double clearSkySolarRadiation;
+    double averageT;
+    double surfaceEmissivity;
+    double cloudCoverFactor;
+    double Nolr;
+    Nsr = (1.0d - talbedoCoefficient) * tsolarRadiation;
+    clearSkySolarRadiation = (0.75d + (2 * Math.pow(10.0d, -5) * televation)) * textraSolarRadiation;
+    averageT = (Math.pow(tmaxTair + 273.16d, 4) + Math.pow(tminTair + 273.16d, 4)) / 2.0d;
+    surfaceEmissivity = 0.34d - (0.14d * Math.sqrt(tvaporPressure / 10.0d));
+    cloudCoverFactor = 1.35d * (tsolarRadiation / clearSkySolarRadiation) - 0.35d;
+    Nolr = tstefanBoltzman * averageT * surfaceEmissivity * cloudCoverFactor;
+    tnetRadiation = Nsr - Nolr;
+    tnetOutGoingLongWaveRadiation = Nolr;
+    netRadiation.setValue(tnetRadiation);
+    netOutGoingLongWaveRadiation.setValue(tnetOutGoingLongWaveRadiation);
+}

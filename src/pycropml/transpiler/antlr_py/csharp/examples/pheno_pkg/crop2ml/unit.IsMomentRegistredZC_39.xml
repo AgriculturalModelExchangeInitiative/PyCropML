@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.WheatPhenology.IsMomentRegistredZC_39" name="IsMomentRegistredZC_39" timestep="1" version="1.0">
+    <Description>
+        <Title>Is FlagLeafLiguleJustVisible Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modeling development phase in the 
+                Wheat Simulation Model SiriusQuality.
+                See documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract>if FlagLeafLiguleJustVisible is already Registred </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="calendarMoments_t1" description="List containing appearance of each stage at previous time" variablecategory="state"  datatype="STRINGLIST"  default= "['Sowing']" unit=""  inputtype = "variable"/>
+    </Inputs>
+    <Outputs>
+        <Output name="isMomentRegistredZC_39" description=" if Flag leaf ligule has already appeared " variablecategory="state" datatype="INT" min="0" max="1"  unit="" />
+
+    </Outputs>
+    
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/IsMomentRegistredZC_39.pyx" />
+
+    <Parametersets>
+        <Parameterset name="wheat" description="some values in there" >
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model" parameterset = "wheat" description="some values in there" >
+        	<Test name ="test_wheat1">
+ 				<InputValue name="calendarMoments_t1">["Sowing", "Emergence", "FloralInitiation", "FlagLeafLiguleJustVisible", "Heading", "Anthesis"]</InputValue>
+				<OutputValue name="isMomentRegistredZC_39" >1</OutputValue>
+        	</Test>
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>
+

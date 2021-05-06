@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="NetRadiation" timestep="1" version="1.0">
+
+    <Description>
+        <Title>NetRadiation Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    
+    <Inputs>
+        <Input name="minTair" description="minimal temperature" datatype="DOUBLE" min="0" max="25" default="0.7" unit="°C" uri="some url" inputtype = "variable"/>
+        <Input name="maxTair" description="max Temperature" datatype="DOUBLE" min="0" max="30" default="7.2" unit="°C" uri="some url" inputtype = "variable"/>
+        <Input name="albedoCoefficient" description="albedoCoefficient" parametercategory="species" datatype="DOUBLE" default="0.23" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="stefanBoltzman" description="stefanBoltzman" parametercategory="species" datatype="DOUBLE" default="4.903E-09" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="elevation" description="elevation" parametercategory="species" datatype="DOUBLE" default="0" min="-500" max="10000" unit="m" uri="some url" inputtype="parameter"/>
+        <Input name="solarRadiation" description="solarRadiation" datatype="DOUBLE" default="3" min="0" max="1000" unit="MJ/m²/d" uri="some url" inputtype="variable"/>
+        <Input name="vaporPressure" description="vaporPressure" parametercategory="species" datatype="DOUBLE" default="6.1" min="0" max="1000" unit="hPa" uri="some url" inputtype="variable"/>
+        <Input name="extraSolarRadiation" description="extraSolarRadiation"  datatype="DOUBLE" default="11.7" min="0" max="1000" unit="MJ/m²/d" uri="some url" inputtype="variable"/>
+    </Inputs>
+    
+    <Outputs>
+        <Output name="netRadiation" description=" " datatype="DOUBLE" min="0" max="5"  unit="Cd/leaf" uri="some url"/>
+        <Output name="netOutGoingLongWaveRadiation" description=" " datatype="DOUBLE" min="0" max="5"  unit="Cd/leaf" uri="some url"/>
+     </Outputs>
+    
+    <Algorithm language="C#" platform=""><![CDATA[
+    
+        double Nsr = (1 - albedoCoefficient) * solarRadiation;
+        double clearSkySolarRadiation = (0.75 + 2 * Math.Pow(10, -5) * elevation) * extraSolarRadiation;
+        double averageT = (Math.Pow(maxTair + 273.16, 4) + Math.Pow(minTair + 273.16, 4)) / 2;                            
+        double surfaceEmissivity = (0.34 - 0.14 * Math.Sqrt(vaporPressure / 10));                                     
+        double cloudCoverFactor = (1.35 * (solarRadiation / clearSkySolarRadiation) - 0.35);
+        double Nolr = stefanBoltzman * averageT * surfaceEmissivity * cloudCoverFactor;
+        netRadiation= Nsr - Nolr;
+        netOutGoingLongWaveRadiation = Nolr;
+         
+      ]]>
+     </Algorithm>    
+    
+    <Algorithm language="python_ext" platform=""><![CDATA[
+        Nsr = (1 - albedoCoefficient) * solarRadiation
+        clearSkySolarRadiation = (0.75 + 2 * pow(10, -5) * elevation) * extraSolarRadiation
+        averageT = (pow(maxTair + 273.16, 4) + pow(minTair + 273.16, 4)) / 2                           
+        surfaceEmissivity = (0.34 - 0.14 * sqrt(vaporPressure / 10))                                     
+        cloudCoverFactor = (1.35 * (solarRadiation / clearSkySolarRadiation) - 0.35)
+        Nolr = stefanBoltzman * averageT * surfaceEmissivity * cloudCoverFactor
+        netRadiation= Nsr - Nolr
+        netOutGoingLongWaveRadiation = Nolr
+      
+
+      ]]>
+     </Algorithm>
+     <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="elevation">0</Param>
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="solarRadiation">3</InputValue>
+				<InputValue name="vaporPressure">6.1</InputValue>
+				<OutputValue name="netRadiation" precision ="3">1.566</OutputValue>
+				<OutputValue name="netOutGoingLongWaveRadiation" precision ="3">0.744</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+	
+</ModelUnit>

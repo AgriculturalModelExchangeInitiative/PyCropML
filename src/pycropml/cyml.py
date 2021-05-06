@@ -24,8 +24,8 @@ import pycropml.transpiler.antlr_py
 NAMES = {'r':'r','cs':'csharp','cpp':'cpp', 'py':'python', 'f90':'fortran', 'java':'java', 'simplace':'simplace', 'sirius':'sirius', "openalea":"openalea","check":"check","apsim":"apsim", "record":"record", "dssat":"dssat","bioma":"bioma"}
 ext = {'r':'r','cs':'cs','cpp':'cpp', 'py':'py', 'f90':'f90', 'java':'java', 'simplace':'java', 'sirius':'cs', "openalea":"py","check":"check", "apsim":"cs", "record":"cpp", "dssat":"f90"}
 
-domain_class = ["cs", "java", 'sirius','cpp']
-wrapper=["cs", "sirius"]
+domain_class = ["cs", "java", 'sirius','cpp', "bioma"]
+wrapper=["cs", "sirius", "bioma"]
 platform = ["simplace","sirius","openalea","apsim","bioma","record","dssat"]
 
 def transpile_file(source, language):
@@ -79,7 +79,7 @@ def transpile_package(package, language):
 
     # cretae topology of composite model
     T = Topology(namep,package)
-    namep = T.model.name.lower()
+    namep = T.model.name
 
     # Record VPZ
     if language == "record":
@@ -108,7 +108,7 @@ def transpile_package(package, language):
                 test.parse()
                 test.to_ast(source)
                 code=test.to_source()
-                filename = Path(os.path.join(tg_rep, "%s.%s"%(name.capitalize(), ext[language])))
+                filename = Path(os.path.join(tg_rep, "%s.%s"%(name, ext[language])))
                 with open(filename, "wb") as tg_file:
                     tg_file.write(code.encode('utf-8'))
                 Model2Nb(model,code,name,dir_test_lang).generate_nb(language,tg_rep,namep)
@@ -120,7 +120,7 @@ def transpile_package(package, language):
     with open(fileT, "wb") as tg_file:
         tg_file.write(T_pyx.encode('utf-8'))  
 
-    filename = Path(os.path.join(tg_rep, "%sComponent.%s"%(namep.capitalize(), ext[language])))
+    filename = Path(os.path.join(tg_rep, "%sComponent.%s"%(namep, ext[language])))
     
     with open(filename, "wb") as tg_file:
         tg_file.write(T.compotranslate(language).encode('utf-8'))      

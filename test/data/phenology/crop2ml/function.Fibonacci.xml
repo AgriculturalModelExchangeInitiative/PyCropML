@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="crop2ml.fibonacci" name="fibonacci" timestep="1" version="1.0">
+    <Description>
+        <Title>fibonacci function</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference> to write in package</Reference>
+        <Abstract>see documentation</Abstract>
+    </Description>
+    <Inputs>
+        <Input name="n" description="argument"  datatype="INT" inputtype = "variable"/>         
+    </Inputs>
+    <Outputs>
+        <Output name="result" description=" fibonacci number " datatype="INT"/>
+    	
+    </Outputs>
+    
+	<Algorithm  language="Python" platform="" filename="algo/py/Fibonacci.py" />
+	<Algorithm  language="C#" platform="" filename="algo/cs/Fibonacci.cs" />
+	<Algorithm  language="Java" platform="" filename="algo/java/Fibonacci.java" />
+	<Algorithm  language="C++" platform="" filename="algo/cpp/Fibonacci.cpp" />
+	<Algorithm  language="Fortran" platform="" filename="algo/f90/Fibonacci.f90" />
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/Fibonacci.pyx" />
+    <Algorithm  language="R" platform="" filename="algo/r/Fibonacci.r" />
+
+    <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="testset1" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+ 				<InputValue name="n">6</InputValue>
+				<OutputValue name="result">8</OutputValue>
+        	</Test>
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

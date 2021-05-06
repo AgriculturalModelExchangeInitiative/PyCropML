@@ -1,0 +1,15 @@
+SUBROUTINE model_leafnumber(lf,dTT,phyllochron)
+    REAL, INTENT(IN) :: dTT, phyllochron
+    REAL, INTENT(INOUT) :: lf
+        !- inputs:
+    !       * name: lf
+    !           ** description :  last leaf number
+    !           ** variablecategory : state
+    !...
+        !- outputs:
+    !       * name: lf
+    !           ** description : Actual leaf number
+    !           ** variablecategory : state
+    !           ** datatype : DOUBLE
+        lf = lf + MIN(dTT / phyllochron, 0.99)
+END SUBROUTINE model_leafnumber

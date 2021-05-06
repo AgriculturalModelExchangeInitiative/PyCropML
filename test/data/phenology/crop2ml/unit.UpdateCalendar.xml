@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.WheatPhenology.UpdateCalendar" name="UpdateCalendar" timestep="1" version="1.0">
+
+    <Description>
+        <Title>Calendar Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modeling development phase in the 
+                Wheat Simulation Model SiriusQuality.
+                See documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract>Lists containing for each stage the date it occurs as well as a copy of all types of cumulated thermal times </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="cumulTT" description="cumul thermal times at current date" variablecategory="auxiliary" datatype="DOUBLE" min="-200" max="10000" default="741.510096671757" unit="°C d"  inputtype="variable"/>
+        <Input name="calendarMoments" description="List containing apparition of each stage" variablecategory="auxiliary"  datatype="STRINGLIST"  default= "['Sowing']" unit=""  inputtype = "variable"/>
+        <Input name="calendarDates" description="List containing  the dates of the wheat developmental phases" variablecategory="auxiliary" datatype="DATELIST" default="['21/3/2007']" unit=""  inputtype = "variable"/>
+        <Input name="calendarCumuls" description="list containing for each stage occured its cumulated thermal times" variablecategory="auxiliary"  datatype="DOUBLELIST" default="[0.0]" unit="°C d"  inputtype = "variable"/>
+        <Input name="currentdate" description="current date" variablecategory="auxiliary"   datatype="DATE"  default="27/3/2007" unit="" inputtype = "variable"/>
+		<Input name="phase" description=" the name of the phase" variablecategory="state"  datatype="DOUBLE" min="0" max="7" default = "1" unit=""  inputtype="variable"/>
+     
+    </Inputs>
+    <Outputs>
+        <Output name="calendarMoments" description=" List containing apparition of each stage" variablecategory="auxiliary" datatype="STRINGLIST"  unit="" />
+        <Output name="calendarDates" description=" List containing  the dates of the wheat developmental phases" variablecategory="auxiliary"  datatype="DATELIST "  unit=""/>
+        <Output name="calendarCumuls" description=" list containing for each stage occured its cumulated thermal times"  datatype="DOUBLELIST"  unit="°C d" />
+
+    </Outputs>
+
+	<Algorithm  language="Python" platform="" filename="algo/py/UpdateCalendar.py" />
+	<Algorithm  language="C#" platform="" filename="algo/cs/UpdateCalendar.cs" />
+	<Algorithm  language="Java" platform="" filename="algo/java/UpdateCalendar.java" />
+ 	<Algorithm  language="C++" platform="" filename="algo/cpp/UpdateCalendar.cpp" />
+	<Algorithm  language="Fortran" platform="" filename="algo/f90/UpdateCalendar.f90" /> 
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/UpdateCalendar.pyx" />
+    <Algorithm  language="R" platform="" filename="algo/r/UpdateCalendar.r" />        
+   
+    <Parametersets>
+        <Parameterset name="wheat" description="some values in there" >
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model" parameterset = "wheat" description="some values in there" >
+        	<Test name ="test_wheat1">
+        		<InputValue name="cumulTT"> 112.330110409888</InputValue>
+				<InputValue name="calendarMoments">["Sowing"]</InputValue>
+                <InputValue name="calendarDates">["21/3/2007"]</InputValue>
+                <InputValue name="calendarCumuls">[0.0]</InputValue>
+				<InputValue name="phase">1</InputValue>
+				<OutputValue name="calendarMoments">["Sowing", "Emergence"]</OutputValue>
+                <OutputValue name="calendarDates">["21/3/2007", "27/3/2007"]</OutputValue>
+                <OutputValue name="calendarCumuls" precision="2">[ 0.0 ,112.33]</OutputValue>
+        	</Test>                         
+                                        
+        </Testset>                                             
+      </Testsets>
+ 	
+</ModelUnit>

@@ -1,0 +1,8 @@
+public void Process()
+{
+    double tdiffusionLimitedEvaporation = diffusionLimitedEvaporation.getValue();
+    double tenergyLimitedEvaporation = energyLimitedEvaporation.getValue();
+    double tsoilEvaporation = soilEvaporation.getValue();
+    tsoilEvaporation = Math.min(tdiffusionLimitedEvaporation, tenergyLimitedEvaporation);
+    soilEvaporation.setValue(tsoilEvaporation);
+}

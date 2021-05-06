@@ -1,0 +1,89 @@
+<?xml encoding="UTF-8"?>
+
+<!ELEMENT ModelUnit (Description,Inputs,Ouputs,Algorithm,Parametersets,
+                     Tests)>
+<!ATTLIST ModelUnit
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Description (Title,Author,Institution,Reference,Abstract)>
+<!ATTLIST Description
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Inputs (Input)+>
+<!ATTLIST Inputs
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Outputs (Output)>
+<!ATTLIST Outputs
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Algorithm (#PCDATA)>
+<!ATTLIST Algorithm
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Parametersets (Parameterset)+>
+<!ATTLIST Parametersets
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Tests (Test)>
+<!ATTLIST Tests
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Title (#PCDATA)>
+<!ATTLIST Title
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Author (#PCDATA)>
+<!ATTLIST Author
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Institution (#PCDATA)>
+<!ATTLIST Institution
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Reference (#PCDATA)>
+<!ATTLIST Reference
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Abstract (#PCDATA)>
+<!ATTLIST Abstract
+  xmlns CDATA #FIXED ''>
+
+<!ELEMENT Input EMPTY>
+<!ATTLIST Input
+  xmlns CDATA #FIXED ''
+  datatype NMTOKEN #REQUIRED
+  default CDATA #IMPLIED
+  description CDATA #REQUIRED
+  max CDATA #REQUIRED
+  min CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  type NMTOKEN #REQUIRED
+  unit CDATA #REQUIRED
+  url CDATA #REQUIRED>
+
+<!ELEMENT Output EMPTY>
+<!ATTLIST Output
+  xmlns CDATA #FIXED ''
+  datatype NMTOKEN #REQUIRED real, boolean, string, listreal, listint, datetime
+  description CDATA #REQUIRED
+  max CDATA #REQUIRED
+  min CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  unit CDATA #REQUIRED
+  url CDATA #REQUIRED>
+
+<!ELEMENT Parameterset EMPTY>
+<!ATTLIST Parameterset
+  xmlns CDATA #FIXED ''
+  description CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  uri CDATA #REQUIRED>
+
+<!ELEMENT Test EMPTY>
+<!ATTLIST Test
+  xmlns CDATA #FIXED ''
+  description CDATA #REQUIRED
+  name CDATA #REQUIRED
+  parameterset NMTOKEN #REQUIRED
+  uri CDATA #REQUIRED>

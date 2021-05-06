@@ -50,6 +50,13 @@ def parsef(filename, language,
 
 
 
+"""
+from antlr-ast
+It allows you to use ANTLR grammars and use the parser output to generate an abstract syntax tree (AST).
+https://github.com/datacamp/antlr-ast/blob/master/README.md
+
+"""
+
 class CaseTransformInputStream(InputStream):
     """Support case insensitive languages
     https://github.com/antlr/antlr4/blob/master/doc/case-insensitive-lexing.md#custom-character-streams-approach

@@ -1,0 +1,8 @@
+public void Process()
+{
+    double tevapoTranspiration = evapoTranspiration.getValue();
+    double ttau = tau.getValue();
+    double tpotentialTranspiration = potentialTranspiration.getValue();
+    tpotentialTranspiration = tevapoTranspiration * (1.0d - ttau);
+    potentialTranspiration.setValue(tpotentialTranspiration);
+}

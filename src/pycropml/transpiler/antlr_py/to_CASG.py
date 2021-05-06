@@ -26,5 +26,6 @@ def to_CASG(filePath, language):
     tree = parse.parsef(filePath,language, start="compilation_unit", strict=False)
     ast_proc = simplifyAntlrTree.process_tree(tree,transformer_cls =GENERATORS[language].Transformer )
     trans = GENERATORS[language].AstTransformer(ast_proc).transformer()
+    #print(trans)
     csag= transform_to_syntax_tree(trans["body"])[0]
     return csag

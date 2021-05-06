@@ -6,7 +6,6 @@ from pycropml.transpiler.pseudo_tree import Node
 class MetaExtraction():
     def __init__(self):
         self.parameters = {}
-        self.description = {}
         self.getTree = []
     
     def getTypeNode(self, tree, nodetype, change=True):
@@ -37,6 +36,7 @@ class MetaExtraction():
     def translist(self, tree, nodetype):
         for ch in tree:
             self.getTypeNode(ch, nodetype, False) 
+    
 
     def getAttNode(self, tree, **attVal):
         """
@@ -69,6 +69,8 @@ class MetaExtraction():
         self.getTypeNode(tree, "methodDef")
         methNode = self.getTree
         meth = self.getAttNode(methNode,**{"name":nameMethod})
-        return meth[0]
+        return meth[0] if meth else []
+    
+
 
 

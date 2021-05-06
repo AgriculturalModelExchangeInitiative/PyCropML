@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.WheatPhenology.PTQ" name="PTQ" timestep="1" version="1.0">
+    <Description>
+        <Title>Phyllochron Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modeling development phase in the 
+                Wheat Simulation Model SiriusQuality.
+                See documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract>Calculate Photothermal Quaotient </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="tTWindowForPTQ" description="Thermal time window in which averages are computed" parametercategory="species" datatype="DOUBLE" min="0.0" max="70000.0" default="70.0" unit="°C d" uri="some url" inputtype = "parameter"/>
+        <Input name="kl" description="Exctinction Coefficient" parametercategory="species" datatype="DOUBLE" min="0.0" max="50.0" default="0.45" unit="" uri="some url" inputtype = "parameter"/>
+        <Input name="listTTShootWindowForPTQ_t1" description="List of Daily Shoot thermal time during TTWindowForPTQ thermal time period" variablecategory="state" datatype="DOUBLELIST" min="" max="" default="[0.0]" unit="°C d" uri="some url" inputtype = "variable"/>
+        <Input name="listPARTTWindowForPTQ_t1" description="List of Daily PAR during TTWindowForPTQ thermal time period" variablecategory="state" inputtype="variable" datatype="DOUBLELIST" min="" max="" default="[0.0]" unit="MJ m2 d" uri="some url"/>
+        <Input name="listGAITTWindowForPTQ" description="List of daily GAI over TTWindowForPTQ thermal time period" variablecategory="state" inputtype="variable" datatype="DOUBLELIST" min="" max="" default="[0.0, 5.2]" unit="m2 m-2" uri="some url"/>
+        <Input name="pAR" description="Daily Photosyntetically Active Radiation" variablecategory="auxiliary" datatype="DOUBLE" default="0.0" min="0.0" max="10000.0" unit="MJ m² d" uri="some url" inputtype="variable"/>
+        <Input name="deltaTT" description="daily delta TT " variablecategory="auxiliary" inputtype ="variable" datatype="DOUBLE" min="0.0" max="100.0" default="0.0" unit="°C d" uri="some url"/>
+                
+    </Inputs>
+    <Outputs>
+        <Output name="listPARTTWindowForPTQ" description=" List of Daily PAR during TTWindowForPTQ thermal time period" variablecategory="state" datatype="DOUBLELIST" min="" max=""  unit="MJ m2 d" />
+    	<Output name="listTTShootWindowForPTQ" description="List of Daily Shoot thermal time during TTWindowForPTQ thermal time period" variablecategory="state" datatype="DOUBLELIST" min="" max=""  unit="°C d"/>
+    	<Output name="ptq" description="Photothermal Quotient" variablecategory="state" datatype="DOUBLE" min="0" max="10000"  unit="MJ °C-1 d m-2)"/>
+    	    	
+    </Outputs>
+    
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/PTQ.pyx"/>
+
+    <Parametersets>
+        <Parameterset name="wheat" description="some values in there" >
+        	<Param name="tTWindowForPTQ">70.0</Param>
+        	<Param name="kl">0.45</Param>           
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model" parameterset = "wheat" description="some values in there" >
+        	<Test name ="test_wheat1">
+        		<InputValue name="listTTShootWindowForPTQ_t1">[0.0]</InputValue>
+        		<InputValue name="listPARTTWindowForPTQ_t1">[0.0]</InputValue>        						
+        		<InputValue name="listGAITTWindowForPTQ">[0.0, 5.2]</InputValue>        						
+                <InputValue name="pAR">0.0</InputValue> 
+                <InputValue name="deltaTT">21.3</InputValue>                        						
+                <OutputValue name="listPARTTWindowForPTQ" precision ="2">[0.00, 0.0]</OutputValue>
+                <OutputValue name="listTTShootWindowForPTQ" precision ="2">[0.0, 21.3]</OutputValue> 				
+                <OutputValue name="ptq" precision ="2">0.0</OutputValue> 				
+				
+        	</Test>
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

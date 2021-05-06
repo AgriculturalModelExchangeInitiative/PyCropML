@@ -1,0 +1,15 @@
+public void Process()
+{
+    double tevapoTranspirationPriestlyTaylor = evapoTranspirationPriestlyTaylor.getValue();
+    double thslope = hslope.getValue();
+    double tVPDair = VPDair.getValue();
+    double tpsychrometricConstant = psychrometricConstant.getValue();
+    double tAlpha = Alpha.getValue();
+    double tlambdaV = lambdaV.getValue();
+    double trhoDensityAir = rhoDensityAir.getValue();
+    double tspecificHeatCapacityAir = specificHeatCapacityAir.getValue();
+    double tconductance = conductance.getValue();
+    double tevapoTranspirationPenman = evapoTranspirationPenman.getValue();
+    tevapoTranspirationPenman = tevapoTranspirationPriestlyTaylor / tAlpha + (1000.0d * (trhoDensityAir * tspecificHeatCapacityAir * tVPDair * tconductance / (tlambdaV * (thslope + tpsychrometricConstant))));
+    evapoTranspirationPenman.setValue(tevapoTranspirationPenman);
+}

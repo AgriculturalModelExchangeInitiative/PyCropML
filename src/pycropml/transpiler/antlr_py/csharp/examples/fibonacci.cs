@@ -25,7 +25,7 @@ namespace LogicalPrograms
             // To return the first Fibonacci number  
             if (number == 0)
                 return firstNumber;
-            for (int i = 2; i <= number; i++)
+            for (int i = 2; i < number; i+=1) // i++
             {
                 int papa = 5;
                 nextNumber = firstNumber + secondNumber;

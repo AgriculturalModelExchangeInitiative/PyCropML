@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.EnergyBalance.CanopyTemperature" name="CanopyTemperature" timestep="1" version="1.0">
+    <Description>
+        <Title>CanopyTemperature Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA/LEPSE Montpellier</Institution>
+        <Reference>Modelling energy balance in the wheat crop model SiriusQuality2:
+            Evapotranspiration and canopy and soil temperature calculations</Reference>
+        <Abstract>It is calculated from the crop heat flux and the boundary layer conductance </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="minTair" description="minimum air temperature" datatype="DOUBLE" variablecategory="auxiliary" min="-30" max="45" default="0.7" unit="degC" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="variable" />
+        <Input name="maxTair" description="maximum air Temperature" datatype="DOUBLE" variablecategory="auxiliary" min="-30" max="45" default="7.2" unit="degC" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="variable" />
+        <Input name="cropHeatFlux" description="Crop heat flux" variablecategory="rate" inputtype="variable" datatype="DOUBLE" min="0" max="10000" default="447.912" unit="g/m**2/d" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" />
+        <Input name="conductance" description="the boundary layer conductance" variablecategory="state" inputtype="variable" datatype="DOUBLE" min="0" max="10000" default="598.685" unit="m/d" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" />
+        <Input name="lambdaV" description="latent heat of vaporization of water" parametercategory="constant" datatype="DOUBLE" default="2.454" min="0" max="10" unit="MJ/kg" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="parameter" />
+        <Input name="rhoDensityAir" description="Density of air" parametercategory="constant" datatype="DOUBLE" default="1.225" unit="kg/m**3" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="parameter" />
+        <Input name="specificHeatCapacityAir" description="Specific heat capacity of dry air" parametercategory="constant" datatype="DOUBLE" default="0.00101" unit="MJ/kg/degC" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="parameter" />
+    </Inputs>
+    <Outputs>
+        <Output name="minCanopyTemperature" description="minimal Canopy Temperature  " datatype="DOUBLE" variablecategory="state" min="-30" max="45" unit="degC" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" />
+        <Output name="maxCanopyTemperature" description="maximal Canopy Temperature " datatype="DOUBLE" variablecategory="state" min="-30" max="45" unit="degC" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" />
+    </Outputs>
+    <Algorithm language="Cyml" platform="" filename="algo/pyx/canopytemperature.pyx" />
+    <Parametersets>
+        <Parameterset name="set1" description="some values in there">
+            <Param name="rhoDensityAir">1.225</Param>
+        </Parameterset>
+    </Parametersets>  
+    <Testsets>
+        <Testset name="first" parameterset="set1" description="some values in there">
+            <Test name="test1">
+                <InputValue name="minTair">0.7</InputValue>
+                <InputValue name="maxTair">7.2</InputValue>
+                <OutputValue name="minCanopyTemperature" precision="3">2.184</OutputValue>
+                <OutputValue name="maxCanopyTemperature" precision="3">8.684</OutputValue>
+            </Test>
+        </Testset>
+    </Testsets>  
+</ModelUnit>

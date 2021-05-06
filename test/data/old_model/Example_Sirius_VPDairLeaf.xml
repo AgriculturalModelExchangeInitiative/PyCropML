@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/cyrillemidingoyi/PyCropML/render_csharp/test/data/ModelUnit.dtd">
+<ModelUnit modelid="1" name="VPDairleaf" timestep="1" version="1.0">
+    <Description>
+        <Title>VPDairleaf Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="hourlyTemp" description="" parametercategory="species" datatype="DOUBLE" default="[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 3.0, 5.0, 6.0, 7.0, 7.0, 7.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 2.0, 2.0, 1.0]" min="0" max="1000" unit="°C" uri="some url" inputtype="variable"/>
+        <Input name="hourlyCanopyTemperature" description="" parametercategory="species" datatype="DOUBLE" default="[6.8,6.8, 6.8, 6.8, 6.8, 6.8, 6.8, 6.8, 7.5, 8.1, 9.4, 10.0, 10.7, 10.9, 11.2, 11.4, 10.6, 9.9, 9.1, 8.3, 7.5, 7.5, 7.5, 6.8]" min="0" max="100" unit="°C" uri="some url" inputtype="variable"/>
+        <Input name="RH" description="Relative humidity"  datatype="DOUBLE" default="[86.0, 87.0, 88.0, 88.0, 89.0, 89.0, 89.0, 89.0, 83.0, 74.0, 67.0, 62.0, 59.0, 57.0, 57.0, 59.0, 63.0, 68.0, 73.0, 77.0, 80.0, 82.0, 84.0, 85.0]" min="0" max="100" unit="%" uri="some url" inputtype="variable"/>
+        <Input name="SwitchMaize" description="true if maize false if wheat" parametercategory="species" datatype="DOUBLE" default="0" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+ 
+   
+    </Inputs>
+    <Outputs>
+
+        <Output name="hourlyVPDairLeaf" description=" " datatype="DOUBLE" min="0" max="5"  unit="MJ/m²d" uri="some url"/>
+
+    </Outputs>
+    
+    <Algorithm language="C#" platform=""><![CDATA[
+
+        if (SwitchMaize == 1)
+        	{
+             		
+            	for (int i = 0; i < 24; i++)
+        			{
+        				hourlyVPDairLeaf[i] = 0.6106 * (Math.Exp((17.27 * hourlyCanopyTemperature[i]) / (hourlyCanopyTemperature[i] + 237.3)) - RH[i] / 100 * Math.Exp((17.27 * hourlyTemp[i]) / (hourlyTemp[i] + 237.3)));
+            		}
+                   
+             }        
+    
+                
+      ]]>
+     </Algorithm>
+    
+    <Algorithm language="python_ext" platform=""><![CDATA[
+    
+    hourlyVPDairLeaf = range(24)
+             
+             if (SwitchMaize == 1):
+        	{
+             		
+            	for i in range(0,24):
+        			{
+        				hourlyVPDairLeaf[i] = 0.6106 * (exp((17.27 * hourlyCanopyTemperature[i]) / (hourlyCanopyTemperature[i] + 237.3)) - RH[i] / 100 * exp((17.27 * hourlyTemp[i]) / (hourlyTemp[i] + 237.3)));
+            		}
+                   
+             } 
+     
+
+      ]]>
+     </Algorithm>
+     <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="SwitchMaize">1</Param>
+  
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="hourlyTemp">[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 3.0, 5.0, 6.0, 7.0, 7.0, 7.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 2.0, 2.0, 1.0]</InputValue>
+        		<InputValue name="hourlyCanopyTemperature">[6.8,6.8, 6.8, 6.8, 6.8, 6.8, 6.8, 6.8, 7.5, 8.1, 9.4, 10.0, 10.7, 10.9, 11.2, 11.4, 10.6, 9.9, 9.1, 8.3, 7.5, 7.5, 7.5, 6.8]</InputValue>
+        		<InputValue name="RH">[86.0, 87.0, 88.0, 88.0, 89.0, 89.0, 89.0, 89.0, 83.0, 74.0, 67.0, 62.0, 59.0, 57.0, 57.0, 59.0, 63.0, 68.0, 73.0, 77.0, 80.0, 82.0, 84.0, 85.0]</InputValue>
+        		<OutputValue name="hourlyVPDairLeaf" precision ="1">[0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.7, 0.6, 0.6, 0.5, 0.5, 0.5, 0.4, 0.4]</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

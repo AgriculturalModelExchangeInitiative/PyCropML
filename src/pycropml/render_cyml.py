@@ -73,7 +73,7 @@ class Model2Package(object):
         count = 0
         for model in self.models:          
             self.generate_component(model) 
-            filename = Path(os.path.join(self.dir,"%s.pyx"%signature(model).capitalize() ))                   
+            filename = Path(os.path.join(self.dir,"%s.pyx"%signature(model) ))                   
             with open(filename, "wb") as cyml_file:
 #                cyml_file.write(self.code.encode('utf-8','ignore'))
                 cyml_file.write(self.code.encode('utf-8'))
@@ -110,6 +110,7 @@ class Model2Package(object):
         return self.code
 
     def generate_algorithm(self, model_unit):
+        print(model_unit.name)
         outputs = model_unit.outputs
         inputs = model_unit.inputs
         tab = ' '*4
@@ -336,7 +337,7 @@ class Model2Package(object):
 def signature(model):
     name = model.name
     name = name.strip()
-    name = name.replace(' ', '_').lower()
+    name = name.replace(' ', '_')
 
     return name
 

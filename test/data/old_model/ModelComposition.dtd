@@ -1,0 +1,129 @@
+<!ELEMENT ModelComposition (Description,Inputs?,Outputs?,Composition,Algorithm?,Parametersets,Testsets)>
+<!ATTLIST ModelComposition
+  name CDATA #REQUIRED
+  id CDATA #REQUIRED
+  timestep CDATA #IMPLIED
+  version CDATA #IMPLIED>
+
+
+<!ELEMENT Description (Title,Authors,Institution,URI?,Reference?,Abstract)>
+<!ATTLIST Description>
+
+<!ELEMENT Composition (Model+,Links)>
+
+<!ELEMENT Model (#PCDATA)>
+<!ATTLIST Model
+  name CDATA #REQUIRED
+  id CDATA #REQUIRED
+  displayx CDATA #IMPLIED
+  displayy CDATA #IMPLIED>
+
+<!ELEMENT Links (InputLink*,InternalLink*,OutputLink*)>
+<!ATTLIST Links>
+
+<!ELEMENT Parametersets (Parameterset+)>
+<!ATTLIST Parametersets>
+
+<!ELEMENT Testsets (Testset+)>
+<!ATTLIST Testsets>
+
+<!ELEMENT Title (#PCDATA)>
+<!ATTLIST Title>
+
+<!ELEMENT Authors (#PCDATA)>
+<!ATTLIST Authors>
+
+<!ELEMENT Institution (#PCDATA)>
+<!ATTLIST Institution>
+
+<!ELEMENT URI (#PCDATA)>
+<!ATTLIST URI>
+
+<!ELEMENT Reference (#PCDATA)>
+<!ATTLIST Reference>
+
+<!ELEMENT Abstract (#PCDATA)>
+<!ATTLIST Abstract>
+
+<!ELEMENT InputLink EMPTY>
+<!ATTLIST InputLink
+  target NMTOKEN #REQUIRED
+  source NMTOKEN #REQUIRED>
+
+<!ELEMENT InternalLink EMPTY>
+<!ATTLIST InternalLink
+  target NMTOKEN #REQUIRED
+  source NMTOKEN #REQUIRED>
+
+<!ELEMENT OutputLink EMPTY>
+<!ATTLIST OutputLink
+  source NMTOKEN #REQUIRED
+  target NMTOKEN #REQUIRED>
+
+<!ELEMENT Parameterset (Param*)>
+<!ATTLIST Parameterset
+  description CDATA #REQUIRED
+  name NMTOKEN #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Testset (Test+)>
+<!ATTLIST Testset
+  description CDATA #REQUIRED
+  name CDATA #REQUIRED
+  parameterset NMTOKEN #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Test (InputValue*, OutputValue+)>
+<!ATTLIST Test
+  description CDATA #IMPLIED
+  name CDATA #REQUIRED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Param (#PCDATA) >
+<!ATTLIST Param name CDATA #REQUIRED >
+
+<!ELEMENT InputValue (#PCDATA) >
+<!ATTLIST InputValue name CDATA #REQUIRED >
+
+<!ELEMENT OutputValue (#PCDATA) >
+<!ATTLIST OutputValue name CDATA #REQUIRED >
+<!ATTLIST OutputValue description CDATA #IMPLIED >
+<!ATTLIST OutputValue precision CDATA #IMPLIED >
+
+<!ELEMENT Inputs (Input)+>
+<!ATTLIST Inputs>
+
+<!ELEMENT Outputs (Output*)>
+<!ATTLIST Outputs>
+
+<!ELEMENT Input EMPTY>
+<!ATTLIST Input
+  name NMTOKEN #REQUIRED
+  datatype (STRING|DATE|DOUBLE|LIST|STRINGARRAY|DOUBLEARRAY|INTARRAY|STRINGLIST|INTLIST|DOUBLELIST|INT|BOOLEAN|BOOLEANARRAY|BOOLEANLIST|DATELIST|DATEARRAY) #REQUIRED 
+  description CDATA #REQUIRED
+  default CDATA #IMPLIED
+  max CDATA #IMPLIED
+  min CDATA #IMPLIED
+  inputtype (variable|parameter) #REQUIRED
+  parametercategory (constant|species|genotypic|soil|private) #IMPLIED
+  variablecategory (state|rate|auxillary) #IMPLIED
+  unit CDATA #IMPLIED
+  uri CDATA #IMPLIED>
+
+<!ELEMENT Output EMPTY>
+<!ATTLIST Output
+  name NMTOKEN #REQUIRED
+  datatype (STRING|DATE|DOUBLE|LIST|STRINGARRAY|DOUBLEARRAY|INTARRAY|STRINGLIST|INTLIST|DOUBLELIST|INT|BOOLEAN|BOOLEANARRAY|BOOLEANLIST|DATELIST|DATEARRAY) #REQUIRED 
+  description CDATA #REQUIRED
+  max CDATA #REQUIRED
+  min CDATA #REQUIRED
+  variablecategory (state|rate|auxiliary) #IMPLIED
+  unit CDATA #IMPLIED
+  uri CDATA #IMPLIED>
+  
+<!ELEMENT Algorithm (#PCDATA)>
+<!ATTLIST Algorithm
+  language CDATA #REQUIRED
+  platform CDATA #IMPLIED
+  filename CDATA #IMPLIED
+  function CDATA #IMPLIED>

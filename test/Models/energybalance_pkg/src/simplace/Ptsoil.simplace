@@ -1,0 +1,19 @@
+public void Process()
+{
+    double tevapoTranspirationPriestlyTaylor = evapoTranspirationPriestlyTaylor.getValue();
+    double tAlpha = Alpha.getValue();
+    double ttau = tau.getValue();
+    double ttauAlpha = tauAlpha.getValue();
+    double tenergyLimitedEvaporation = energyLimitedEvaporation.getValue();
+    double AlphaE;
+    if (ttau < ttauAlpha)
+    {
+        AlphaE = 1.0d;
+    }
+    else
+    {
+        AlphaE = tAlpha - ((tAlpha - 1.0d) * (1.0d - ttau) / (1.0d - ttauAlpha));
+    }
+    tenergyLimitedEvaporation = tevapoTranspirationPriestlyTaylor / tAlpha * AlphaE * ttau;
+    energyLimitedEvaporation.setValue(tenergyLimitedEvaporation);
+}

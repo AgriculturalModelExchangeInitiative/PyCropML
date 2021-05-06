@@ -529,7 +529,6 @@ class AstTransformer():
         return {'type': 'unicode', 'value':  node.value, 'pseudo_type': 'str'}
 
     def visit_stringnode(self, node, location):
-        print(type(node.value), node.value, "mmmmmmmm")
         return {'type': 'str', 'value':  node.value, 'pseudo_type': 'str'}
 
     def visit_tuplenode(self, node, args, mult_factor, location):
@@ -1173,6 +1172,7 @@ class AstTransformer():
                 self._compatible_types(base_type.name, decl["pseudo_type"], "can't change the type of variable %s in %s " % (
                 name, self.function_name))
         elif default and (isinstance(default, ExprNodes.ListNode)or isinstance(default, ExprNodes.TupleNode)):
+            print("yesss")
             arglist = []
             for arg in default.args:
                 arglist.append(self.visit_node(arg))

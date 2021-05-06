@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.WheatPhenology.LeafNumber" name="LeafNumber" timestep="1" version="1.0">
+    <Description>
+        <Title>CalculateLeafNumber Model</Title>
+        <Authors>Pierre MARTRE</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modeling development phase in the 
+                Wheat Simulation Model SiriusQuality.
+                See documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract>calculate leaf number. LeafNumber increase is caped at one more leaf per day</Abstract>
+    </Description>
+    <Inputs>
+        <Input name="deltaTT" description="daily delta TT " variablecategory="auxiliary" datatype="DOUBLE" min="-20" max="100" default="23.5895677277199" unit="°C d"  inputtype="variable"/>
+        <Input name="phyllochron" description="phyllochron" variablecategory="state" inputtype ="variable" datatype="DOUBLE" min="0" max="1000" default="0" unit="°C d leaf-1" />
+        <Input name="hasFlagLeafLiguleAppeared" description="true if flag leaf has appeared (leafnumber reached finalLeafNumber)" variablecategory="state" datatype="INT" min="0" max="1" default="0" unit="" inputtype = "variable"/>
+        <Input name="leafNumber" description=" Actual number of phytomers" variablecategory="state" datatype="DOUBLE" min="0" max="25" default="0"  unit="leaf" inputtype="variable"/>
+        <Input name="cumulTT" description="cumul thermal times at current time " variablecategory="auxiliary" datatype="DOUBLE" min="-200" max="10000"  unit="°C" default="402.042720581446"  inputtype="variable"/>
+        <Input name="phase" description=" the name of the phase" variablecategory="state" datatype="DOUBLE" min="0" max="7" default = "1" unit=" " uri="some url" inputtype="variable"/>
+        
+    
+    </Inputs>
+    <Outputs>
+        <Output name="leafNumber" description="Actual number of phytomers" datatype="DOUBLE" min="0" max="10000"  unit="leaf" uri="some url"/>
+    </Outputs>
+    
+    <Algorithm  language="Python" platform="" filename="algo/py/LeafNumberModule.py"/>
+	<Algorithm  language="C#" platform="" filename="algo/cs/LeafNumberModule.cs"/>
+	<Algorithm  language="Java" platform="" filename="algo/java/LeafNumberModule.java"/>
+	<Algorithm  language="C++" platform="" filename="algo/cpp/LeafNumberModule.cpp"/>
+	<Algorithm  language="Fortran" platform="" filename="algo/f90/LeafNumberModule.f90"/>
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/LeafNumberModule.pyx"/>
+    <Algorithm  language="R" platform="" filename="algo/r/LeafNumberModule.r"/>
+
+    <Parametersets>
+        <Parameterset name="ParamWheat" description="some values in there" >
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model1" parameterset = "ParamWheat" description="some values in there" >
+        	<Test name ="test_wheat1">
+        		<InputValue name="leafNumber">5.147163833893262</InputValue>
+        		<InputValue name="phase">3</InputValue>
+        		<InputValue name="phyllochron">91.2</InputValue>
+				<OutputValue name="leafNumber" precision ="2">5.41</OutputValue>
+ 	
+        	</Test>
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

@@ -1,0 +1,17 @@
+def leafNumber(double lf, double dTT, double phyllochron)->int:
+    """ doc
+    # inputs:
+        *name : lf
+        *description: last leaf number 
+        *variablecategory: state
+        * units: 
+        ...
+    # outputs:
+        * name : lf
+        * description: actual leaf number
+        ...    
+    """    
+    lf = lf + min(dTT/phyllochron, 0.99)
+    return lf
+
+

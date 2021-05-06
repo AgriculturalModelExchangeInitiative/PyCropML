@@ -1,0 +1,22 @@
+<ModelUnit modelid="SQ.Pheno_Pkg.PhylSowingDateCorrection" name="PhylSowingDateCorrection" timestep="1" version="001">
+    <Description>
+        <Title>PhylSowingDateCorrection model</Title>
+        <Authors>Loic Manceau</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>(None,)</Reference>
+        <Abstract>Correction of the Phyllochron Varietal parameter according to sowing date </Abstract></Description>
+    <Inputs>
+        <Input datatype="INT" default="1" description="Day of Year at sowing" max="365" min="1" name="sowingDay" parametercategory="constant" units="d"/>
+        <Input datatype="DOUBLE" default="0.0" description="Latitude" max="90" min="-90" name="latitude" parametercategory="constant" units="°"/>
+        <Input datatype="DOUBLE" default="1.0" description="Sowing date at which Phyllochrone is maximum in southern hemispher" max="365" min="1" name="sDsa_sh" parametercategory="constant" units="d"/>
+        <Input datatype="DOUBLE" default="0" description="Rate of change of Phyllochrone with sowing date" max="365" min="0" name="rp" parametercategory="constant" units="d-1"/>
+        <Input datatype="INT" default="1" description="Sowing date at which Phyllochrone is minimum" max="365" min="1" name="sDws" parametercategory="constant" units="d"/>
+        <Input datatype="DOUBLE" default="1.0" description="Sowing date at which Phyllochrone is maximum in northern hemispher" max="365" min="1" name="sDsa_nh" parametercategory="constant" units="d"/>
+        <Input datatype="DOUBLE" default="120" description="Phyllochron (Varietal parameter)" max="1000" min="0" name="p" parametercategory="constant" units="°C d leaf-1"/></Inputs>
+    <Outputs>
+        <Output datatype="DOUBLE" description=" Phyllochron Varietal parameter " max="1000" min="0" name="fixPhyll" units="°C d leaf-1" variablecategory="auxiliary"/></Outputs>
+    <Algorithm filename="algo/pyx/PhylSowingDateCorrection.pyx" language="cyml" platform=""/>
+    <Parametersets>
+        <Parameterset description="" name=""/></Parametersets>
+    <Testsets>
+        <Testset description="" name="" parameterset=""/></Testsets></ModelUnit>

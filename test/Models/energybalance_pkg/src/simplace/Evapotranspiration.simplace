@@ -1,0 +1,16 @@
+public void Process()
+{
+    int tisWindVpDefined = isWindVpDefined.getValue();
+    double tevapoTranspirationPriestlyTaylor = evapoTranspirationPriestlyTaylor.getValue();
+    double tevapoTranspirationPenman = evapoTranspirationPenman.getValue();
+    double tevapoTranspiration = evapoTranspiration.getValue();
+    if (tisWindVpDefined == 1)
+    {
+        tevapoTranspiration = tevapoTranspirationPenman;
+    }
+    else
+    {
+        tevapoTranspiration = tevapoTranspirationPriestlyTaylor;
+    }
+    evapoTranspiration.setValue(tevapoTranspiration);
+}

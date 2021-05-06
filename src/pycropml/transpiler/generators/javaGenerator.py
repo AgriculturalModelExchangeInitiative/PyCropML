@@ -721,12 +721,12 @@ class JavaGenerator(CodeGenerator,JavaRules):
         self.visit(node.start)
         self.write(' ; ')
         self.visit(node.index)
-        self.write("<")        
+        self.write("!=")        
         self.visit(node.end)
         self.write(' ; ')
         self.visit(node.index)
         self.write("+=")
-        if node.step.value==1: 
+        if "value" in dir(node.step) and node.step.value==1: 
             self.write("1")
         else:      
             self.visit(node.step)

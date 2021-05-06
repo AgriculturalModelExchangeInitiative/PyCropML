@@ -1,0 +1,16 @@
+<ModelUnit modelid="SQ.Pheno_Pkg.IsMomentRegistredZC_39" name="IsMomentRegistredZC_39" timestep="1" version="001">
+    <Description>
+        <Title>IsMomentRegistredZC_39 model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>(None,)</Reference>
+        <Abstract>if FlagLeafLiguleJustVisible is already Registred </Abstract></Description>
+    <Inputs>
+        <Input datatype="STRINGLIST" default="" description="List containing appearance of each stage" max="" min="" name="calendarMoments_t1" units="" variablecategory="state"/></Inputs>
+    <Outputs>
+        <Output datatype="INT" description=" if Flag leaf ligule has already appeared " max="1" min="0" name="isMomentRegistredZC_39" units="" variablecategory="state"/></Outputs>
+    <Algorithm filename="algo/pyx/IsMomentRegistredZC_39.pyx" language="cyml" platform=""/>
+    <Parametersets>
+        <Parameterset description="" name=""/></Parametersets>
+    <Testsets>
+        <Testset description="" name="" parameterset=""/></Testsets></ModelUnit>

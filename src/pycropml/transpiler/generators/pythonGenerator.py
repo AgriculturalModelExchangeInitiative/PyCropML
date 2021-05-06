@@ -191,7 +191,7 @@ class PythonGenerator(CodeGenerator, PythonRules):
         self.newline(node)
         self.write("from pycropml.units import u")
         self.newline(node)
-        self.write("from copy import copy\nfrom array import array\n")
+        self.write("from copy import copy\nfrom array import array\nfrom math import *\n")
         self.newline(node)
         self.visit(node.body)
 
@@ -403,9 +403,8 @@ class PythonGenerator(CodeGenerator, PythonRules):
         self.visit(node.start)
         self.write(' , ')
         self.visit(node.end)
-        if node.step.value!=1:
-            self.write(' , ')
-            self.visit(node.step)
+        self.write(' , ')
+        self.visit(node.step)
         self.write('):')
         self.body(node.block)
         

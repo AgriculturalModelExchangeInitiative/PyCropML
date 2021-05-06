@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="Penman" timestep="1" version="1.0">
+    <Description>
+        <Title>Penman Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+ 
+        <Input name="evapoTranspirationPriestlyTaylor" description="" parametercategory="species" datatype="DOUBLE" default="449.367" min="0" max="1000" unit="°Cd/leaf" uri="some url" inputtype="variable"/>
+        <Input name="hslope" description="" parametercategory="species" datatype="DOUBLE" default="0.584" min="0" max="1000" unit="hPa/°C" uri="some url" inputtype="variable"/>
+        <Input name="VPDair" description="" parametercategory="species" datatype="DOUBLE" default="2.19" min="0" max="1000" unit="hPa" uri="some url" inputtype="variable"/>
+        <Input name="psychrometricConstant" description="psychrometric constant" parametercategory="species" datatype="DOUBLE" default="0.66" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="Alpha" description="Priestley-Taylor evapotranspiration proportionality constant" parametercategory="species" datatype="DOUBLE" default="1.5" min="0" max="100" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="lambdaV" description="latent heat of vaporization of water" parametercategory="species" datatype="DOUBLE" default="2.454" min="0" max="10" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="rhoDensityAir" description="Density of air" parametercategory="species" datatype="DOUBLE" default="1.225" min="0" max="10" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="specificHeatCapacityAir" description="Specific heat capacity of dry air" parametercategory="species" datatype="DOUBLE" default="0.00101" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="conductance" description="" parametercategory="constant"  datatype="DOUBLE" min="0" max="10" default="598.685" unit="unitless" uri="some url" inputtype="variable"/>
+ 
+     </Inputs>
+    <Outputs>
+
+        <Output name="evapoTranspirationPenman" description=" " datatype="DOUBLE" min="0" max="5"  unit="Cd/leaf" uri="some url"/>
+
+    	
+    </Outputs>
+    
+    <Algorithm language=" " platform=""><![CDATA[
+    
+    	evapoTranspirationPenman = evapoTranspirationPriestlyTaylor / Alpha + 1000 * ((rhoDensityAir * specificHeatCapacityAir * VPDair * conductance) / (lambdaV * (hslope + psychrometricConstant)))
+          
+                
+      ]]>
+     </Algorithm>    
+    
+     <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="Alpha">1.5</Param>
+        	<Param name="lambdaV">2.454</Param>
+
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="evapoTranspirationPriestlyTaylor">449.367</InputValue>
+        		<InputValue name="hslope">0.584</InputValue>
+        		<InputValue name="VPDair">2.19</InputValue>
+				<OutputValue name="evapoTranspirationPenman" precision ="3">830.958</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

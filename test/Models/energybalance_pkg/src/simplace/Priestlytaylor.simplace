@@ -1,0 +1,10 @@
+public void Process()
+{
+    double tnetRadiationEquivalentEvaporation = netRadiationEquivalentEvaporation.getValue();
+    double thslope = hslope.getValue();
+    double tpsychrometricConstant = psychrometricConstant.getValue();
+    double tAlpha = Alpha.getValue();
+    double tevapoTranspirationPriestlyTaylor = evapoTranspirationPriestlyTaylor.getValue();
+    tevapoTranspirationPriestlyTaylor = Math.max(tAlpha * thslope * tnetRadiationEquivalentEvaporation / (thslope + tpsychrometricConstant), 0.0d);
+    evapoTranspirationPriestlyTaylor.setValue(tevapoTranspirationPriestlyTaylor);
+}

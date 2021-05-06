@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.EnergyBalance.CropHeatFlux" name="CropHeatFlux" timestep="1" version="1.0">
+    <Description>
+        <Title>CropHeatFlux Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA/LEPSE Montpellier</Institution>
+        <Reference>abModelling energy balance in the wheat crop model SiriusQuality2:
+            Evapotranspiration and canopy and soil temperature calculations</Reference>
+        <Abstract>It is calculated from net Radiation, soil heat flux and potential transpiration </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="netRadiationEquivalentEvaporation" variablecategory="auxiliary" description="net Radiation Equivalent Evaporation"  datatype="DOUBLE" default="638.142" min="0" max="10000" unit="g m-2 d-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="variable"/>
+        <Input name="soilHeatFlux" description="soil Heat Flux" variablecategory="rate"  datatype="DOUBLE" default="188.817" min="0" max="1000" unit="g m-2 d-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="variable"/>
+        <Input name="potentialTranspiration" description="potential Transpiration" variablecategory = "rate"  datatype="DOUBLE" default=" 1.413" min="0" max="1000" unit="g m-2 d-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="variable"/>
+
+    </Inputs>
+    <Outputs>
+
+        <Output name="cropHeatFlux" description=" crop Heat Flux" variablecategory="rate" datatype="DOUBLE" min="0" max="10000"  unit="g m-2 d-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547"/>
+
+
+    </Outputs>
+
+
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/cropheatflux.pyx" />
+
+
+
+     <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="netRadiationEquivalentEvaporation">638.142</InputValue>
+        		<InputValue name="soilHeatFlux">188.817</InputValue>
+        		<InputValue name="potentialTranspiration"> 1.413</InputValue>
+ 				<OutputValue name="cropHeatFlux" precision ="3"> 447.912</OutputValue>
+
+        	</Test>
+
+        </Testset>
+      </Testsets>
+
+
+
+</ModelUnit>

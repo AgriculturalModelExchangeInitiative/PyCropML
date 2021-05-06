@@ -10,10 +10,16 @@
  """
 from pycropml.transpiler.pseudo_tree import Node
 from pycropml.transpiler.antlr_py.extract_metadata import MetaExtraction
-
+from pycropml.modelunit import ModelUnit
+from pycropml.description import Description
+from pycropml.inout import Input, Output
+from pycropml.function import Function
 class BiomaExtraction(MetaExtraction):
     def __init__(self):
         MetaExtraction.__init__(self)
+        self.inputs = []
+        self.outputs = []
+        self.model = None
       
     def getStrategyVar(self, tree):
         """ This method returns a list of parameters and the value of their attributes
@@ -50,8 +56,12 @@ class BiomaExtraction(MetaExtraction):
             vi={}
             for att in listatt:
                 n = self.getAttNode(constrNode[0].block,**{'type':'assignment', 'target': Node(type = 'member_access', name= v, member = att, pseudo_type = 'VarInfo')})      
-                if att !="ValueType" : vi[att] = n[0].value.value
-                else: vi[att] = n[0].value.args[0].value
+                if att !="ValueType" : 
+                    vi[att] = n[0].value.value
+                    if isinstance(vi[att] , Node): vi[att] = "%s%s"%(n[0].value.operator,vi[att].value)
+                else: 
+                    vi[att] = mapType[n[0].value.args[0].value.decode("utf-8")]
+            vi["category"] = "constant"     # "TODOOOOOOOO"   
             pa.append(vi) 
         def inout_att(pd_name):
             inps =[]
@@ -67,23 +77,22 @@ class BiomaExtraction(MetaExtraction):
         out = inout_att(pdo_name)
         return pa, inp, out
     
-    def getFromVarInfo(self, tree1, *tree):
+    def getFromVarInfo(self, tree1, tree):
         """get metadata from strategy classes and varinfo domain classes
 
         Args:
             tree1 (Node): A strategy class transformed to Node
-            *tree (Node): varinfo domain classes transformed to Nodes
+            tree (Node): list of varinfo domain classes transformed to Nodes
 
         Returns:
             Tuple: metadata (inputs, parameters, outputs)
         """
-        tree2 = []
-        for t in tree:
-            tree2.append(t)
-        self.getTypeNode(tree2, "methodDef")
+        self.getTypeNode(tree, "methodDef")
         methNode = self.getTree
         descMeth = self.getAttNode(methNode,**{"name":"DescribeVariables"})
-        block = descMeth[0].block
+        block = []
+        for b in descMeth:
+            if b.block:  block += b.block
         pa, inp, out = self.getStrategyVar(tree1)
         listatt = ["DefaultValue","Description","MaxValue","Name", "MinValue", "Units", "URL", "ValueType"]    
         def attV(inps):
@@ -95,6 +104,9 @@ class BiomaExtraction(MetaExtraction):
                         for att in listatt:
                             if att == b.target.member and att!="ValueType":
                                 vi[att] = b.value.value
+                                if b.value.type == "unary_op": vi[att] = "%s%s"%(b.value.operator, b.value.value.value)
+                            if att == "ValueType" and b.target.member == "ValueType" :
+                                vi[att] = mapType[b.value.args[0].value.decode('utf-8')]
                                 break
                 vi["category"] = p["category"]
                 var_in.append(vi)
@@ -105,10 +117,160 @@ class BiomaExtraction(MetaExtraction):
         return var_in, pa, var_out
     
     def description(self, tree):
+        
         d = ["name", "authors", "institution", "description", "url"]
         desc = {}
         # get an instance of PublisherData
         meth = self.getmethod(tree, "SetPublisherData")
+        ass = self.getAttNode(meth.block,**{"type":"assignment"})
+        target = ass[0].target.name
+        addMeth = self.getAttNode(meth.block, **{"type":"custom_call"})
+        for v in addMeth:
+            if v.args[0].value==b"Creator": desc["authors"] = v.args[1].value
+            if v.args[0].value==b"Publisher": desc["institution"] = v.args[1].value
+        property = self.getTypeNode(tree, "propertyDef")
+        pro = self.getAttNode(self.getTree,**{"name":"Description"} )
+        desc["description"] = pro[0].get[0].value.value
+        pro = self.getAttNode(self.getTree,**{"name":"URL"} )
+        desc["url"] = pro[0].get[0].value.value  
+        constr = self.getTypeNode(tree, "constructorDef")
+        desc["name"] = self.getTree[0].name         
+        return desc   
+    
+    def getAlgo(self, tree):
+        meth = self.getmethod(tree, "CalculateModel")
+        return meth
+    
+    def prec_cur_states(self, tree):
+        algo = self.getAlgo(tree)
+        p = self.getStrategyVar(tree)
+        inputs = [st["Name"].decode("utf-8") for st in p[1]]
+        outputs = [st["Name"].decode("utf-8") for st in p[2]]
+        self.getTypeNode(algo.block,"member_access")
+        v = self.getAttNode(self.getTree, name ="s1")
+        precedent_v = list(set([vi.member for vi in v]))
+        v1 = self.getAttNode(self.getTree, name ="s")
+        current_v = list(set([vi.member for vi in v1]))
+        cv=[v for v in current_v if v not in outputs ]
+        for v in current_v:
+            if v in inputs and v not in precedent_v:
+                cv.append(v)
+        inp_st = list(set(cv))+ [t+"_t1" for t in precedent_v]
+        return inp_st
+    
+    def externFunction(self, tree):
+        algo = self.getAlgo(tree)
+        self.getTypeNode(algo, "custom_call")
+        custom_call = self.getTree
+        methNames = [c.function for c in custom_call] if custom_call else []
+        meth = [self.getmethod(tree, name) for name in methNames ] if methNames else []
+        return meth
+    
+    def totalvar(self, tree):
+        pc = self.prec_cur_states(tree)
+        val = self.getStrategyVar(tree)
+        p = val[1]
+        p2 = val[2]
+        var = []
+        for inp in p:
+            if not inp["category"].lower().endswith("state"):
+                var.append(inp["Name"].decode("utf-8"))
+        var = var + pc 
+        for out in p2:
+            var.append(out["Name"].decode("utf-8"))
+        var = var + [v["Name"].decode("utf-8") for v in  self.getStrategyVar(tree)[0] ]
+        return var
+    
+    def modelunit(self, tree, tree2):
+        desc = self.description(tree)
+        self.model= ModelUnit({"name":desc["name"], "version":"001", "timestep":"1"})
+        description = Description()
+        description.Title = desc["name"]+" model" 
+        description.Authors = desc["authors"].decode("utf-8")
+        description.Institution=desc["institution"].decode("utf-8")
+        description.Reference = desc["Reference"].decode("utf-8") if "Reference" in desc else None, 
+        description.Abstract = desc["description"].decode("utf-8")
+        description.Url = desc["url"].decode("utf-8")
+        self.model.add_description(description)
+        var = self.getFromVarInfo(tree, tree2)
+        inp = var[0]
+        out = var[2]
+        out_names = [p["Name"].decode("utf-8") for p in out]
+        param = var[1]
+        param_names = [p["Name"].decode("utf-8") for p in param]
+        pc = self.prec_cur_states(tree)
+        for k in inp:
+            if not k["category"].lower().endswith("state"):
+                pc.append(k["Name"].decode("utf-8"))
+        inp = inp+param+out
+        inputs = []
+        outputs = []
+        inp_par, outp=[], []
+        for v in pc+param_names+out_names:
+            vn = v[:-3] if (len(v)>3 and v not in param_names and v.endswith("_t1")) else v
+            v_inputtype = "parameter" if v in param_names else "variable"
+            v_categ = "parametercategory" if v in param_names else "variablecategory"
+            description = [s["Description"].decode("utf-8") for s in inp if s["Name"].decode("utf-8") == vn][0]
+            category = [categorize(s["category"]) for s in inp if s["Name"].decode("utf-8") == vn][0]
+            max = [modVal(s["MaxValue"]) for s in inp if s["Name"].decode("utf-8") == vn][0]
+            min = [modVal(s["MinValue"]) for s in inp if s["Name"].decode("utf-8") == vn][0]
+            default = [modVal(s["DefaultValue"]) for s in inp if s["Name"].decode("utf-8") == vn][0]
+            units = [s["Units"].decode("utf-8") for s in inp if s["Name"].decode("utf-8") == vn][0]
+            datatype = [s["ValueType"] for s in inp if s["Name"].decode("utf-8") == vn][0]
+            desc_dict = {"name":v, "description":description, 
+                                v_categ:category,
+                                "datatype": datatype,
+                                "inputtype":v_inputtype,
+                                "max":max,
+                                "min":min,
+                                "units":units}
+            
+            if v in pc+param_names and v not in inp_par: 
+                desc_dict["default"] = default
+                inputs.append(Input(desc_dict))
+                inp_par.append(v)
+            if v in out_names and v not in outp:
+                outputs.append(Output(desc_dict))
+                outp.append(v)
+            
+        self.model.inputs = inputs
+        self.model.outputs = outputs
+
+        funcs = self.externFunction(tree)
+        self.model.function = [func.name for func in funcs] if funcs else []
+    
+    def modelcomposite(self, models, tree):
+        algo = self.getmethod(tree, "EstimateOfAssociatedClasses")
+        return algo
+
+            
+
+def modVal(val):
+    if val=="-1D":
+        return ""
+    return val
+
+def categorize(cat):
+    if cat.lower().endswith("state"): return "state"
+    if cat.lower().endswith("rate"): return "rate"
+    if cat.lower().endswith("auxiliary"): return "auxiliary"
+    if cat.lower().endswith("exogenous"): return "exogenous"
+    else: return "constant" # TODOOOOOOOOOO
+
+
+
+        
+mapType = {"Integer":"INT",
+           "Double":"DOUBLE",
+           "String":"STRING",
+           "Date":"DATE",
+           "ListDouble":"DOUBLELIST",
+           "ListInteger":"INTLIST",
+           "ListString":"STRINGLIST",
+           "ListDate":"DATELIST"}
+
+
+
 
 
 

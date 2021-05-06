@@ -1,0 +1,14 @@
+﻿SiriusQuality2.5 output file	2019-10-09	10:36:53		build:3.1.0.0
+Project	C:\Users\mancealo\Desktop\SQ_Linux_Windows\SQ_Release\1-Project\Project.sqpro
+Management	Management.sqman
+Non-varietal parameters	NonVarietal.sqpar
+Run options	RunOption.sqopt
+Site	Site.sqsit
+Soil	Soil.sqsoi
+Varietal parameters	Varietal.sqvar
+
+																																															Available water	Available mineral N	Total mineral N	Available water	Available mineral N	Total mineral N				
+Management	Non-varietal parameters	Run options	Site	Soil	Varietal parameters		Sowing year	ZC_00_Sowing	ZC_10_Emergence	Beginning stem extension	ZC_65_Anthesis	End cell division	End grain filling	ZC_92_Maturity		Final	Leaf area index	Green area index	Crop dry mass	Crop dry mass	Grain dry mass	Crop nitrogen	Crop nitrogen	Grain nitrogen	Post-anthesis crop	Single grain	Single grain	Grain protein	Grain	Grain starch	Albumins-globulins	Amphiphils	Gliadins	Glutenins	Gliadins	Gluteins	Gliadins to	Dry mass 	Nitrogen	Cumulative	Cumulative	Cumulative available	Cumulative nitrogen	Cumulative water	Cumulative N	Cumulative N	in soil profil	in soil profil	in soil profil	in root zone	in root zone	in root zone	Nitrogen use	Nitrogen utilisation	Nitrogen upake	Water use	Cumulative	Cumulative	Cumulative
+																leaf number	at anthesis	at anthesis	at anthesis	at maturity	at maturity	at anthesis	at maturity	at maturity	nitrogen uptake	dry mass	nitrogen	concentration	number	concentration	per grain	per grain	per grain	per grain	concentration	concentration	gluteins ratio	harvest index	harvest index	rain + irrigation	ET	soil nitrogen	leaching	drainage	mineralisation	denitrification	at maturity	at maturity	at maturity	at maturity	at maturity	at maturity	efficiency	efficiency	efficiency	efficiency	Evaporation	Transpiration	Intercepted PAR
+							yyyy	yyyy-mm-dd	yyyy-mm-dd	yyyy-mm-dd	yyyy-mm-dd	yyyy-mm-dd	yyyy-mm-dd	yyyy-mm-dd		leaf/mainstem	m²/m²	m²/m²	kgDM/ha	kgDM/ha	kgDM/ha	kgN/ha	kgN/ha	kgN/ha	kgN/ha	mgDM/grain	mgN/grain	% grain dry mass	grain/m²	% grain dry mass	mgN/grain	mgN/grain	mgN/grain	mgN/grain	% grain nitrogen	% grain nitrogen	dimensionless	dimensionless	dimensionless	mm	mm	kgN/ha	kgN/ha	mm	kgN/ha	kgN/ha	mm	kgN/ha	kgN/ha	mm	kgN/ha	kgN/ha	kgDM/kgN	kgDM/kgN	kgN/kgN	kgDM/ha/mm	mm	mm	MJ/m²
+901-Dry-High_N-Ambient_CO2	Spring_Wheat	V1.5	MARA-92-93	Maricopa	Yecora Rojo		1992	1992-12-12	1992-12-30	1993-01-31	1993-03-20	1993-04-16	1993-04-28	1993-04-29		0.00	4.11	7.44	5735	10348	5074	164	204	147	41	34.59	1.00	16.46	14670	16.2344	46.94	0.08	0.22	0.41	21.987	41.260	0.53	49.03	71.77	403.0	377.75	432	44.32	0.0	10.90	0.2285	101.85	56.35	183.66	36.73	44.66	161.65	11.74	24.86	0.47	13.43	133.90	243.85	506.41

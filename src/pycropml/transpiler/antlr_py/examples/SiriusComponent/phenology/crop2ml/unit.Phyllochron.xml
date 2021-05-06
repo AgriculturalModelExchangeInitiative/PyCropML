@@ -1,0 +1,34 @@
+<ModelUnit modelid="SQ.Pheno_Pkg.Phyllochron" name="Phyllochron" timestep="1" version="001">
+    <Description>
+        <Title>Phyllochron model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>(None,)</Reference>
+        <Abstract>Calculate different types of phyllochron </Abstract></Description>
+    <Inputs>
+        <Input datatype="DOUBLE" default="0.0" description="Photothermal quotient " max="10000.0" min="0.0" name="ptq" units="MJ °C-1 d-1 m-2)" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="" description="Mean Green Area Index" max="500.0" min="0.0" name="gAImean" units="m2 leaf m-2 ground" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="0" description="Actual number of phytomers" max="25" min="0" name="leafNumber" units="leaf" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="" description=" Phyllochron Varietal parameter " max="1000" min="0" name="fixPhyll" units="°C d leaf-1" variablecategory="auxiliary"/>
+        <Input datatype="DOUBLE" default="8.0" description="Leaf number above which the phyllochron is increased by Pincr" max="30.0" min="0.0" name="lincr" parametercategory="constant" units="leaf"/>
+        <Input datatype="DOUBLE" default="0.0" description="Leaf number up to which the phyllochron is decreased by Pdecr" max="100.0" min="0.0" name="ldecr" parametercategory="constant" units="leaf"/>
+        <Input datatype="DOUBLE" default="0.4" description="Factor decreasing the phyllochron for leaf number less than Ldecr" max="10.0" min="0.0" name="pdecr" parametercategory="constant" units="-"/>
+        <Input datatype="DOUBLE" default="1.5" description="Factor increasing the phyllochron for leaf number higher than Lincr" max="10.0" min="0.0" name="pincr" parametercategory="constant" units="-"/>
+        <Input datatype="DOUBLE" default="0.45" description="Exctinction Coefficient" max="50.0" min="0.0" name="kl" parametercategory="constant" units="-"/>
+        <Input datatype="DOUBLE" default="0.0" description="Slope to intercept ratio for Phyllochron  parametrization with PhotoThermal Quotient" max="1000.0" min="0.0" name="pTQhf" parametercategory="constant" units="°C d leaf-1"/>
+        <Input datatype="DOUBLE" default="20.0" description="Phyllochron at PTQ equal 1" max="1000.0" min="0.0" name="B" parametercategory="constant" units="°C d leaf-1"/>
+        <Input datatype="DOUBLE" default="120.0" description="Phyllochron (Varietal parameter)" max="1000.0" min="0.0" name="p" parametercategory="constant" units="°C d leaf-1"/>
+        <Input datatype="STRING" default="" description="Switch to choose the type of phyllochron calculation to be used" max="" min="" name="choosePhyllUse" parametercategory="constant" units="-"/>
+        <Input datatype="DOUBLE" default="0.0" description=" Area Leaf" max="1000.0" min="0.0" name="areaSL" parametercategory="constant" units="cm2"/>
+        <Input datatype="DOUBLE" default="0.0" description="Area Sheath" max="1000.0" min="0.0" name="areaSS" parametercategory="constant" units="cm2"/>
+        <Input datatype="DOUBLE" default="0.0" description="LAR minimum" max="1000.0" min="0.0" name="lARmin" parametercategory="constant" units="leaf-1 °C"/>
+        <Input datatype="DOUBLE" default="0.0" description="LAR maximum" max="1000.0" min="0.0" name="lARmax" parametercategory="constant" units="leaf-1 °C"/>
+        <Input datatype="DOUBLE" default="0.0" description="Sowing Density" max="1000.0" min="0.0" name="sowingDensity" parametercategory="constant" units="plant m-2"/>
+        <Input datatype="DOUBLE" default="0.0" description="Leaf Number efficace" max="1000.0" min="0.0" name="lNeff" parametercategory="constant" units="leaf"/></Inputs>
+    <Outputs>
+        <Output datatype="DOUBLE" description="phyllochron" max="1000" min="0" name="phyllochron" units="°C d leaf-1" variablecategory="state"/></Outputs>
+    <Algorithm filename="algo/pyx/Phyllochron.pyx" language="cyml" platform=""/>
+    <Parametersets>
+        <Parameterset description="" name=""/></Parametersets>
+    <Testsets>
+        <Testset description="" name="" parameterset=""/></Testsets></ModelUnit>

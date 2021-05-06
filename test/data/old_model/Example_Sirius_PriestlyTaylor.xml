@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="PriestlyTaylor" timestep="1" version="1.0">
+    <Description>
+        <Title>evapoTranspirationPriestlyTaylor  Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="netRadiationEquivalentEvaporation" description="" parametercategory="species" datatype="DOUBLE" default="638.142" min="0" max="1000" unit="g/m²d" uri="some url" inputtype="variable"/>
+        <Input name="hslope" description="" parametercategory="species" datatype="DOUBLE" default="0.584" min="0" max="1000" unit="hPa/°C" uri="some url" inputtype="variable"/>
+        <Input name="psychrometricConstant" description="psychrometric constant" parametercategory="species" datatype="DOUBLE" default="0.66" min="0" max="1" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="Alpha" description="Priestley-Taylor evapotranspiration proportionality constant" parametercategory="species" datatype="DOUBLE" default="1.5" min="0" max="100" unit="" uri="some url" inputtype="parameter"/>
+   </Inputs>
+   
+    <Outputs>
+         <Output name="evapoTranspirationPriestlyTaylor" description=" " datatype="DOUBLE" min="0" max="5"  unit="Cd/leaf" uri="some url"/>
+   	
+    </Outputs>
+    
+    <Algorithm language="C#" platform=""><![CDATA[
+    
+        evapoTranspirationPriestlyTaylor = Math.Max((Alpha * hslope * (netRadiationEquivalentEvaporation) / (hslope + psychrometricConstant)), 0);
+     
+                
+      ]]>
+     </Algorithm>    
+    
+    <Algorithm language="python_ext" platform=""><![CDATA[
+           evapoTranspirationPriestlyTaylor = max((Alpha * hslope * (netRadiationEquivalentEvaporation) / (hslope + psychrometricConstant)), 0)
+    
+    
+
+      ]]>
+     </Algorithm>
+      <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="Alpha">1.5</Param>
+
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="netRadiationEquivalentEvaporation">638.142</InputValue>
+				<OutputValue name="evapoTranspirationPriestlyTaylor" precision ="3">449.367</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

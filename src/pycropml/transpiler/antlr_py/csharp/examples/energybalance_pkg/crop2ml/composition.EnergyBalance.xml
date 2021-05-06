@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelComposition PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelComposition.dtd">
+<ModelComposition name="EnergyBalance" id="SQ.EnergyBalance" version="001" timestep = "1">
+  <Description>
+    <Title>EnergyBalance</Title>
+    <Authors>Pierre MARTRE</Authors>
+    <Institution>INRA/LEPSE</Institution>
+    <Reference>Modelling energy balance in the wheat crop model SiriusQuality2: Evapotranspiration and canopy and soil temperature calculations</Reference>
+    <Abstract>see documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=547</Abstract>
+  </Description>
+  <Composition>
+    <Model name="NetRadiation" id="SQ.EnergyBalance.NetRadiation" filename="unit.NetRadiation.xml" />
+    <Model name="NetRadiationEquivalentEvaporation" id="SQ.EnergyBalance.NetRadiationEquivalentEvaporation" filename="unit.NetRadiationEquivalentEvaporation.xml" />
+    <Model name="PriestlyTaylor" id="SQ.EnergyBalance.PriestlyTaylor" filename="unit.PriestlyTaylor.xml" />
+    <Model name="Conductance" id="SQ.EnergyBalance.Conductance" filename="unit.Conductance.xml" />
+    <Model name="DiffusionLimitedEvaporation" id="SQ.EnergyBalance.DiffusionLimitedEvaporation" filename="unit.DiffusionLimitedEvaporation.xml" />
+    <Model name="Penman" id="SQ.EnergyBalance.Penman" filename="unit.Penman.xml" />
+    <Model name="PtSoil" id="SQ.EnergyBalance.PtSoil" filename="unit.PtSoil.xml" />
+    <Model name="SoilEvaporation" id="SQ.EnergyBalance.SoilEvaporation" filename="unit.SoilEvaporation.xml" />
+    <Model name="EvapoTranspiration" id="SQ.EnergyBalance.EvapoTranspiration" filename="unit.EvapoTranspiration.xml" />
+    <Model name="SoilHeatFlux" id="SQ.EnergyBalance.SoilHeatFlux" filename="unit.SoilHeatFlux.xml" />
+    <Model name="PotentialTranspiration" id="SQ.EnergyBalance.PotentialTranspiration" filename="unit.PotentialTranspiration.xml" />
+    <Model name="CropHeatFlux" id="SQ.EnergyBalance.CropHeatFlux" filename="unit.CropHeatFlux.xml" />
+    <Model name="CanopyTemperature" id="SQ.EnergyBalance.CanopyTemperature" filename="unit.CanopyTemperature.xml" />
+
+    <Links>
+      <InputLink target="NetRadiation.minTair" source="minTair" />
+      <InputLink target="NetRadiation.maxTair" source="maxTair" />
+      <InputLink target="NetRadiation.albedoCoefficient" source="albedoCoefficient" />
+      <InputLink target="NetRadiation.stefanBoltzman" source="stefanBoltzman" />
+      <InputLink target="NetRadiation.elevation" source="elevation" />
+      <InputLink target="NetRadiation.solarRadiation" source="solarRadiation" />
+      <InputLink target="NetRadiation.vaporPressure" source="vaporPressure" />
+      <InputLink target="NetRadiation.extraSolarRadiation" source="extraSolarRadiation" />      
+      <InputLink target="NetRadiationEquivalentEvaporation.lambdaV" source="lambdaV" />            
+      <InputLink target="PriestlyTaylor.hslope" source="hslope" />
+      <InputLink target="PriestlyTaylor.psychrometricConstant" source="psychrometricConstant" />
+      <InputLink target="PriestlyTaylor.Alpha" source="Alpha" />           
+      <InputLink target="Conductance.vonKarman" source="vonKarman" />
+      <InputLink target="Conductance.heightWeatherMeasurements" source="heightWeatherMeasurements" />
+      <InputLink target="Conductance.zm" source="zm" />
+      <InputLink target="Conductance.d" source="d" />
+      <InputLink target="Conductance.zh" source="zh" />
+      <InputLink target="Conductance.plantHeight" source="plantHeight" />
+      <InputLink target="Conductance.wind" source="wind" />      
+      <InputLink target="DiffusionLimitedEvaporation.deficitOnTopLayers" source="deficitOnTopLayers" />
+      <InputLink target="DiffusionLimitedEvaporation.soilDiffusionConstant" source="soilDiffusionConstant" />      
+      <InputLink target="Penman.hslope" source="hslope" />
+      <InputLink target="Penman.VPDair" source="VPDair" />
+      <InputLink target="Penman.psychrometricConstant" source="psychrometricConstant" />
+      <InputLink target="Penman.Alpha" source="Alpha" />
+      <InputLink target="Penman.lambdaV" source="lambdaV" />
+      <InputLink target="Penman.rhoDensityAir" source="rhoDensityAir" />
+      <InputLink target="Penman.specificHeatCapacityAir" source="specificHeatCapacityAir" />      
+      <InputLink target="PtSoil.Alpha" source="Alpha" />
+      <InputLink target="PtSoil.tau" source="tau" />
+      <InputLink target="PtSoil.tauAlpha" source="tauAlpha" />      
+      <InputLink target="EvapoTranspiration.isWindVpDefined" source="isWindVpDefined" />      
+      <InputLink target="SoilHeatFlux.tau" source="tau" />      
+      <InputLink target="PotentialTranspiration.tau" source="tau" />      
+      <InputLink target="CanopyTemperature.minTair" source="minTair" />
+      <InputLink target="CanopyTemperature.maxTair" source="maxTair" />
+      <InputLink target="CanopyTemperature.lambdaV" source="lambdaV" />
+      <InputLink target="CanopyTemperature.rhoDensityAir" source="rhoDensityAir" />
+      <InputLink target="CanopyTemperature.specificHeatCapacityAir" source="specificHeatCapacityAir" />
+            
+
+      <InternalLink target="NetRadiationEquivalentEvaporation.netRadiation" source="NetRadiation.netRadiation" />      
+      <InternalLink target="PriestlyTaylor.netRadiationEquivalentEvaporation" source="NetRadiationEquivalentEvaporation.netRadiationEquivalentEvaporation" />
+      <InternalLink target="SoilHeatFlux.netRadiationEquivalentEvaporation" source="NetRadiationEquivalentEvaporation.netRadiationEquivalentEvaporation" />
+      <InternalLink target="CropHeatFlux.netRadiationEquivalentEvaporation" source="NetRadiationEquivalentEvaporation.netRadiationEquivalentEvaporation" />
+      <InternalLink target="PtSoil.evapoTranspirationPriestlyTaylor" source="PriestlyTaylor.evapoTranspirationPriestlyTaylor" />
+      <InternalLink target="Penman.evapoTranspirationPriestlyTaylor" source="PriestlyTaylor.evapoTranspirationPriestlyTaylor" />
+      <InternalLink target="EvapoTranspiration.evapoTranspirationPriestlyTaylor" source="PriestlyTaylor.evapoTranspirationPriestlyTaylor" />
+      <InternalLink target="SoilEvaporation.diffusionLimitedEvaporation" source="DiffusionLimitedEvaporation.diffusionLimitedEvaporation" />
+      <InternalLink target="SoilEvaporation.energyLimitedEvaporation" source="PtSoil.energyLimitedEvaporation" />
+      <InternalLink target="Penman.conductance" source="Conductance.conductance" />
+      <InternalLink target="CanopyTemperature.conductance" source="Conductance.conductance" />
+      <InternalLink target="EvapoTranspiration.evapoTranspirationPenman" source="Penman.evapoTranspirationPenman" />
+      <InternalLink target="SoilHeatFlux.soilEvaporation" source="SoilEvaporation.soilEvaporation" />
+      <InternalLink target="PotentialTranspiration.evapoTranspiration" source="EvapoTranspiration.evapoTranspiration" />
+      <InternalLink target="CropHeatFlux.potentialTranspiration" source="PotentialTranspiration.potentialTranspiration" />
+      <InternalLink target="CropHeatFlux.soilHeatFlux" source="SoilHeatFlux.soilHeatFlux" />
+      <InternalLink target="CanopyTemperature.cropHeatFlux" source="CropHeatFlux.cropHeatFlux" />
+        
+         
+      <OutputLink source="NetRadiation.netRadiation" target="netRadiation" />
+      <OutputLink source="NetRadiation.netOutGoingLongWaveRadiation" target="netOutGoingLongWaveRadiation" />
+      <OutputLink source="NetRadiationEquivalentEvaporation.netRadiationEquivalentEvaporation" target="netRadiationEquivalentEvaporation" />
+      <OutputLink source="PriestlyTaylor.evapoTranspirationPriestlyTaylor" target="evapoTranspirationPriestlyTaylor" />
+      <OutputLink source="DiffusionLimitedEvaporation.diffusionLimitedEvaporation" target="diffusionLimitedEvaporation" />
+      <OutputLink source="PtSoil.energyLimitedEvaporation" target="energyLimitedEvaporation" />
+      <OutputLink source="Conductance.conductance" target="conductance" />
+      <OutputLink source="Penman.evapoTranspirationPenman" target="evapoTranspirationPenman" />
+      <OutputLink source="SoilEvaporation.soilEvaporation" target="soilEvaporation" />
+      <OutputLink source="EvapoTranspiration.evapoTranspiration" target="evapoTranspiration" />
+      <OutputLink source="PotentialTranspiration.potentialTranspiration" target="potentialTranspiration" />
+      <OutputLink source="SoilHeatFlux.soilHeatFlux" target="soilHeatFlux" />
+      <OutputLink source="CropHeatFlux.cropHeatFlux" target="cropHeatFlux" />
+      <OutputLink source="CanopyTemperature.minCanopyTemperature" target="minCanopyTemperature" />
+      <OutputLink source="CanopyTemperature.maxCanopyTemperature" target="maxCanopyTemperature" />
+   
+    </Links>
+  </Composition>
+</ModelComposition>

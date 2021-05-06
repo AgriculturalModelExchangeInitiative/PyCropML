@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.EnergyBalance.DiffusionLimitedEvaporation" name="DiffusionLimitedEvaporation" timestep="1" version="1.0">
+    <Description>
+        <Title>DiffusionLimitedEvaporation Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modelling energy balance in the wheat crop model SiriusQuality2:
+            Evapotranspiration and canopy and soil temperature calculations</Reference>
+        <Abstract>the evaporation from the diffusion limited soil </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="deficitOnTopLayers" description="deficit On TopLayers" variablecategory="auxiliary"  datatype="DOUBLE" default="5341" min="0" max="10000" unit="g m-2 d-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="variable"/>
+        <Input name="soilDiffusionConstant" description="soil Diffusion Constant" parametercategory="soil" datatype="DOUBLE" default="4.2" min="0" max="10" unit="" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547" inputtype="parameter"/>
+     
+    </Inputs>
+    <Outputs>
+
+        <Output name="diffusionLimitedEvaporation" description="the evaporation from the diffusion limited soil " variablecategory="state" datatype="DOUBLE" min="0" max="5000"  unit="g m-2 d-1" uri="http://www1.clermont.inra.fr/siriusquality/?page_id=547"/>
+   	
+    </Outputs>
+    
+    <Algorithm  language="C#" platform="" filename="algo/cs/DiffusionLimitedEvaporation.cs" />
+    <Algorithm  language="Python" platform="" filename="algo/py/DiffusionLimitedEvaporation.py" />
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/DiffusionLimitedEvaporation.pyx" />
+    <Algorithm  language="Java" platform="" filename="algo/java/DiffusionLimitedEvaporation.java" />
+    <Algorithm  language="C++" platform="" filename="algo/cpp/DiffusionLimitedEvaporation.cpp" />
+    <Algorithm  language="R" platform="" filename="algo/r/DiffusionLimitedEvaporation.r" />
+    <Algorithm  language="Fortran" platform="" filename="algo/f90/DiffusionLimitedEvaporation.f90" />
+ 
+    <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="soilDiffusionConstant">4.2</Param>
+
+        </Parameterset>
+
+    </Parametersets>
+    <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="deficitOnTopLayers">5341</InputValue>
+				<OutputValue name="diffusionLimitedEvaporation" precision ="3"> 6605.505</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+    </Testsets>
+</ModelUnit>

@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+ <xsd:schema targetNamespace="http://inheritance-ext-res"
+ xmlns:tns="http://inheritance-ext-res"
+ xmlns:xsd="http://www.w3.org/2001/XML Schema"
+ elementFormDefault="qualified"
+ attributeFormDefault="unqualified">
+ 
+ <xsd:complexType name="BaseType">
+ <xsd:sequence>
+ <xsd:element name="child1" type="xsd:string" maxOccurs="unbounded" />
+ <xsd:element name="child2" type="xsd:string"/>
+ </xsd:sequence>
+ <xsd:attribute name="att1" type="xsd:string" use="optional" />
+ </xsd:complexType>
+ 
+ <xsd:complexType name="DerivedType">
+ <xsd: complexContent>
+ <xsd:
+ 
+ restriction base="tns:BaseType">
+ <xsd:
+ 
+ sequence>
+ <xsd:element name="child1" type="xsd:string" 
+ 
+ maxOccurs="4" />
+ 
+ <xsd:element name="child2">
+ <xsd:simpleType>
+ <xsd:
+ 
+ restriction base="xsd:string">
+ <xsd:
+ 
+ maxLength value="35" />
+ </xsd:restriction>
+ </xsd:simpleType>
+ </xsd:element>
+ 
+ </xsd:sequence>
+ 
+ 
+ <xsd:attribute name="att1" type="xsd:string" use="prohibited" />
+ </xsd:restriction>
+ </xsd:complexContent>
+ </xsd:complexType>
+ 
+ <xsd:element name="CCRestriction">
+ <xsd:complexType>
+ <xsd:sequence>
+ <xsd:element name="Base" type="tns:BaseType" />
+ <xsd:element name="Derived" type="tns:DerivedType" />
+ </xsd:sequence>
+ </xsd:complexType>
+ </xsd:element>
+ 
+ </xsd:schema>

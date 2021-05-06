@@ -1,0 +1,20 @@
+<ModelUnit modelid="SQ.Pheno_Pkg.LeafNumber" name="LeafNumber" timestep="1" version="001">
+    <Description>
+        <Title>LeafNumber model</Title>
+        <Authors>Pierre MARTRE</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>(None,)</Reference>
+        <Abstract>calculate leaf number. LeafNumber increase is caped at one more leaf per day</Abstract></Description>
+    <Inputs>
+        <Input datatype="DOUBLE" default="1" description=" the name of the phase" max="7" min="0" name="phase" units="" variablecategory="state"/>
+        <Input datatype="INT" default="1" description="true if flag leaf has appeared (leafnumber reached finalLeafNumber)" max="1" min="0" name="hasFlagLeafLiguleAppeared" units="" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="0" description="phyllochron" max="1000" min="0" name="phyllochron_t1" units="°C d leaf-1" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="0" description="Actual number of phytomers" max="25" min="0" name="leafNumber_t1" units="leaf" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="0.0" description="Thermal time increase of the day" max="100.0" min="0.0" name="deltaTT" units="°C d" variablecategory="auxiliary"/></Inputs>
+    <Outputs>
+        <Output datatype="DOUBLE" description="Actual number of phytomers" max="25" min="0" name="leafNumber" units="leaf" variablecategory="state"/></Outputs>
+    <Algorithm filename="algo/pyx/LeafNumber.pyx" language="cyml" platform=""/>
+    <Parametersets>
+        <Parameterset description="" name=""/></Parametersets>
+    <Testsets>
+        <Testset description="" name="" parameterset=""/></Testsets></ModelUnit>

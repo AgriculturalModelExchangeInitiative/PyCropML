@@ -117,7 +117,8 @@ class PythonRules(GeneralRule):
             'pop': '.pop',
             'contains?': lambda node: Node("simpleCall", op='in', value=node.args, sequence=node.receiver, pseudo_type='Boolean'),
             'not contains?': translateNotContains,
-            'index': '.index'
+            'index': '.index',
+            'extend': '.extend'
         },
         'datetime':{
             'datetime':'datetime',

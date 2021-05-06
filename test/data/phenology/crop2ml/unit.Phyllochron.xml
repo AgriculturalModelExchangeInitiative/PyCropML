@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.WheatPhenology.Phyllochron" name="Phyllochron" timestep="1" version="1.0">
+    <Description>
+        <Title>Phyllochron Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modeling development phase in the 
+                Wheat Simulation Model SiriusQuality.
+                See documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract>Calculate different types of phyllochron </Abstract>
+    </Description>
+    <Inputs>
+        <Input name="fixPhyll" description="Sowing date corrected Phyllochron" variablecategory="auxiliary" datatype="DOUBLE" min="0" max="10000" default="5" unit="°C d leaf-1" uri="some url" inputtype = "variable"/>
+        <Input name="leafNumber" description="Actual number of phytomers" variablecategory="state" datatype="DOUBLE" min="0" max="25" default="0" unit="leaf" uri="some url" inputtype = "variable"/>
+        <Input name="lincr" description="Leaf number above which the phyllochron is increased by Pincr" parametercategory="species" datatype="DOUBLE" min="0" max="30" default="8" unit="leaf" uri="some url" inputtype = "parameter"/>
+        <Input name="ldecr" description="Leaf number up to which the phyllochron is decreased by Pdecr" parametercategory="species" inputtype="parameter" datatype="DOUBLE" min="0" max="30" default="10" unit="leaf" uri="some url"/>
+        <Input name="pdecr" description="Factor decreasing the phyllochron for leaf number less than Ldecr" parametercategory="constant" inputtype="parameter" datatype="DOUBLE" min="0" max="10" default="0.4" unit="" uri="some url"/>
+        <Input name="pincr" description="Factor increasing the phyllochron for leaf number higher than Lincr" parametercategory="constant" datatype="DOUBLE" default="1.5" min="0" max="10" unit="" uri="some url" inputtype="parameter"/>
+        <Input name="ptq" description="Photothermal quotient " parametercategory="species" inputtype ="variable" datatype="DOUBLE" min="0" max="10000" default="0" unit="MJ °C-1 d-1 m-2)" uri="some url"/>
+        <Input name="gai" description="Green Area Index" parametercategory="species" datatype="DOUBLE" min="0" max="10000" default="0" unit="m2 m-2" uri="some url" inputtype = "variable"/>
+        <Input name="pastMaxAI" description="PhotoThermal Quotien" variablecategory="auxiliary" datatype="DOUBLE" min="0" max="10000" default="0" unit="m2 m-2" uri="some url" inputtype = "variable"/>
+        <Input name="kl" description="Exctinction Coefficient" parametercategory="constant" datatype="DOUBLE" min="0" max="50" default="0.45" unit="" uri="some url" inputtype = "parameter"/>
+        <Input name="aPTQ" description="Slope to intercept ratio for Phyllochron  parametrization with PhotoThermal Quotient" parametercategory="constant" inputtype="variable" datatype="DOUBLE" min="0" max="1000" default="0.842934" unit="" uri="some url"/>
+        <Input name="phylPTQ1" description="Phyllochron at PTQ equal 1" parametercategory="constant" datatype="DOUBLE" default="20" min="0" max="1000" unit="°C d leaf-1" uri="some url" inputtype="parameter"/>
+        <Input name="p" description="Phyllochron (Varietal parameter)" parametercategory="species" datatype="DOUBLE" default="120" min="0" max="1000" unit="°C d leaf-1" uri="some url" inputtype="parameter"/>
+        <Input name="choosePhyllUse" description="Switch to choose the type of phyllochron calculation to be used" datatype="STRING" default="Default" unit="" uri="some url" inputtype = "parameter"/>
+                
+    </Inputs>
+    <Outputs>
+        <Output name="phyllochron" description=" the rate of leaf appearance " variablecategory="state" datatype="DOUBLE" min="0" max="1000"  unit=" °C d leaf-1" />
+    	<Output name="pastMaxAI" description="Past maximum GAI" variablecategory="auxiliary" datatype="DOUBLE" min="0" max="10000"  unit="m2 m-2"/>
+    	    	
+    </Outputs>
+    
+	<Algorithm  language="Python" platform="" filename="algo/py/PhyllochronModule.py" />
+	<Algorithm  language="C#" platform="" filename="algo/cs/PhyllochronModule.cs"/>
+	<Algorithm  language="Java" platform="" filename="algo/java/PhyllochronModule.java"/>
+    <Algorithm  language="C++" platform="" filename="algo/cpp/PhyllochronModule.cpp"/>
+	<Algorithm  language="Fortran" platform="" filename="algo/f90/PhyllochronModule.f90"/>
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/PhyllochronModule.pyx"/>
+    <Algorithm  language="R" platform="" filename="algo/r/PhyllochronModule.r"/>
+
+    <Parametersets>
+        <Parameterset name="wheat" description="some values in there" >
+        	<Param name="lincr">8</Param>
+        	<Param name="ldecr">3</Param>
+        	<Param name="pdecr">0.4</Param>
+            <Param name="pincr">1.25</Param>            
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model" parameterset = "wheat" description="some values in there" >
+        	<Test name ="test_wheat1">
+        		<InputValue name="fixPhyll">91.2</InputValue>
+        		<InputValue name="gai">0.279874189539498</InputValue>        						
+			    <OutputValue name="phyllochron" precision ="2">36.48</OutputValue>
+                <OutputValue name="pastMaxAI" precision ="2">0</OutputValue> 				
+				
+        	</Test>
+        </Testset>
+      </Testsets>
+ 	
+</ModelUnit>

@@ -1,0 +1,24 @@
+<ModelUnit modelid="SQ.Pheno_Pkg.PTQ" name="PTQ" timestep="1" version="001">
+    <Description>
+        <Title>PTQ model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>(None,)</Reference>
+        <Abstract>Calculate Photothermal Quaotient </Abstract></Description>
+    <Inputs>
+        <Input datatype="DOUBLELIST" default="" description="List of daily Green Area Index in the window dedicated to average" max="" min="" name="listGAITTWindowForPTQ" units="m2 leaf m-2 ground" variablecategory="state"/>
+        <Input datatype="DOUBLELIST" default="" description="List of Daily PAR during TTWindowForPTQ thermal time period" max="" min="" name="listPARTTWindowForPTQ_t1" units="MJ m2 d" variablecategory="state"/>
+        <Input datatype="DOUBLELIST" default="" description="List of Daily Shoot thermal time during TTWindowForPTQ thermal time period" max="" min="" name="listTTShootWindowForPTQ_t1" units="°C d" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="0.0" description="Daily Photosyntetically Active Radiation" max="10000.0" min="0.0" name="pAR" units="MJ m² d" variablecategory="auxiliary"/>
+        <Input datatype="DOUBLE" default="0.0" description="Thermal time increase of the day" max="100.0" min="0.0" name="deltaTT" units="°C d" variablecategory="auxiliary"/>
+        <Input datatype="DOUBLE" default="70.0" description="Thermal time window in which averages are computed" max="70000.0" min="0.0" name="tTWindowForPTQ" parametercategory="constant" units="°C d"/>
+        <Input datatype="DOUBLE" default="0.45" description="Exctinction Coefficient" max="50.0" min="0.0" name="kl" parametercategory="constant" units=""/></Inputs>
+    <Outputs>
+        <Output datatype="DOUBLELIST" description="List of Daily PAR during TTWindowForPTQ thermal time period" max="" min="" name="listPARTTWindowForPTQ" units="MJ m2 d" variablecategory="state"/>
+        <Output datatype="DOUBLELIST" description="List of Daily Shoot thermal time during TTWindowForPTQ thermal time period" max="" min="" name="listTTShootWindowForPTQ" units="°C d" variablecategory="state"/>
+        <Output datatype="DOUBLE" description="Photothermal quotient " max="10000.0" min="0.0" name="ptq" units="MJ °C-1 d-1 m-2)" variablecategory="state"/></Outputs>
+    <Algorithm filename="algo/pyx/PTQ.pyx" language="cyml" platform=""/>
+    <Parametersets>
+        <Parameterset description="" name=""/></Parametersets>
+    <Testsets>
+        <Testset description="" name="" parameterset=""/></Testsets></ModelUnit>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="DiffusionLimitedEvaporation" timestep="1" version="1.0">
+    <Description>
+        <Title>DiffusionLimitedEvaporation Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="deficitOnTopLayers" description=""  datatype="DOUBLE" default="5341" min="0" max="10000" unit="g/m²d" uri="some url" inputtype="variable"/>
+        <Input name="soilDiffusionConstant" description="soilDiffusionConstant" parametercategory="soil" datatype="DOUBLE" default="4.2" min="0" max="10" unit="" uri="some url" inputtype="parameter"/>
+     
+    </Inputs>
+    <Outputs>
+
+        <Output name="diffusionLimitedEvaporation" description=" " datatype="DOUBLE" min="0" max="5"  unit="g/m²d" uri="some url"/>
+   	
+    </Outputs>
+    
+    <Algorithm language="C#" platform=""><![CDATA[
+        if (deficitOnTopLayers / 1000 <= 0)
+        	{ 
+                diffusionLimitedEvaporation = 8.3 * 1000;
+            }
+        else
+            {
+             	if (deficitOnTopLayers / 1000 < 25)
+                	{
+                        diffusionLimitedEvaporation = (2 * soilDiffusionConstant * soilDiffusionConstant / (deficitOnTopLayers / 1000)) * 1000;
+                    }
+                else
+                    {
+                        diffusionLimitedEvaporation = 0;
+                    }
+            }
+   
+      ]]>
+     </Algorithm>    
+    
+    <Algorithm language="python_ext" platform=""><![CDATA[
+            if (deficitOnTopLayers / 1000.0 <= 0):
+        	{ 
+                diffusionLimitedEvaporation = 8.3 * 1000
+            }
+         else:
+            {
+             	if (deficitOnTopLayers / 1000 < 25):
+                	{
+                        diffusionLimitedEvaporation = (2 * soilDiffusionConstant * soilDiffusionConstant / (deficitOnTopLayers / 1000.0)) * 1000.0
+                    }
+                else:
+                    {
+                        diffusionLimitedEvaporation = 0
+                       
+                    }
+            }
+
+      ]]>
+     </Algorithm>
+      <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="soilDiffusionConstant">4.2</Param>
+
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="deficitOnTopLayers">5341</InputValue>
+				<OutputValue name="diffusionLimitedEvaporation" precision ="3"> 6605.505</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+</ModelUnit>

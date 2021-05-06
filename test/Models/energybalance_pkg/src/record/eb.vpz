@@ -1,0 +1,299 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE vle_project PUBLIC '-//VLE TEAM//DTD Strict//EN' 'http://www.vle-project.org/vle-1.1.0.dtd'>
+<vle_project version="1.1.x" date="2012-Oct-03 13:01:13" author="Eric Casellas">
+<structures>
+<model width="100" height="165" x="316" y="127" name="EnergyBalance" type="coupled">
+ <in>
+  <port name="minTair"/>
+  <port name="maxTair"/>
+  <port name="solarRadiation"/>     
+  <port name="vaporPressure"/>      
+  <port name="extraSolarRadiation"/>
+  <port name="hslope"/>
+  <port name="plantHeight"/>        
+  <port name="wind"/>
+  <port name="deficitOnTopLayers"/>
+  <port name="VPDair"/>
+ </in>
+ <out>
+  <port name="netRadiation"/>
+  <port name="netOutGoingLongWaveRadiation"/>
+  <port name="netRadiationEquivalentEvaporation"/>
+  <port name="evapoTranspirationPriestlyTaylor"/>
+  <port name="diffusionLimitedEvaporation"/>
+  <port name="energyLimitedEvaporation"/>
+  <port name="conductance"/>
+  <port name="evapoTranspirationPenman"/>
+  <port name="soilEvaporation"/>
+  <port name="evapoTranspiration"/>
+  <port name="potentialTranspiration"/>
+  <port name="soilHeatFlux"/>
+  <port name="cropHeatFlux"/>
+  <port name="minCanopyTemperature"/>
+  <port name="maxCanopyTemperature"/>
+ </out>
+<submodels>
+ <model width=" " height=" " x=" " y=" " dynamics="dynNetradiation" name="NetRadiation" type="atomic">
+  <in>
+   <port name="minTair"/>
+   <port name="maxTair"/>
+   <port name="solarRadiation"/>
+   <port name="vaporPressure"/>
+   <port name="extraSolarRadiation"/>
+  </in>
+  <out>
+   <port name="netRadiation"/>
+   <port name="netOutGoingLongWaveRadiation"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynNetradiationequivalentevaporation" name="NetRadiationEquivalentEvaporation" type="atomic">
+  <in>
+   <port name="netRadiation"/>
+  </in>
+  <out>
+   <port name="netRadiationEquivalentEvaporation"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynPriestlytaylor" name="PriestlyTaylor" type="atomic">
+  <in>
+   <port name="netRadiationEquivalentEvaporation"/>
+   <port name="hslope"/>
+  </in>
+  <out>
+   <port name="evapoTranspirationPriestlyTaylor"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynConductance" name="Conductance" type="atomic">
+  <in>
+   <port name="plantHeight"/>
+   <port name="wind"/>
+  </in>
+  <out>
+   <port name="conductance"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynDiffusionlimitedevaporation" name="DiffusionLimitedEvaporation" type="atomic">
+  <in>
+   <port name="deficitOnTopLayers"/>
+  </in>
+  <out>
+   <port name="diffusionLimitedEvaporation"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynPenman" name="Penman" type="atomic">
+  <in>
+   <port name="evapoTranspirationPriestlyTaylor"/>
+   <port name="hslope"/>
+   <port name="VPDair"/>
+   <port name="conductance"/>
+  </in>
+  <out>
+   <port name="evapoTranspirationPenman"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynPtsoil" name="PtSoil" type="atomic">
+  <in>
+   <port name="evapoTranspirationPriestlyTaylor"/>
+  </in>
+  <out>
+   <port name="energyLimitedEvaporation"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynSoilevaporation" name="SoilEvaporation" type="atomic">
+  <in>
+   <port name="diffusionLimitedEvaporation"/>
+   <port name="energyLimitedEvaporation"/>
+  </in>
+  <out>
+   <port name="soilEvaporation"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynEvapotranspiration" name="EvapoTranspiration" type="atomic">     
+  <in>
+   <port name="evapoTranspirationPriestlyTaylor"/>
+   <port name="evapoTranspirationPenman"/>
+  </in>
+  <out>
+   <port name="evapoTranspiration"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynSoilheatflux" name="SoilHeatFlux" type="atomic">
+  <in>
+   <port name="netRadiationEquivalentEvaporation"/>
+   <port name="soilEvaporation"/>
+  </in>
+  <out>
+   <port name="soilHeatFlux"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynPotentialtranspiration" name="PotentialTranspiration" type="atomic">
+  <in>
+   <port name="evapoTranspiration"/>
+  </in>
+  <out>
+   <port name="potentialTranspiration"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynCropheatflux" name="CropHeatFlux" type="atomic">
+  <in>
+   <port name="netRadiationEquivalentEvaporation"/>
+   <port name="soilHeatFlux"/>
+   <port name="potentialTranspiration"/>
+  </in>
+  <out>
+   <port name="cropHeatFlux"/>
+  </out>
+ </model>
+ <model width=" " height=" " x=" " y=" " dynamics="dynCanopytemperature" name="CanopyTemperature" type="atomic">       
+  <in>
+   <port name="minTair"/>
+   <port name="maxTair"/>
+   <port name="cropHeatFlux"/>
+   <port name="conductance"/>
+  </in>
+  <out>
+   <port name="minCanopyTemperature"/>
+   <port name="maxCanopyTemperature"/>
+  </out>
+ </model>
+</submodels>
+<connections>
+<connection type="input">
+ <origin model="EnergyBalance" port="minTair"/>
+ <destination model="NetRadiation" port="minTair"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="maxTair"/>
+ <destination model="NetRadiation" port="maxTair"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="solarRadiation"/>
+ <destination model="NetRadiation" port="solarRadiation"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="vaporPressure"/>
+ <destination model="NetRadiation" port="vaporPressure"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="extraSolarRadiation"/>
+ <destination model="NetRadiation" port="extraSolarRadiation"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="hslope"/>
+ <destination model="PriestlyTaylor" port="hslope"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="plantHeight"/>
+ <destination model="Conductance" port="plantHeight"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="wind"/>
+ <destination model="Conductance" port="wind"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="deficitOnTopLayers"/>
+ <destination model="DiffusionLimitedEvaporation" port="deficitOnTopLayers"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="hslope"/>
+ <destination model="Penman" port="hslope"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="VPDair"/>
+ <destination model="Penman" port="VPDair"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="minTair"/>
+ <destination model="CanopyTemperature" port="minTair"/>
+</connection>
+<connection type="input">
+ <origin model="EnergyBalance" port="maxTair"/>
+ <destination model="CanopyTemperature" port="maxTair"/>
+</connection>
+<connection type="internal">
+ <origin model="NetRadiation" port="netRadiation"/>
+ <destination model="NetRadiationEquivalentEvaporation" port="netRadiation"/>
+</connection>
+<connection type="internal">
+ <origin model="NetRadiationEquivalentEvaporation" port="netRadiationEquivalentEvaporation"/>
+ <destination model="PriestlyTaylor" port="netRadiationEquivalentEvaporation"/>
+</connection>
+<connection type="internal">
+ <origin model="NetRadiationEquivalentEvaporation" port="netRadiationEquivalentEvaporation"/>
+ <destination model="SoilHeatFlux" port="netRadiationEquivalentEvaporation"/>
+</connection>
+<connection type="internal">
+ <origin model="NetRadiationEquivalentEvaporation" port="netRadiationEquivalentEvaporation"/>
+ <destination model="CropHeatFlux" port="netRadiationEquivalentEvaporation"/>
+</connection>
+<connection type="internal">
+ <origin model="PriestlyTaylor" port="evapoTranspirationPriestlyTaylor"/>
+ <destination model="PtSoil" port="evapoTranspirationPriestlyTaylor"/>
+</connection>
+<connection type="internal">
+ <origin model="PriestlyTaylor" port="evapoTranspirationPriestlyTaylor"/>
+ <destination model="Penman" port="evapoTranspirationPriestlyTaylor"/>
+</connection>
+<connection type="internal">
+ <origin model="PriestlyTaylor" port="evapoTranspirationPriestlyTaylor"/>
+ <destination model="EvapoTranspiration" port="evapoTranspirationPriestlyTaylor"/>
+</connection>
+<connection type="internal">
+ <origin model="DiffusionLimitedEvaporation" port="diffusionLimitedEvaporation"/>
+ <destination model="SoilEvaporation" port="diffusionLimitedEvaporation"/>
+</connection>
+<connection type="internal">
+ <origin model="PtSoil" port="energyLimitedEvaporation"/>
+ <destination model="SoilEvaporation" port="energyLimitedEvaporation"/>
+</connection>
+<connection type="internal">
+ <origin model="Conductance" port="conductance"/>
+ <destination model="Penman" port="conductance"/>
+</connection>
+<connection type="internal">
+ <origin model="Conductance" port="conductance"/>
+ <destination model="CanopyTemperature" port="conductance"/>
+</connection>
+<connection type="internal">
+ <origin model="Penman" port="evapoTranspirationPenman"/>
+ <destination model="EvapoTranspiration" port="evapoTranspirationPenman"/>
+</connection>
+<connection type="internal">
+ <origin model="SoilEvaporation" port="soilEvaporation"/>
+ <destination model="SoilHeatFlux" port="soilEvaporation"/>
+</connection>
+<connection type="internal">
+ <origin model="EvapoTranspiration" port="evapoTranspiration"/>
+ <destination model="PotentialTranspiration" port="evapoTranspiration"/>
+</connection>
+<connection type="internal">
+ <origin model="PotentialTranspiration" port="potentialTranspiration"/>
+ <destination model="CropHeatFlux" port="potentialTranspiration"/>
+</connection>
+<connection type="internal">
+ <origin model="SoilHeatFlux" port="soilHeatFlux"/>
+ <destination model="CropHeatFlux" port="soilHeatFlux"/>
+</connection>
+<connection type="internal">
+ <origin model="CropHeatFlux" port="cropHeatFlux"/>
+ <destination model="CanopyTemperature" port="cropHeatFlux"/>
+</connection>
+</connections>
+</model>
+</structures>
+<dynamics>
+<dynamic library="Netradiation" package="EnergyBalance" name="dynNetradiation"/>
+<dynamic library="Netradiationequivalentevaporation" package="EnergyBalance" name="dynNetradiationequivalentevaporation"/>
+<dynamic library="Priestlytaylor" package="EnergyBalance" name="dynPriestlytaylor"/>
+<dynamic library="Conductance" package="EnergyBalance" name="dynConductance"/>
+<dynamic library="Diffusionlimitedevaporation" package="EnergyBalance" name="dynDiffusionlimitedevaporation"/>
+<dynamic library="Penman" package="EnergyBalance" name="dynPenman"/>
+<dynamic library="Ptsoil" package="EnergyBalance" name="dynPtsoil"/>
+<dynamic library="Soilevaporation" package="EnergyBalance" name="dynSoilevaporation"/>
+<dynamic library="Evapotranspiration" package="EnergyBalance" name="dynEvapotranspiration"/>
+<dynamic library="Soilheatflux" package="EnergyBalance" name="dynSoilheatflux"/>
+<dynamic library="Potentialtranspiration" package="EnergyBalance" name="dynPotentialtranspiration"/>
+<dynamic library="Cropheatflux" package="EnergyBalance" name="dynCropheatflux"/>
+<dynamic library="Canopytemperature" package="EnergyBalance" name="dynCanopytemperature"/>
+</dynamics>
+</vle_project>

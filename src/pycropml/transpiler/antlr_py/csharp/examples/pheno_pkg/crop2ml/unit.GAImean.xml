@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="-.pheno_pkg.GAImean" name="GAImean" timestep="1" version="1.0">
+	<Description>
+		<Title>Average GAI on a specific thermal time window</Title>
+		<Authors>Loïc Manceau</Authors>
+		<Institution>INRA</Institution>
+		<Reference>-</Reference>
+		<Abstract>-</Abstract>
+	</Description>
+	<Inputs>
+		<Input name="gAI" description="Green Area Index of the day" inputtype="variable" variablecategory="auxiliary" datatype="DOUBLE" default="0.0" min="0.0" max="500.0" unit="m2 leaf m-2 ground" uri=""/>
+		<Input name="tTWindowForPTQ" description="Thermal Time window for average" inputtype="parameter" parametercategory="constant" datatype="DOUBLE" default="0.0" min="0.0" max="5000.0" unit="°C d" uri=""/>
+		<Input name="deltaTT" description="Thermal time increase of the day" inputtype="variable" variablecategory="auxiliary" datatype="DOUBLE" default="0.0" min="0.0" max="100.0" unit="°C d" uri=""/>
+		<Input name="pastMaxAI_t1" description="Maximum Leaf Area Index reached the current day" inputtype="variable" variablecategory="state" datatype="DOUBLE" default="0.0" min="0.0" max="5000.0" unit="m2 leaf m-2 ground" uri=""/>
+		<Input name="listTTShootWindowForPTQ1_t1" description="List of daily shoot thermal time in the window dedicated to average" inputtype="variable" variablecategory="state" datatype="DOUBLELIST" default="[0.0]" min="" max="" unit="°C d" uri=""/>
+		<Input name="listGAITTWindowForPTQ_t1" description="List of daily Green Area Index in the window dedicated to average" inputtype="variable" variablecategory="state" datatype="DOUBLELIST" default="[0.0]" min="" max="" unit="m2 leaf m-2 ground" uri=""/>
+	</Inputs>
+	<Outputs>
+		<Output name="gAImean" description="Mean Green Area Index" variablecategory="state" datatype="DOUBLE" min="0.0" max="500.0" unit="m2 leaf m-2 ground" uri=""/>
+		<Output name="pastMaxAI" description="Maximum Leaf Area Index reached the current day" variablecategory="state" datatype="DOUBLE" min="0.0" max="5000.0" unit="m2 leaf m-2 ground" uri=""/>
+		<Output name="listTTShootWindowForPTQ1" description="List of daily shoot thermal time in the window dedicated to average" variablecategory="state" datatype="DOUBLELIST" min="" max="" unit="°C d" uri=""/>
+		<Output name="listGAITTWindowForPTQ" description="List of daily Green Area Index in the window dedicated to average" variablecategory="state" datatype="DOUBLELIST" min="" max="" unit="m2 leaf m-2 ground" uri=""/>
+	</Outputs>
+	<Algorithm language="Cyml" platform="" filename="algo/pyx/GAImean.pyx" />
+	<Parametersets>
+		<Parameterset name="paramerSetGAImean" description="Parameters for GAImean unit" >
+			<Param name="tTWindowForPTQ">70.0</Param>
+		</Parameterset>
+	</Parametersets>
+	<Testsets>
+        <Testset name="check wheat model" parameterset = "paramerSetGAImean" description="some values in there" >
+        	<Test name ="test_wheat1">
+        		<InputValue name="gAI">91.2</InputValue>
+				<InputValue name="deltaTT">0.279</InputValue>  
+				<InputValue name="pastMaxAI_t1">0.279</InputValue> 
+				<InputValue name="listTTShootWindowForPTQ1_t1">[0.0]</InputValue> 
+        		<InputValue name="listGAITTWindowForPTQ_t1">[0.0]</InputValue> 												      						
+			    <OutputValue name="gAImean" precision ="2">45.6</OutputValue>
+				<OutputValue name="pastMaxAI" precision ="2">45.6</OutputValue> 	
+				<OutputValue name="listTTShootWindowForPTQ1" precision ="2">[0.0, 0.28]</OutputValue> 
+				<OutputValue name="listGAITTWindowForPTQ" precision ="2">[0.0, 91.2]</OutputValue> 				
+        	</Test>
+        </Testset>
+	</Testsets>
+</ModelUnit>

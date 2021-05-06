@@ -1,0 +1,9 @@
+public void Process()
+{
+    double tnetRadiationEquivalentEvaporation = netRadiationEquivalentEvaporation.getValue();
+    double tsoilHeatFlux = soilHeatFlux.getValue();
+    double tpotentialTranspiration = potentialTranspiration.getValue();
+    double tcropHeatFlux = cropHeatFlux.getValue();
+    tcropHeatFlux = tnetRadiationEquivalentEvaporation - tsoilHeatFlux - tpotentialTranspiration;
+    cropHeatFlux.setValue(tcropHeatFlux);
+}

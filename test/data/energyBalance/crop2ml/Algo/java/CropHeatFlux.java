@@ -1,0 +1,1 @@
+cropHeatFlux = netRadiationEquivalentEvaporation - soilHeatFlux - potentialTranspiration;

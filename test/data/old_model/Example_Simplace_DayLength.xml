@@ -1,0 +1,94 @@
+<?xml version="1.0" ?>
+<!DOCTYPE ModelUnit PUBLIC "" "https://raw.githubusercontent.com/cyrillemidingoyi/xml_representation/usecase/ModelUnit.dtd">
+<ModelUnit modelid="1" timestep="1" name ="DayLength" version="1.0">
+	<Description>
+		<Title>STMPsimCalculator</Title>
+		<Authors>Andreas Enders</Authors>
+		<Institution>Crop Science Group Bonn</Institution>
+		<URI>http://www.simplace.net/doc/simplace_modules/class_net.simplace.sim.components.soil.temperature.STMPsimCalculator.html</URI>
+		<Abstract>Calculates the DayLength.</Abstract>
+	</Description>
+	<Inputs>
+		<Input name="pDaylength" datatype="DOUBLEARRAY" inputtype="parameter" parametercategory="constant" min="0" max="1441" default="0" unit="d" description="" />
+		<Input name="cLatitude"  description="Latitude of the simulated location" datatype="float" inputtype="parameter" parametercategory="constant" min="0" max="90" default="60" unit="" />
+		<Input name="iDayOfYear" description="Day Of Year" datatype="float" inputtype="variable" parametercategory="constant" min="" max="" default="100" unit="" />
+
+	</Inputs>
+	<Outputs>
+		<Output name="DayLength" datatype="INT"   min="0" max="1441"  unit="" description="Day Length in minutes"/>
+	</Outputs>
+	<Algorithm language="java" platform="SIMPLACE"><![CDATA[
+	
+	if (pDaylength.getValue() == null) {
+        Integer[] dayLengthArray = new Integer[370];
+        for (int i = 1; i &lt; 370; i++) {
+            int TIME = i;
+            double tDayLength;
+            double SINLAT = sin(PI * cLatitude.getValue() / 180);
+            double COSLAT = cos(PI * cLatitude.getValue() / 180);
+            double SINDCM = sin(PI * 23.45 / 180);
+            double SINDEC = -SINDCM * cos(2 * PI * (TIME + 10) / 365);
+            double COSDEC = sqrt(1 - SINDEC * SINDEC);
+            double A = SINLAT * SINDEC;
+            double B = COSLAT * COSDEC;
+            double arg = A / B;
+            if (arg &gt; 1)
+                arg = 1;
+            if (arg &lt; -1)
+                arg = -1;
+            tDayLength = 12 * (1 + (2 / PI) * asin(arg));
+            dayLengthArray[i] = (int) round(tDayLength * 60);
+        }
+        pDaylength.setValue(dayLengthArray, this);
+    }
+	DayLength.setValue((Integer) pDaylength.getArrayValue(iDayOfYear.getValue()), this);
+	
+	]]>
+	</Algorithm>
+	
+	<Algorithm language="python_ext" platform=" "><![CDATA[
+	
+		dayLengthArray = np.arange(370)
+		
+		for i in range(0,370):
+		{
+			TIME = i
+			SINLAT = float(np.sin(np.pi * cLatitude/ 180))
+			COSLAT = float(np.cos(np.pi * cLatitude / 180))
+
+			SINDCM = float(np.sin(np.pi * 23.45 / 180))
+
+			SINDEC = (-SINDCM * np.cos(2 * np.pi * (TIME + 10) / 365))
+			COSDEC = float( np.sqrt(1 - SINDEC * SINDEC))
+
+			A = float(SINLAT * SINDEC)
+			B = float(COSLAT * COSDEC)
+
+			arg = float(A / B)
+			if (arg > 1): arg = 1
+			if (arg < -1): arg = -1
+			tDayLength = float(12 * (1 + (2 / np.pi) * np.arcsin(arg)))
+
+			dayLengthArray[i] = int(round(tDayLength * 60))
+		}
+
+		pDaylength=dayLengthArray
+		DayLength = pDaylength[iDayOfYear]
+	
+		]]>
+	</Algorithm>
+	<Parametersets>
+		<Parameterset name="first" description="some values for cold weather">
+			<Param name="cLatitude">20</Param>
+
+		</Parameterset>
+	</Parametersets>
+	<Testsets>
+		<Testset name="check soil temp1" parameterset="first" description="some values in there">
+			<Test name="daytest">
+				<InputValue name="iDayOfYear">15</InputValue>
+				<OutputValue name="DayLength" precision = "2">655</OutputValue>
+			</Test>
+		</Testset>
+	</Testsets>
+</ModelUnit>

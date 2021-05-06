@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" timestep="1" name="TemperatureSum" version="1.0">
+	<Description>
+		<Title>TemperatureSum</Title>
+		<Authors>various</Authors>
+		<Institution>JRC - CREA</Institution>
+		<URI></URI>
+		<Abstract><![CDATA[
+			Temperature sum based on the calculation of development rate - Van Keulen, H., Wolf, J., 1986. 
+			Modelling of agricultural production: weather soils and crops. Simulation Monographs.
+			Pudoc, Wageningen, The Netherlands, pp. 479
+		]]>
+		</Abstract>
+	</Description>
+	<Inputs>
+		<Input name="DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X1" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="-10" max="50" default="4" unit="°C" description="Daily increase of temperature sum function on average temperature - temperature1" />
+		<Input name="DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X2" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="-10" max="50" default="35" unit="°C" description="Daily increase of temperature sum function on average temperature - temperature2" />
+		<Input name="DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y1" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="-10" max="50" default="0" unit="unitless" description="Daily increase of temperature sum function on average temperature - increase1" />
+		<Input name="DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y2" datatype="DOUBLE" inputtype="parameter" parametercategory="constant" min="-10" max="50" default="31" unit="unitless" description="Daily increase of temperature sum function on average temperature - increase2" />
+		<Input name="AirTemperatureAverage" datatype="DOUBLE" inputtype="variable"  min="-25" max="50" default="10" unit="°C" description="Daily average of air temperature"/>		
+		<Input name="GrowingDegreeDaysTemperature" datatype="DOUBLE" inputtype="variable" min="0" max="8000" default="100" unit="°C-day" description="Potential growing degree days calculated on temperature of previous day"/>		
+	</Inputs>
+	<Outputs>
+		<Output name="GrowingDegreeDaysTemperature" datatype="DOUBLE"  min="0" max="8000"  unit="°C-day" description="Potential growing degree days calculated on temperature of current day"/>		
+		<Output name="GrowingDegreeDaysTemperatureRate" datatype="DOUBLE" min="0" max="50"  unit="°C-day" description="Potential daily rate of growing degree days accumulation based on temperature"/>
+		
+	</Outputs>
+	<Algorithm language="python_ext" platform=" ">
+		<![CDATA[ 
+				Tavg = AirTemperatureAverage
+				if(Tavg<=DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X1):
+				{
+				GrowingDegreeDaysTemperatureRate=DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y1
+				}
+				if(Tavg>DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X1 and Tavg<DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X2):
+				{
+				b = (DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y2 - DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y1) / (DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X2 - DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X1)					
+				GrowingDegreeDaysTemperatureRate=Tavg * b + DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y1
+				}
+                if(Tavg>=DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X2):
+                {
+                 GrowingDegreeDaysTemperatureRate=DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y2
+				}
+				GrowingDegreeDaysTemperature = GrowingDegreeDaysTemperature + GrowingDegreeDaysTemperatureRate
+		]]>
+	</Algorithm>
+	<Parametersets>
+		<Parameterset name="default" description="default values">
+			<Param name="DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X1">4</Param>
+			<Param name="DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_X2">35</Param>	
+			<Param name="DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y1">0</Param>
+			<Param name="DailyIncreaseTempSumFunctionOfAverageT_DTSMTB_Y2">31</Param>	
+			
+		</Parameterset>		
+	</Parametersets>
+	<Testsets>
+		<Testset name="check 1" parameterset="default" description="some test values">
+			<Test name="check 1 1">
+				<InputValue name="AirTemperatureAverage">16</InputValue>				
+				<InputValue name="GrowingDegreeDaysTemperature">1</InputValue>				
+				<OutputValue name="GrowingDegreeDaysTemperature" precision = "3">17.0</OutputValue>				
+				<OutputValue name="GrowingDegreeDaysTemperatureRate" precision = "3">16.0</OutputValue>				
+			</Test>
+			<Test name="check 1 2">
+				<InputValue name="AirTemperatureAverage">3</InputValue>				
+				<InputValue name="GrowingDegreeDaysTemperature">1</InputValue>				
+				<OutputValue name="GrowingDegreeDaysTemperature" precision = "3">1.0</OutputValue>				
+				<OutputValue name="GrowingDegreeDaysTemperatureRate" precision = "3">0.0</OutputValue>					
+			</Test>			
+			<Test name="check 1 2">
+				<InputValue name="AirTemperatureAverage">50</InputValue>				
+				<InputValue name="GrowingDegreeDaysTemperature">1</InputValue>				
+				<OutputValue name="GrowingDegreeDaysTemperature" precision = "3">32.0</OutputValue>				
+				<OutputValue name="GrowingDegreeDaysTemperatureRate" precision = "3">31.0</OutputValue>					
+			</Test>			
+		</Testset>		
+	</Testsets>
+</ModelUnit>

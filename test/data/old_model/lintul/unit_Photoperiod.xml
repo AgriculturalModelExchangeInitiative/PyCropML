@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC "-//SIMPLACE/DTD SOL 1.0//EN" "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+  <ModelUnit modelid="1" name="Photoperiod" timestep="1" version="1.0">
+    <Description>
+      <Title>Photoperiod</Title>
+      <Authors>Gunther Krauss, gk@uni-bonn.de</Authors>
+      <Institution>INRES Pflanzenbau, Uni Bonn</Institution>
+      <Reference>as given in the documentation</Reference>
+      <Abstract>see documentation at http://www.simplace.net/doc/simplace_modules/class_net.simplace.sim.components.experimental.amei.Photoperiod.html</Abstract>
+    </Description>
+    <Inputs>
+      <Input name="iDayLength" description="Day length in minutes" datatype="INT" min="0" max="1440" default="0" unit="http://www.wurvoc.org/vocabularies/om-1.8/minute" />
+      <Input name="iPhotoInsensitivity" description="Daily effective temperature before anthesis" datatype="DOUBLE" min="0.0" max="24.0" default="6.0" unit="http://www.wurvoc.org/vocabularies/om-1.8/hour" />
+      <Input name="iPhotoInhibition" description="Daily mean air temperature" datatype="DOUBLE" min="0.0" max="24.0" default="14.0" unit="http://www.wurvoc.org/vocabularies/om-1.8/hour" />
+    </Inputs>
+    <Outputs>
+      <Output name="PhotoPeriodFactor" description="daily photoperiod factor" datatype="DOUBLE" min="0.0" max="1.0" default="0.0" unit="http://www.wurvoc.org/vocabularies/om-1.8/one" />
+    </Outputs>
+    <Algorithm language="java" platform="SIMPLACE" ><![CDATA[
+    PhotoPeriodFactor.setValue((iPhotoInhibition.getValue() - iDayLength.getValue() / 60) / (iPhotoInhibition.getValue() - iPhotoInsensitivity.getValue()), this);
+    if (iPhotoInsensitivity.getValue() &gt; iPhotoInhibition.getValue()) {
+        PhotoPeriodFactor.setValue((iDayLength.getValue() / 60 - iPhotoInhibition.getValue()) / (iPhotoInsensitivity.getValue() - iPhotoInhibition.getValue()), this);
+    }
+    if (PhotoPeriodFactor.getValue() &lt; 0) {
+        PhotoPeriodFactor.setValue(0., this);
+    }
+    if (PhotoPeriodFactor.getValue() &gt; 1) {
+        PhotoPeriodFactor.setValue(1., this);
+    }
+      ]]>
+    </Algorithm>
+    
+     <Algorithm language="python_ext" platform="" ><![CDATA[
+
+                PhotoPeriodFactor = ((iPhotoInhibition - iDayLength) /60)/ (iPhotoInhibition - iPhotoInsensitivity)
+                if (iPhotoInsensitivity > iPhotoInhibition):
+                {
+                    PhotoPeriodFactor = (iDayLength - iPhotoInhibition) / (iPhotoInsensitivity - iPhotoInhibition)
+                }
+                if (PhotoPeriodFactor < 0):
+                {
+                    PhotoPeriodFactor = 0
+                }
+                if (PhotoPeriodFactor > 1):
+                {
+                    PhotoPeriodFactor = 1
+                }   
+            ]]>
+            
+    </Algorithm>
+  </ModelUnit>

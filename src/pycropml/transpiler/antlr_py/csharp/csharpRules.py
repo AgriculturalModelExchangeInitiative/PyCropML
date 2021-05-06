@@ -41,7 +41,8 @@ class Cs_CymlRules(GeneralRule):
         "tuple": "tuple",
         "string": "str",
         "Dictionary": "dict",
-        "Datetime":"dateTime"
+        "DateTime":"datetime",
+        "unknown":"unknown"
     }
 
     functions = {

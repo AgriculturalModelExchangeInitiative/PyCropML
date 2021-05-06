@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.WheatPhenology.RegisterZadok" name="RegisterZadok" timestep="1" version="1.0">
+    <Description>
+        <Title>RegisterZadok Model</Title>
+        <Authors>Pierre MARTRE</Authors>
+        <Institution>INRA/LEPSE Montpellier</Institution>
+        <Reference>Modeling development phase in the 
+                Wheat Simulation Model SiriusQuality.
+                See documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract><![CDATA[Record the zadok stage in the calendar]]>
+    	</Abstract>
+    </Description>
+    <Inputs>
+        <Input name="cumulTT" description="" variablecategory="auxiliary" datatype="DOUBLE" min="-200" max="10000" default="354.582294511779" unit="°C d" uri="some url" inputtype="variable"/>
+        <Input name="phase" description="instance of the phase class . You can get the name of the phase using phase.getPhaseAsString(PhaseValue) " variablecategory="state"  inputtype ="variable" datatype="DOUBLE" min="0" max="7" default="2" unit="" uri="some url"/>
+        <Input name="leafNumber" description="Actual number of phytomers" variablecategory="state" datatype="DOUBLE" min="0" max="25" default="4.8854219661087575" unit="leaf" uri="some url" inputtype = "variable"/>
+        <Input name="calendarMoments" description="List containing apparition of each stage" variablecategory="auxiliary"  datatype="STRINGLIST"  default= "['Sowing']" unit=""  inputtype = "variable"/>
+        <Input name="calendarDates" description="List containing  the dates of the wheat developmental phases" variablecategory="auxiliary" datatype="DATELIST" default="['21/3/2007']" unit=""  inputtype = "variable"/>
+        <Input name="calendarCumuls" description="list containing for each stage occured its cumulated thermal times" variablecategory="auxiliary"  datatype="DOUBLELIST" default="[0.0]" unit="°C d"  inputtype = "variable"/>
+        <Input name="cumulTTFromZC_65" description="cumul of the thermal time (DeltaTT) since the moment ZC_65" variablecategory="auxiliary" datatype="DOUBLE" min="-200" max="10000" default="0" unit="°C d" uri="some url" inputtype = "variable"/>
+        <Input name="currentdate" description="current date" variablecategory="auxiliary" datatype="DATE" min="" max="" default="9/4/2007" unit="" uri="some url" inputtype = "variable"/>
+        <Input name="der" description="Duration of the endosperm endoreduplication phase" parametercategory="species" datatype="DOUBLE" min="0" max="10000" default="300.0" unit="°C d" uri="some url" inputtype = "parameter"/>
+        <Input name="slopeTSFLN" description="used to calculate Terminal spikelet" parametercategory="species" datatype="DOUBLE" min="0" max="10000" default="0.9" unit="" uri="some url" inputtype = "parameter"/>
+        <Input name="intTSFLN" description="used to calculate Terminal spikelet" parametercategory="species" datatype="DOUBLE" min="0" max="10000" default="0.9" unit="" uri="some url" inputtype = "parameter"/>
+        <Input name="finalLeafNumber" description="final leaf number" variablecategory="state" datatype="DOUBLE" min="0" max="10000" default="8.797582013199484" unit="leaf" uri="some url" inputtype = "variable"/>
+        <Input name="currentZadokStage" description="current zadok stage"  datatype="STRING" min="" max="" default ="MainShootPlus1Tiller" unit="" uri="some url" inputtype="variable"/>
+        <Input name="hasZadokStageChanged" description="true if the zadok stage has changed this time step" variablecategory="state" datatype="INT" min="0" max="1" default="0" unit="" uri="some url" inputtype="variable"/>
+     
+    </Inputs>
+    <Outputs>
+        <Output name="hasZadokStageChanged" description="true if the zadok stage has changed this time step" variablecategory="state" datatype="INT" min="0" max="1" unit="" uri="some url"/>
+        <Output name="currentZadokStage" description="current zadok stage" variablecategory="auxiliary" datatype="STRING"  unit=" " uri="some url" />
+        <Output name="calendarMoments" description=" List containing apparition of each stage" variablecategory="auxiliary" datatype="STRINGLIST"  unit="" />
+        <Output name="calendarDates" description=" List containing  the dates of the wheat developmental phases" variablecategory="auxiliary"  datatype="DATELIST"  unit=""/>
+        <Output name="calendarCumuls" description=" list containing for each stage occured its cumulated thermal times" variablecategory="auxiliary"  datatype="DOUBLELIST"  unit="°C d" />
+   	
+    </Outputs>
+    
+  
+    
+	<Algorithm  language="Python" platform="" filename="algo/py/RegisterZadok.py" />
+	<Algorithm  language="C#" platform="" filename="algo/cs/RegisterZadok.cs" />
+	<Algorithm  language="Java" platform="" filename="algo/java/RegisterZadok.java" />
+    <Algorithm  language="C++" platform="" filename="algo/cpp/RegisterZadok.cpp" />
+	<Algorithm  language="Fortran" platform="" filename="algo/f90/RegisterZadok.f90" />
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/RegisterZadok.pyx" />
+    <Algorithm  language="R" platform="" filename="algo/r/RegisterZadok.r" />
+
+	
+	
+     <Parametersets>
+        <Parameterset name="wheat" description="some values in there" >
+        	<Param name="slopeTSFLN">0.9</Param>
+        	<Param name="intTSFLN">2.6</Param>
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model1" parameterset = "wheat" description="some values in there" >
+        	<Test name ="test_wheat1">
+				<InputValue name="calendarMoments">["Sowing","Emergence","EndVernalisation","MainShootPlus1Tiller"]</InputValue>
+                <InputValue name="calendarDates">["21/3/2007","27/3/2007","30/3/2007","5/4/2007"]</InputValue>
+                <InputValue name="calendarCumuls">[ 0.0, 112.330110409888,157.969706915664, 280.570678654207]</InputValue>
+				<InputValue name="phase">2</InputValue>
+				<OutputValue name="calendarMoments">["Sowing","Emergence","EndVernalisation","MainShootPlus1Tiller"]</OutputValue>
+                <OutputValue name="calendarDates">["21/3/2007", "27/3/2007", "30/3/2007", "5/4/2007"]</OutputValue>
+                <OutputValue name="calendarCumuls" precision="2">[ 0.0, 112.33,157.97, 280.57]</OutputValue>
+				<OutputValue name="currentZadokStage">"MainShootPlus1Tiller"</OutputValue>
+				<OutputValue name="hasZadokStageChanged" >0</OutputValue>
+  	
+        	</Test>
+        </Testset>
+       </Testsets>
+ 	
+</ModelUnit>

@@ -203,20 +203,24 @@ FUNCTION_API = {
 
     'Math': {
         'Log':      {
-            1:      StandardCall('Math', 'ln'),
-            2:      StandardCall('Math', 'log')
+            1:      StandardCall('math', 'ln'),
+            2:      StandardCall('math', 'log')
         },
 
-        'Sin':      StandardCall('Math', 'sin'),
+        'Sin':      StandardCall('math', 'sin'),
         'Max':      StandardCall('system', 'max', expander=max_expander),
-        'Cos':      StandardCall('Math', 'cos'),
-        'Tan':      StandardCall('Math', 'tan'),
-        'Acos':     StandardCall('Math', 'acos'),
-        'Asin':     StandardCall('Math', 'asin'),
-        'Atan':     StandardCall('Math', 'atan'),
-        'Sqrt':     StandardCall('Math', 'sqrt'),
-        'Ceiling':  StandardCall('Math', 'ceiling'),
-        'Exp':      StandardCall('Math', 'exp')
+        'Cos':      StandardCall('math', 'cos'),
+        'Tan':      StandardCall('math', 'tan'),
+        'Acos':     StandardCall('math', 'acos'),
+        'Asin':     StandardCall('math', 'asin'),
+        'Atan':     StandardCall('math', 'atan'),
+        'Sqrt':     StandardCall('math', 'sqrt'),
+        'Ceiling':  StandardCall('math', 'ceil'),
+        'Exp':      StandardCall('math', 'exp'),
+        'Round':      StandardCall('System', 'round'),
+        'Pow':      StandardCall('math', 'pow'),
+        'Floor':      StandardCall('math', 'floor'),
+        'Min':      StandardCall('system', 'min', expander=min_expander)
         
     },
     'datetime':{
@@ -246,18 +250,18 @@ METHOD_API = {
     'List': {
         'Add':      StandardMethodCall('List', 'append'),
         'Sum':      StandardMethodCall('List', 'sum'),
-        'Count':    StandardMethodCall('list', 'len', expander=len_expander),
-        'pop':      StandardMethodCall('list', 'pop'),
+        'Count':    StandardMethodCall('List', 'len', expander=len_expander),
+        'Contains':      StandardMethodCall('List', 'contains?'),
         'insert':   {
-            1:      StandardMethodCall('list', 'insert'),
-            2:      StandardMethodCall('list', 'insert_at')
+            1:      StandardMethodCall('List', 'insert'),
+            2:      StandardMethodCall('List', 'insert_at')
         },
-        'remove':   StandardMethodCall('list', 'remove'),
-        'extend':   StandardMethodCall('list', 'extend'),
-        'map':      StandardMethodCall('list', 'map'),
-        'filter':   StandardMethodCall('list', 'filter'),
-        'copy':     StandardMethodCall('list', 'copy'),
-        'index':    StandardMethodCall('list', 'index')
+        'remove':   StandardMethodCall('List', 'remove'),
+        'AddRange':   StandardMethodCall('List', 'extend'),
+        'map':      StandardMethodCall('List', 'map'),
+        'filter':   StandardMethodCall('List', 'filter'),
+        'copy':     StandardMethodCall('List', 'copy'),
+        'IndexOf':    StandardMethodCall('List', 'index')
     },
 
     'dict': {
@@ -289,23 +293,20 @@ METHOD_API = {
 PROPERTY_API = {
     
     "List":{
-        "Count": StandardCall("List", "Count")
-
+        "Count": StandardMethodCall("List", "len",default={1: [{'type': 'str', 'value': ' ', 'pseudo_type': 'str'}]}, expander=len_expander)
     }
-
-
 }
 
 CONSTANT_API = {
       'Math':{
               
-              'PI':{'type':'constant', 'library':'Math', 'pseudo_type':'double', 'name':'PI'}
+              'PI':{'type':'constant', 'library':'math', 'pseudo_type':'double', 'name':'PI'}
               
               }  
         }
 
 OPERATOR_API = {
-    'list':  {
+    'List':  {
         '+':    'concat',
         '*':    'repeat'
     },

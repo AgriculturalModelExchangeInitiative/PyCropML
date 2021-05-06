@@ -1,0 +1,24 @@
+<ModelUnit modelid="SQ.Pheno_Pkg.GAImean" name="GAImean" timestep="1" version="001">
+    <Description>
+        <Title>GAImean model</Title>
+        <Authors>Loïc Manceau</Authors>
+        <Institution>INRA</Institution>
+        <Reference>(None,)</Reference>
+        <Abstract>-</Abstract></Description>
+    <Inputs>
+        <Input datatype="DOUBLELIST" default="" description="List of daily Green Area Index in the window dedicated to average" max="" min="" name="listGAITTWindowForPTQ_t1" units="m2 leaf m-2 ground" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="0.0" description="Maximum Leaf Area Index reached the current day" max="5000.0" min="0.0" name="pastMaxAI_t1" units="m2 leaf m-2 ground" variablecategory="state"/>
+        <Input datatype="DOUBLELIST" default="" description="List of daily shoot thermal time in the window dedicated to average" max="" min="" name="listTTShootWindowForPTQ1_t1" units="°C d" variablecategory="state"/>
+        <Input datatype="DOUBLE" default="0.0" description="Green Area Index of the day" max="500.0" min="0.0" name="gAI" units="m2 leaf m-2 ground" variablecategory="auxiliary"/>
+        <Input datatype="DOUBLE" default="0.0" description="Thermal time increase of the day" max="100.0" min="0.0" name="deltaTT" units="°C d" variablecategory="auxiliary"/>
+        <Input datatype="DOUBLE" default="0.0" description="Thermal Time window for average" max="5000.0" min="0.0" name="tTWindowForPTQ" parametercategory="constant" units="°C d"/></Inputs>
+    <Outputs>
+        <Output datatype="DOUBLE" description="Mean Green Area Index" max="500.0" min="0.0" name="gAImean" units="m2 leaf m-2 ground" variablecategory="state"/>
+        <Output datatype="DOUBLE" description="Maximum Leaf Area Index reached the current day" max="5000.0" min="0.0" name="pastMaxAI" units="m2 leaf m-2 ground" variablecategory="state"/>
+        <Output datatype="DOUBLELIST" description="List of daily shoot thermal time in the window dedicated to average" max="" min="" name="listTTShootWindowForPTQ1" units="°C d" variablecategory="state"/>
+        <Output datatype="DOUBLELIST" description="List of daily Green Area Index in the window dedicated to average" max="" min="" name="listGAITTWindowForPTQ" units="m2 leaf m-2 ground" variablecategory="state"/></Outputs>
+    <Algorithm filename="algo/pyx/GAImean.pyx" language="cyml" platform=""/>
+    <Parametersets>
+        <Parameterset description="" name=""/></Parametersets>
+    <Testsets>
+        <Testset description="" name="" parameterset=""/></Testsets></ModelUnit>

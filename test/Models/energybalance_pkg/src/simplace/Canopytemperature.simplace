@@ -1,0 +1,16 @@
+public void Process()
+{
+    double tminTair = minTair.getValue();
+    double tmaxTair = maxTair.getValue();
+    double tcropHeatFlux = cropHeatFlux.getValue();
+    double tconductance = conductance.getValue();
+    double tlambdaV = lambdaV.getValue();
+    double trhoDensityAir = rhoDensityAir.getValue();
+    double tspecificHeatCapacityAir = specificHeatCapacityAir.getValue();
+    double tminCanopyTemperature = minCanopyTemperature.getValue();
+    double tmaxCanopyTemperature = maxCanopyTemperature.getValue();
+    tminCanopyTemperature = tminTair + (tcropHeatFlux / (trhoDensityAir * tspecificHeatCapacityAir * tconductance / tlambdaV * 1000.0d));
+    tmaxCanopyTemperature = tmaxTair + (tcropHeatFlux / (trhoDensityAir * tspecificHeatCapacityAir * tconductance / tlambdaV * 1000.0d));
+    minCanopyTemperature.setValue(tminCanopyTemperature);
+    maxCanopyTemperature.setValue(tmaxCanopyTemperature);
+}

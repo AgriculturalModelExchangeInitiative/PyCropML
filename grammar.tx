@@ -1,0 +1,33 @@
+from textx import metamodel_from_str, get_children_of_type
+grammar = """
+funcdef: 'def' name '(' arguments*=typename[','] ')' ':' suite;
+typename: Type name;
+name:ID;
+Type: 'int' | 'float';
+suite: simple_stmt | NEWLINE INDENT stmt+ DEDENT;
+simple_stmt:(small_stmt NEWLINE)*;
+small_stmt: expr_stmt ;
+expr_stmt: testlist ('=' testlist)*;
+testlist: test ;
+test: name;
+NEWLINE:'\r\n';
+INDENT:'    ';
+DEDENT: 'dedent';
+EOL: (/[\n;]/)+;
+stmt: simple_stmt;
+"""
+class test:
+    pass
+
+source ="""
+def test(int toto) :
+    fg=gh
+    hfg = sfdh
+hoh = sdy
+vvf nj fg = sd
+"""
+
+
+mm = metamodel_from_str(grammar)
+model = mm.model_from_str(source)
+

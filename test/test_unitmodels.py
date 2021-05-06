@@ -14,7 +14,7 @@ cwd = Path(__file__).dirname()
 data = cwd/'Tutorial'
 
 packages = [p for p in data.listdir() if (p/'crop2ml').isdir()]
-pkg_nrj, pkg_pheno = packages
+pkg_nrj, pkg_pheno, snow_pkg = packages
 
 ##############################################################################
 # Test on Example

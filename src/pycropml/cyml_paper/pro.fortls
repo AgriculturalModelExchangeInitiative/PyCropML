@@ -1,0 +1,11 @@
+{
+  "source_dirs": ["subdir1", "subdir2"],
+  "excl_paths": ["subdir3", "subdir1/file_to_skip.F90"],
+  "excl_suffixes": ["_skip.f90"],
+  "pp_suffixes": [".f03", ".F90"],
+  "pp_defs": {"HAVE_PACKAGE": ""},
+  "include_dirs": ["rel_include/dir_path", "/abs/include/dir/path"],
+  "ext_source_dirs": ["/path/to/fortran/library"],
+  "lowercase_intrinsics": false,
+  "debug_log": false
+}

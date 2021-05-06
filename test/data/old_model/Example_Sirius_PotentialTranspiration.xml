@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Model PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/xml_representation/master/ModelUnit.dtd">
+<ModelUnit modelid="1" name="PotentialTranspiration" timestep="1" version="1.0">
+    <Description>
+        <Title>PotentialTranspiration Model</Title>
+        <Authors>Pierre Martre</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>absolutely non</Reference>
+        <Abstract>Calculate Energy Balance </Abstract>
+    </Description>
+    <Inputs>
+
+        <Input name="evapoTranspiration" description="" parametercategory="species" datatype="DOUBLE" default="830.958" min="0" max="1000" unit="mm" uri="some url" inputtype="variable"/>
+        <Input name="tau" description="plant cover factor" parametercategory="species" datatype="DOUBLE" default="0.9983" min="0" max="100" unit="" uri="some url" inputtype="parameter"/>
+     
+    </Inputs>
+    <Outputs>
+
+        <Output name="potentialTranspiration" description=" " datatype="DOUBLE" min="0" max="5"  unit="mm" uri="some url"/>
+
+    </Outputs>
+    
+    <Algorithm language=" " platform=""><![CDATA[
+        potentialTranspiration= evapoTranspiration * (1 - tau)   
+      ]]>
+     </Algorithm>    
+  
+
+     <Parametersets>
+        <Parameterset name="set1" description="some values in there" >
+        	<Param name="tau">0.9983</Param>
+  
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="first" parameterset = "set1" description="some values in there" >
+        	<Test name ="test1">
+        		<InputValue name="evapoTranspiration">830.958</InputValue>
+				<OutputValue name="potentialTranspiration" precision ="3">1.413</OutputValue>
+	
+        	</Test>
+
+        </Testset>
+      </Testsets>
+</ModelUnit>

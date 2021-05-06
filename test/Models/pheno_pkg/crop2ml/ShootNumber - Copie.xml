@@ -1,0 +1,36 @@
+<ModelUnit modelid="SQ.WheatPhenology.ShootNumber" name="ShootNumber" timestep="1" version="1.0">
+    <Description>
+        <Title>CalculateShootNumber Model</Title>
+        <Authors>Pierre MARTRE</Authors>
+        <Reference>http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract>calculate the shoot number and update the related variables if needed</Abstract>
+    </Description>
+    <Inputs>
+        <Input name="leafNumber" description="Leaf number " variablecategory="state" inputtype ="variable" 
+			datatype="DOUBLE" min="0" max="10000" default="3.34" unit="leaf" />
+		...
+    </Inputs>
+    <Outputs>
+        <Output name="canopyShootNumber" description="shoot number for the whole canopy" 
+			variablecategory="state" datatype="DOUBLE" min="0" max="10000"  unit="shoot/m**2" />
+		...   	
+    </Outputs>
+    <Function name = "fibonacci" language="Cyml" type="internal" filename="algo/pyx/Fibonacci.pyx"/>  
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/ShootNumber.pyx" />
+    <Parametersets>
+        <Parameterset name="Pwheat1" description="some values in there" >
+        	<Param name="targetFertileShoot">600.0</Param>
+        	<Param name="sowingDensity">288.0</Param>
+        </Parameterset>
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model1" parameterset = "Pwheat1" description="some values in there" >
+        	<Test name ="test_wheat1">
+        		<InputValue name="canopyShootNumber_t1" >288.0</InputValue>						
+				<OutputValue name="leafTillerNumberArray" >[1, 1, 1, 2]</OutputValue> 
+				...				
+        	</Test>
+        </Testset>
+      </Testsets>	
+</ModelUnit>
+

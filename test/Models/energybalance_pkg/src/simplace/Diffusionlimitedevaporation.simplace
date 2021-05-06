@@ -1,0 +1,22 @@
+public void Process()
+{
+    double tdeficitOnTopLayers = deficitOnTopLayers.getValue();
+    double tsoilDiffusionConstant = soilDiffusionConstant.getValue();
+    double tdiffusionLimitedEvaporation = diffusionLimitedEvaporation.getValue();
+    if (tdeficitOnTopLayers / 1000.0d <= 0.0d)
+    {
+        tdiffusionLimitedEvaporation = 8.3d * 1000.0d;
+    }
+    else
+    {
+        if (tdeficitOnTopLayers / 1000.0d < 25.0d)
+        {
+            tdiffusionLimitedEvaporation = 2.0d * tsoilDiffusionConstant * tsoilDiffusionConstant / (tdeficitOnTopLayers / 1000.0d) * 1000.0d;
+        }
+        else
+        {
+            tdiffusionLimitedEvaporation = 0.0d;
+        }
+    }
+    diffusionLimitedEvaporation.setValue(tdiffusionLimitedEvaporation);
+}

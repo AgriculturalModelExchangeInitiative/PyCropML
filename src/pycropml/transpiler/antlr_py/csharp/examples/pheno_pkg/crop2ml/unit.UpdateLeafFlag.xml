@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModelUnit PUBLIC " " "https://raw.githubusercontent.com/AgriculturalModelExchangeInitiative/crop2ml/master/ModelUnit.dtd">
+<ModelUnit modelid="SQ.WheatPhenology.UpdateLeafFlag" name="UpdateLeafFlag" timestep="1" version="1.0">
+    <Description>
+        <Title>UpdateLeafFlag Model</Title>
+        <Authors>Pierre MARTRE</Authors>
+        <Institution>INRA Montpellier</Institution>
+        <Reference>Modeling development phase in the 
+                Wheat Simulation Model SiriusQuality.
+                See documentation at http://www1.clermont.inra.fr/siriusquality/?page_id=427</Reference>
+        <Abstract><![CDATA[tells if flag leaf has appeared and update the calendar if so]]>
+    	</Abstract>
+    </Description>
+    <Inputs>
+        <Input name="cumulTT" description="cumul thermal times at current date" variablecategory="auxiliary" datatype="DOUBLE" min="-200" max="10000" default="741.510096671757" unit="°C d" uri="some url" inputtype="variable"/>
+        <Input name="leafNumber" description="Actual number of phytomers"  variablecategory="state" datatype="DOUBLE" min="0" max="25" default="8.919453833361189" unit="leaf" uri="some url" inputtype = "variable"/>
+        <Input name="calendarMoments" description="List containing apparition of each stage" variablecategory="state"  datatype="STRINGLIST"  default= "['Sowing']" unit=""  inputtype = "variable"/>
+        <Input name="calendarDates" description="List containing  the dates of the wheat developmental phases" variablecategory="state" datatype="DATELIST" default="['2007/3/21']" unit=""  inputtype = "variable"/>
+        <Input name="calendarCumuls" description="list containing for each stage occured its cumulated thermal times" variablecategory="state"  datatype="DOUBLELIST" default="[0.0]" unit="°C d"  inputtype = "variable"/>
+        <Input name="currentdate" description=" current date" variablecategory="auxiliary"  datatype="DATE" default="2007/4/29" unit="" uri="some url" inputtype = "variable"/>
+        <Input name="finalLeafNumber" description="final leaf number" variablecategory="state" datatype="DOUBLE" min="0" max="10000" default="8.797582013199484" unit="leaf" uri="some url" inputtype = "variable"/>
+        <Input name="hasFlagLeafLiguleAppeared_t1" description="true if flag leaf has appeared (leafnumber reached finalLeafNumber)" variablecategory="state"  datatype="INT" min="0" max="1" default="1" unit="" uri="some url" inputtype="variable"/>
+        <Input name="phase" description=" the name of the phase" variablecategory="state"  datatype="DOUBLE" min="0" max="7" default = "1" unit="" uri="some url" inputtype="variable"/>
+     
+    </Inputs>
+    <Outputs>
+        <Output name="hasFlagLeafLiguleAppeared" description="true if flag leaf has appeared (leafnumber reached finalLeafNumber)" variablecategory="state"  datatype="INT" min="0" max="1" unit="" uri="some url"/>
+        <Output name="calendarMoments" description=" List containing apparition of each stage" variablecategory="state" datatype="STRINGLIST"  unit="" />
+        <Output name="calendarDates" description=" List containing  the dates of the wheat developmental phases" variablecategory="state"  datatype="DATELIST"  unit=""/>
+        <Output name="calendarCumuls" description=" list containing for each stage occured its cumulated thermal times" variablecategory="state"  datatype="DOUBLELIST"  unit="°C d" />
+   	
+    </Outputs>
+  
+    <Algorithm  language="Cyml" platform="" filename="algo/pyx/UpdateLeafFlag.pyx" /> 
+
+    <Parametersets>
+        <Parameterset name="wheat" description="some values in there" >
+        </Parameterset>
+
+     </Parametersets>
+     <Testsets>
+        <Testset name="check wheat model1" parameterset = "wheat" description="some values in there" >
+        	<Test name ="test_wheat1">
+        		<InputValue name="hasFlagLeafLiguleAppeared_t1">0</InputValue>
+        		<InputValue name="phase">3</InputValue>
+				<InputValue name="calendarMoments">["Sowing", "Emergence", "EndVernalisation", "MainShootPlus1Tiller", "FloralInitiation", "MainShootPlus2Tiller", "TerminalSpikelet", "PseudoStemErection", "MainShootPlus3Tiller", "1stNodeDetectable", "2ndNodeDetectable", "FlagLeafJustVisible"]</InputValue>
+				<InputValue name="calendarDates">["2007/3/21", "2007/3/27", "2007/3/30", "2007/4/5", "2007/4/9", "2007/4/10", "2007/4/11", "2007/4/12", "2007/4/14", "2007/4/15", "2007/4/19", "2007/4/24"]</InputValue>
+				<InputValue name="calendarCumuls">[0.0, 112.330110409888, 157.969706915664, 280.570678654207, 354.582294511779, 378.453152853726, 402.042720581446, 424.98704708663, 467.23305195298, 487.544313430698, 560.665248444002, 646.389617338974]</InputValue>
+				<OutputValue name="hasFlagLeafLiguleAppeared" precision ="2">1</OutputValue>
+				<OutputValue name="calendarMoments">["Sowing", "Emergence", "EndVernalisation", "MainShootPlus1Tiller", "FloralInitiation", "MainShootPlus2Tiller", "TerminalSpikelet", "PseudoStemErection", "MainShootPlus3Tiller", "1stNodeDetectable", "2ndNodeDetectable", "FlagLeafJustVisible", "FlagLeafLiguleJustVisible"]</OutputValue>
+				<OutputValue name="calendarDates">["2007/3/21", "2007/3/27", "2007/3/30", "2007/4/5", "2007/4/9", "2007/4/10", "2007/4/11", "2007/4/12", "2007/4/14", "2007/4/15", "2007/4/19", "2007/4/24","2007/4/29"]</OutputValue>
+				<OutputValue name="calendarCumuls" precision="2">[0.0, 112.33, 157.97, 280.57, 354.58, 378.45, 402.04, 424.99, 467.23, 487.54, 560.67, 646.39, 741.51]</OutputValue>
+        	
+        	</Test>
+
+        </Testset>
+    
+      </Testsets>
+ 	
+</ModelUnit>

@@ -7,9 +7,9 @@ public class Test
         int[] k = {2,2};
         List<int> hh = new List<int>{2, 2};
         //b = test2(10.5d);
-        if(b>10.2d) 
+        if(b>-10.2d) 
         {
-               b=2.3d;
+               b=-2.3D;
         }
         while (b<10.3d)
         {

@@ -1,0 +1,119 @@
+<ModelComposition name="net.simplace.sim.components.experimental.amei.PotentialGrowth" id="net.simplace.sim.components.experimental.amei.PotentialGrowth">
+  <Description>
+    <Title>PotentialGrowth</Title>
+    <Authors>Gunther Krauss, gk@uni-bonn.de</Authors>
+    <Institution>INRES Pflanzenbau, Uni Bonn</Institution>
+    <Reference>as given in the documentation</Reference>
+    <Abstract>see documentation at http://www.simplace.net/doc/simplace_modules/class_net.simplace.sim.components.experimental.amei.PotentialGrowth.html</Abstract>
+  </Description>
+  <Composition>
+    <Model name="LintulPhenology" id="net.simplace.sim.components.models.lintul.LintulPhenology" filename="unit_LintulPhenology.xml" />
+    <Model name="DayLength" id="net.simplace.sim.components.experimental.amei.DayLength" filename="unit_DayLength.xml" />
+    <Model name="Photoperiod" id="net.simplace.sim.components.experimental.amei.Photoperiod" filename="unit_Photoperiod.xml" />
+    <Model name="Vernalisation" id="net.simplace.sim.components.experimental.amei.Vernalisation" filename="unit_Vernalisation.unit.xml" />
+    <Model name="Partitioning" id="net.simplace.sim.components.experimental.amei.Partitioning" filename="unit_Partitioning.xml" />
+    <Model name="LintulBiomass" id="net.simplace.sim.components.models.lintul.LintulBiomass" filename="unit_LintulBiomass.xml" />
+
+    <Links>
+      <InputLink target="DayLength.cLatitude" source="cLatitude" />
+      <InputLink target="DayLength.iDayOfYear" source="iDayOfYear" />
+      <InputLink target="LintulBiomass.cDevStageRGRL" source="cDevStageRGRL" />
+      <InputLink target="LintulBiomass.cGrainToRootsDailyBiomass" source="cGrainToRootsDailyBiomass" />
+      <InputLink target="LintulBiomass.cGrainToRootsDevStage" source="cGrainToRootsDevStage" />
+      <InputLink target="LintulBiomass.cK" source="cK" />
+      <InputLink target="LintulBiomass.cLAII" source="cLAII" />
+      <InputLink target="LintulBiomass.cLaiCritical" source="cLaiCritical" />
+      <InputLink target="LintulBiomass.cRDRL" source="cRDRL" />
+      <InputLink target="LintulBiomass.cRDRLeavesTableMeanTemperature" source="cRDRLeavesTableMeanTemperature" />
+      <InputLink target="LintulBiomass.cRDRLeavesTableRelativeRate" source="cRDRLeavesTableRelativeRate" />
+      <InputLink target="LintulBiomass.cRDRNS" source="cRDRNS" />
+      <InputLink target="LintulBiomass.cRDRSHM" source="cRDRSHM" />
+      <InputLink target="LintulBiomass.cRDRT" source="cRDRT" />
+      <InputLink target="LintulBiomass.cRGRL" source="cRGRL" />
+      <InputLink target="LintulBiomass.cRelativeDayOfEmergence" source="cRelativeDayOfEmergence" />
+      <InputLink target="LintulBiomass.cSLA" source="cSLA" />
+      <InputLink target="LintulBiomass.iAirTemperatureMean" source="iAirTemperatureMean" />
+      <InputLink target="LintulBiomass.iDoHarvest" source="iDoHarvest" />
+      <InputLink target="LintulBiomass.iDoSow" source="iDoSow" />
+      <InputLink target="LintulBiomass.iEffectiveTempRateAfterAnt" source="iEffectiveTempRateAfterAnt" />
+      <InputLink target="LintulBiomass.iEffectiveTempRateBeforeAnt" source="iEffectiveTempRateBeforeAnt" />
+      <InputLink target="LintulBiomass.iLUE" source="iLUE" />
+      <InputLink target="LintulBiomass.iRadiation" source="iRadiation" />
+      <InputLink target="Partitioning.cLeavesPartitioningTableDVS" source="cLeavesPartitioningTableDVS" />
+      <InputLink target="Partitioning.cLeavesPartitioningTableFraction" source="cLeavesPartitioningTableFraction" />
+      <InputLink target="Partitioning.cPartitionNStressReduction" source="cPartitionNStressReduction" />
+      <InputLink target="Partitioning.cRootsPartitioningTableDVS" source="cRootsPartitioningTableDVS" />
+      <InputLink target="Partitioning.cRootsPartitioningTableFraction" source="cRootsPartitioningTableFraction" />
+      <InputLink target="Partitioning.cStemsPartitioningTableDVS" source="cStemsPartitioningTableDVS" />
+      <InputLink target="Partitioning.cStemsPartitioningTableFraction" source="cStemsPartitioningTableFraction" />
+      <InputLink target="Partitioning.cStorageOrgansPartitioningTableDVS" source="cStorageOrgansPartitioningTableDVS" />
+      <InputLink target="Partitioning.cStorageOrgansPartitioningTableFraction" source="cStorageOrgansPartitioningTableFraction" />
+      <InputLink target="Partitioning.iDoSow" source="iDoSow" />
+      <InputLink target="Phenology.cAirTemperatureSumAnthesis" source="cAirTemperatureSumAnthesis" />
+      <InputLink target="Phenology.cAirTemperatureSumMaturity" source="cAirTemperatureSumMaturity" />
+      <InputLink target="Phenology.cAirTemperatureSumMilkripeness" source="cAirTemperatureSumMilkripeness" />
+      <InputLink target="Phenology.cRelativeDayOfEmergence" source="cRelativeDayOfEmergence" />
+      <InputLink target="Phenology.iDoHarvest" source="iDoHarvest" />
+      <InputLink target="Phenology.iDoSow" source="iDoSow" />
+      <InputLink target="Vernalisation.cApplyVernalisation" source="cApplyVernalisation" />
+      <InputLink target="Vernalisation.cThigh" source="cThigh" />
+      <InputLink target="Vernalisation.cThighCritical" source="cThighCritical" />
+      <InputLink target="Vernalisation.cTlow" source="cTlow" />
+      <InputLink target="Vernalisation.cTlowCritical" source="cTlowCritical" />
+      <InputLink target="Vernalisation.cVernalDaysMax" source="cVernalDaysMax" />
+      <InputLink target="Vernalisation.cVernalDaysMin" source="cVernalDaysMin" />
+      <InputLink target="Vernalisation.iDAVTMP" source="iDAVTMP" />
+      <InputLink target="Vernalisation.iDoSow" source="iDoSow" />
+      <InputLink target="Vernalisation.iTSumBaseAnt" source="iTSumBaseAnt" />
+      <InputLink target="Vernalisation.iTSumBaseMat" source="iTSumBaseMat" />
+      <InternalLink target="LintulBiomass.iDevStage" source="Phenology.sDevStage" />
+      <InternalLink target="LintulBiomass.iPartLeavesFactor" source="Partitioning.FractionLeaves" />
+      <InternalLink target="LintulBiomass.iPartRootFactor" source="Partitioning.FractionRoot" />
+      <InternalLink target="LintulBiomass.iPartStemsFactor" source="Partitioning.FractionStems" />
+      <InternalLink target="LintulBiomass.iPartStorageOrgansFactor" source="Partitioning.FractionStorageOrgans" />
+      <InternalLink target="Partitioning.iDevStage" source="Phenology.sDevStage" />
+      <InternalLink target="Phenology.iRTEFFAnt" source="Vernalisation.RTSUM" />
+      <InternalLink target="Phenology.iRTEFFMat" source="Vernalisation.RTSUM" />
+      <InternalLink target="Photoperiod.iDayLength" source="DayLength.DayLength" />
+      <InternalLink target="Vernalisation.iDevStage" source="Phenology.sDevStage" />
+      <InternalLink target="Vernalisation.iPhotoPeriodFactor" source="Photoperiod.PhotoPeriodFactor" />
+      <OutputLink source="DayLength.DayLength" target="DayLength" />
+      <OutputLink source="LintulBiomass.AboveGroundBiomass" target="AboveGroundBiomass" />
+      <OutputLink source="LintulBiomass.GTOTAL" target="GTOTAL" />
+      <OutputLink source="LintulBiomass.PARINT" target="PARINT" />
+      <OutputLink source="LintulBiomass.rDLAI" target="rDLAI" />
+      <OutputLink source="LintulBiomass.rDeadLeaves" target="rDeadLeaves" />
+      <OutputLink source="LintulBiomass.rDeadStems" target="rDeadStems" />
+      <OutputLink source="LintulBiomass.rRWLVG" target="rRWLVG" />
+      <OutputLink source="LintulBiomass.rRWRT" target="rRWRT" />
+      <OutputLink source="LintulBiomass.sDaysSinceSowing" target="sDaysSinceSowing" />
+      <OutputLink source="LintulBiomass.sLAI" target="sLAI" />
+      <OutputLink source="LintulBiomass.sWLV" target="sWLV" />
+      <OutputLink source="LintulBiomass.sWLVD" target="sWLVD" />
+      <OutputLink source="LintulBiomass.sWLVG" target="sWLVG" />
+      <OutputLink source="LintulBiomass.sWRT" target="sWRT" />
+      <OutputLink source="LintulBiomass.sWSO" target="sWSO" />
+      <OutputLink source="LintulBiomass.sWST" target="sWST" />
+      <OutputLink source="Partitioning.FractionLeaves" target="FractionLeaves" />
+      <OutputLink source="Partitioning.FractionRoot" target="FractionRoot" />
+      <OutputLink source="Partitioning.FractionStems" target="FractionStems" />
+      <OutputLink source="Partitioning.FractionStorageOrgans" target="FractionStorageOrgans" />
+      <OutputLink source="Phenology.AnthesisDOY" target="AnthesisDOY" />
+      <OutputLink source="Phenology.AnthesisDate" target="AnthesisDate" />
+      <OutputLink source="Phenology.CropCycleCount" target="CropCycleCount" />
+      <OutputLink source="Phenology.EmergenceDOY" target="EmergenceDOY" />
+      <OutputLink source="Phenology.EmergenceDate" target="EmergenceDate" />
+      <OutputLink source="Phenology.MaturityDOY" target="MaturityDOY" />
+      <OutputLink source="Phenology.MaturityDate" target="MaturityDate" />
+      <OutputLink source="Phenology.MilkripenessDOY" target="MilkripenessDOY" />
+      <OutputLink source="Phenology.MilkripenessDate" target="MilkripenessDate" />
+      <OutputLink source="Phenology.RTEFF" target="RTEFF" />
+      <OutputLink source="Phenology.SowingDOY" target="SowingDOY" />
+      <OutputLink source="Phenology.SowingDate" target="SowingDate" />
+      <OutputLink source="Phenology.sDevStage" target="sDevStage" />
+      <OutputLink source="Phenology.sTSUM" target="sTSUM" />
+      <OutputLink source="Photoperiod.PhotoPeriodFactor" target="PhotoPeriodFactor" />
+      <OutputLink source="Vernalisation.RTSUM" target="RTSUM" />
+    </Links>
+  </Composition>
+</ModelComposition>

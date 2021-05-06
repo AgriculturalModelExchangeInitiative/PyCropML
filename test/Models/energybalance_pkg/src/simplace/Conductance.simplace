@@ -1,0 +1,15 @@
+public void Process()
+{
+    double tvonKarman = vonKarman.getValue();
+    double theightWeatherMeasurements = heightWeatherMeasurements.getValue();
+    double tzm = zm.getValue();
+    double tzh = zh.getValue();
+    double td = d.getValue();
+    double tplantHeight = plantHeight.getValue();
+    double twind = wind.getValue();
+    double tconductance = conductance.getValue();
+    double h;
+    h = Math.max(10.0d, tplantHeight) / 100.0d;
+    tconductance = twind * Math.pow(tvonKarman, 2) / (Math.log((theightWeatherMeasurements - (td * h)) / (tzm * h)) * Math.log((theightWeatherMeasurements - (td * h)) / (tzh * h)));
+    conductance.setValue(tconductance);
+}

@@ -147,7 +147,8 @@ class CsharpRules(GeneralRule):
         },
         'str': {
             'int': '(int)',
-            'find': '.IndexOf'
+            'find': '.IndexOf',
+            'contains?': '.Contains'
         },
         'list': {
             'len': translateLenList,
@@ -174,10 +175,10 @@ class CsharpRules(GeneralRule):
                 }
     }
     public_properties = '''
-    {
-        get { return this._%s; }
-        set { this._%s= value; } 
-    }'''
+        {
+            get { return this._%s; }
+            set { this._%s= value; } 
+        }'''
 
     public_properties_wrap = '''{ get { return %s.%s;}} 
      '''  
@@ -192,12 +193,12 @@ class CsharpRules(GeneralRule):
     {
     '''
     copy_constrList = '''
-        for (int i = 0; i < toCopy.%s.Count; i++)
-        { %s.Add(toCopy.%s[i]); }
+            for (int i = 0; i < toCopy.%s.Count; i++)
+            { %s.Add(toCopy.%s[i]); }
     '''
     copy_constrArray = '''
-        for (int i = 0; i < %s; i++)
-        { _%s[i] = toCopy._%s[i]; }
+            for (int i = 0; i < %s; i++)
+            { _%s[i] = toCopy._%s[i]; }
     '''
     public_properties_compo = '''
     {
